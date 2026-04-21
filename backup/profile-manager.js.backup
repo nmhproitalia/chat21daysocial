@@ -1,0 +1,1853 @@
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+import { auth, db } from "./firebase.js";
+import { 
+    doc, updateDoc, serverTimestamp, onSnapshot, setDoc, getDoc 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { 
+    updatePassword, reauthenticateWithCredential, EmailAuthProvider, getAuth 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const FIELDS = ['firstName','lastName','userEmail','userPhone','birthDate','height','gender','startWeight','weight','bodyFat','hydration','visceralFat','leanMass','boneMass','metabolicAge','mainGoal','targetWeight','bio'];
+
+// --- BADGE SYSTEM ---
+const BADGE_ICONS = {
+    success: `<div style="width: 48px; height: 48px; border-radius: 50%; background: #28a745; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(40,167,69,0.3);">
+        <i class="fas fa-trophy" style="font-size: 24px; color: #fff8dc;"></i>
+    </div>`,
+    process: `<div style="width: 48px; height: 48px; border-radius: 50%; background: #ff6b35; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(255,107,53,0.3);">
+        <i class="fas fa-fire" style="font-size: 24px; color: #fff8dc;"></i>
+    </div>`,
+    waiting: `<div style="width: 48px; height: 48px; border-radius: 50%; background: #6c757d; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(108,117,125,0.3);">
+        <i class="fas fa-rocket" style="font-size: 24px; color: #fff8dc;"></i>
+    </div>`
+};
+
+// --- FUNZIONI DI CALCOLO ---
+
+function calculateBMI(weight, height) {
+    const heightInMeters = height / 100;
+    return (weight / (heightInMeters * heightInMeters)).toFixed(1);
+}
+
+function calculateBodyClass(bmi, bodyFat, gender = 'male') {
+    // Classificazione basata su BMI E massa grassa con logica migliorata
+    if (!bmi || !bodyFat) return '';
+    
+    // Se la massa grassa è nella norma, dai priorità a quella (atleti/muscolosi)
+    const maleFatRanges = [
+        { fatMax: 10, class: 'Sottopeso' },
+        { fatMax: 20, class: 'Normopeso' },
+        { fatMax: 25, class: 'Sovrappeso' },
+        { fatMax: 30, class: 'Obeso' },
+        { fatMax: Infinity, class: 'Obeso' }
+    ];
+    
+    const femaleFatRanges = [
+        { fatMax: 15, class: 'Sottopeso' },
+        { fatMax: 25, class: 'Normopeso' },
+        { fatMax: 30, class: 'Sovrappeso' },
+        { fatMax: 35, class: 'Obeso' },
+        { fatMax: Infinity, class: 'Obeso' }
+    ];
+    
+    const fatRanges = gender === 'female' ? femaleFatRanges : maleFatRanges;
+    
+    // Prima classificazione basata su massa grassa
+    let fatClass = '';
+    for (const range of fatRanges) {
+        if (bodyFat <= range.fatMax) {
+            fatClass = range.class;
+            break;
+        }
+    }
+    
+    // Se la massa grassa è normale o buona, usa quella come classificazione principale
+    if (fatClass === 'Normopeso' || fatClass === 'Sottopeso') {
+        return fatClass;
+    }
+    
+    // Se la massa grassa è alta, considera anche il BMI
+    const maleRanges = [
+        { bmiMax: 18.5, fatMax: 10, class: 'Sottopeso' },
+        { bmiMax: 24.9, fatMax: 20, class: 'Normopeso' },
+        { bmiMax: 29.9, fatMax: 25, class: 'Sovrappeso' },
+        { bmiMax: 34.9, fatMax: 30, class: 'Obeso' },
+        { bmiMax: Infinity, fatMax: Infinity, class: 'Obeso' }
+    ];
+    
+    const femaleRanges = [
+        { bmiMax: 18.5, fatMax: 15, class: 'Sottopeso' },
+        { bmiMax: 24.9, fatMax: 25, class: 'Normopeso' },
+        { bmiMax: 29.9, fatMax: 30, class: 'Sovrappeso' },
+        { bmiMax: 34.9, fatMax: 35, class: 'Obeso' },
+        { bmiMax: Infinity, fatMax: Infinity, class: 'Obeso' }
+    ];
+    
+    const ranges = gender === 'female' ? femaleRanges : maleRanges;
+    
+    for (const range of ranges) {
+        if (bmi <= range.bmiMax && bodyFat <= range.fatMax) {
+            return range.class;
+        }
+    }
+    
+    return 'Obeso';
+}
+
+function calculateAge(birthDate) {
+    const today = new Date();
+    const birth = new Date(birthDate);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+        age--;
+    }
+    
+    return age;
+}
+
+// Funzione per caricare e visualizzare data e ora challenge
+function loadChallengeDateTime(challengeStartDate) {
+    const displayElement = document.getElementById('challengeDateTimeText');
+    
+    console.log('loadChallengeDateTime chiamato con:', challengeStartDate);
+    console.log('Elemento displayElement trovato:', displayElement);
+    
+    if (!displayElement) return;
+    
+    if (challengeStartDate) {
+        console.log('Data challenge presente, procedo con la formattazione');
+        try {
+            const startDate = new Date(challengeStartDate);
+            
+            // Formatta data in italiano
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            
+            const formattedDate = startDate.toLocaleDateString('it-IT', options);
+            
+            // Verifica se la challenge è futura, corrente o passata
+            const now = new Date();
+            let statusText = '';
+            
+            if (startDate > now) {
+                statusText = `Inizia: ${formattedDate}`;
+            } else if (startDate.toDateString() === now.toDateString()) {
+                statusText = `Inizia OGGI: ${formattedDate}`;
+            } else {
+                statusText = `Iniziata: ${formattedDate}`;
+            }
+            
+            displayElement.textContent = statusText;
+            
+            // Aggiungi colore speciale se inizia oggi
+            if (startDate.toDateString() === now.toDateString()) {
+                displayElement.style.color = '#ff6b35';
+                displayElement.style.fontWeight = '700';
+            }
+            
+        } catch (error) {
+            console.error('Errore formattazione data challenge:', error);
+            displayElement.textContent = 'Data non disponibile';
+        }
+    } else {
+        console.log('Data challenge non presente, mostro "Data non impostata"');
+        displayElement.textContent = 'Data non impostata';
+        displayElement.style.color = '#6c757d';
+        displayElement.style.fontWeight = '500';
+    }
+}
+
+function calculateTanitaWaterRequirement(weight, gender, leanMass) {
+    // Formula TANITA ufficiale per fabbisogno idrico
+    // Base: 30-35ml per kg di peso corporeo
+    // Aggiustamenti per massa magra e sesso
+    
+    let waterRequirement = weight * 0.033; // Base 33ml/kg
+    
+    // Aggiustamento per massa magra (più massa magra = più acqua necessaria)
+    if (leanMass > 0) {
+        const leanMassPercentage = (leanMass / weight) * 100;
+        if (leanMassPercentage > 75) {
+            waterRequirement += 0.2; // +200ml per alta massa magra
+        } else if (leanMassPercentage < 60) {
+            waterRequirement -= 0.2; // -200ml per bassa massa magra
+        }
+    }
+    
+    // Aggiustamento per sesso
+    if (gender === 'male') {
+        waterRequirement += 0.1; // Uomini necessitano +100ml
+    }
+    
+    // Limiti TANITA: minimo 1.5L, massimo 4.0L
+    return Math.max(1.5, Math.min(4.0, waterRequirement));
+}
+
+function calculateTanitaProteinRequirement(weight, leanMass, gender, age) {
+    // Formula TANITA ufficiale per fabbisogno proteico
+    // Base: 1.2-1.6g per kg di peso corporeo
+    // Aggiustamenti per età, sesso e massa magra
+    
+    let proteinRequirement = weight * 1.2; // Base 1.2g/kg
+    
+    // Aggiustamento per età
+    if (age > 65) {
+        proteinRequirement += weight * 0.3; // +0.3g/kg per over 65
+    } else if (age < 30) {
+        proteinRequirement += weight * 0.2; // +0.2g/kg per under 30
+    }
+    
+    // Aggiustamento per massa magra
+    if (leanMass > 0) {
+        const leanMassPercentage = (leanMass / weight) * 100;
+        if (leanMassPercentage > 80) {
+            proteinRequirement += weight * 0.4; // +0.4g/kg per atleti
+        } else if (leanMassPercentage > 70) {
+            proteinRequirement += weight * 0.2; // +0.2g/kg per buona massa magra
+        }
+    }
+    
+    // Aggiustamento per sesso
+    if (gender === 'male') {
+        proteinRequirement += weight * 0.1; // Uomini necessitano +0.1g/kg
+    }
+    
+    // Limiti TANITA: minimo 0.8g/kg, massimo 2.5g/kg
+    const minProtein = weight * 0.8;
+    const maxProtein = weight * 2.5;
+    
+    return Math.max(minProtein, Math.min(maxProtein, proteinRequirement));
+}
+
+function formatBirthday(birthDate) {
+    const months = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 
+                   'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
+    const birth = new Date(birthDate);
+    const day = birth.getDate();
+    const month = months[birth.getMonth()];
+    return `${day} ${month}`;
+}
+
+function calculateBIAScore(bodyFat, hydration, leanMass, visceralFat, boneMass, metabolicAge, actualAge, gender = 'male') {
+    let score = 0;
+    
+    // Calcola BMI e classificazione corporea per il punteggio
+    const height = parseFloat(document.getElementById('height')?.value || 0);
+    const weight = parseFloat(document.getElementById('weight')?.value || 0);
+    let bodyClass = '';
+    let bmi = 0;
+    
+    if (height > 0 && weight > 0) {
+        bmi = parseFloat(calculateBMI(weight, height));
+        bodyClass = calculateBodyClass(bmi, bodyFat, gender);
+    }
+    
+    // Massa Grassa (30%) - Standard TANITA differenziati per sesso
+    if (bodyFat > 0) {
+        if (gender === 'female') {
+            // Range femminili TANITA
+            if (bodyFat <= 22) score += 30;  // Ottimo
+            else if (bodyFat <= 25) score += 25;  // Buono
+            else if (bodyFat <= 30) score += 15;  // Sufficiente
+            else if (bodyFat <= 35) score += 5;   // Elevato
+            else score -= 15;  // Rischio
+        } else {
+            // Range maschili TANITA
+            if (bodyFat <= 15) score += 30;  // Ottimo
+            else if (bodyFat <= 20) score += 25;  // Buono
+            else if (bodyFat <= 25) score += 15;  // Sufficiente
+            else if (bodyFat <= 30) score += 5;   // Elevato
+            else score -= 15;  // Rischio
+        }
+    }
+    
+    // Età Metabolica (25%) - Standard TANITA
+    if (metabolicAge > 0 && actualAge > 0) {
+        const ageDiff = metabolicAge - actualAge;
+        if (ageDiff <= 0) score += 25;      // Ottimo (metabolismo normale o più giovane)
+        else if (ageDiff <= 5) score += 15;  // Buono
+        else if (ageDiff <= 10) score += 5;  // Attenzione
+        else score -= 20;  // Rischio - metabolismo molto rallentato
+    }
+    
+    // Grasso Viscerale (20%) - Standard TANITA
+    if (visceralFat > 0) {
+        if (visceralFat <= 5) score += 20;  // Ottimo
+        else if (visceralFat <= 10) score += 15; // Buono
+        else if (visceralFat <= 15) score += 8;  // Moderato
+        else if (visceralFat <= 20) score += 3;  // Elevato
+        else score -= 10;  // Rischio molto elevato
+    }
+    
+    // Idratazione (15%) - Standard TANITA
+    if (hydration > 0) {
+        if (hydration >= 60) score += 15;  // Ottimo
+        else if (hydration >= 55) score += 12; // Buono
+        else if (hydration >= 50) score += 8;  // Sufficiente
+        else if (hydration >= 45) score += 4;  // Scarso
+        else score -= 5;  // Disidratazione
+    }
+    
+    // Massa Magra (10%) - Standard TANITA
+    if (leanMass > 0) {
+        // Se leanMass è in kg, calcola percentuale assumendo peso totale
+        let leanPercentage = leanMass;
+        if (typeof leanMass === 'number' && leanMass < 100) {
+            leanPercentage = leanMass; // Già percentuale
+        }
+        
+        if (leanPercentage >= 80) score += 10;  // Ottimo
+        else if (leanPercentage >= 75) score += 8;  // Buono
+        else if (leanPercentage >= 70) score += 6;  // Sufficiente
+        else if (leanPercentage >= 65) score += 4;  // Scarso
+        // Nessuna penalizzazione per massa magra bassa
+    }
+    
+    // Massa Ossea (5%) - Standard TANITA
+    if (boneMass > 0) {
+        if (boneMass >= 3.0) score += 5;   // Ottimo (range TANITA)
+        else if (boneMass >= 2.8) score += 4;   // Buono
+        else if (boneMass >= 2.5) score += 3;   // Sufficiente
+        else if (boneMass >= 2.2) score += 2;   // Scarso
+        // Nessuna penalizzazione
+    }
+    
+    // PENALIZZAZIONE CLASSIFICAZIONE CORPOREA (BONUS/MALUS)
+    if (bodyClass) {
+        switch (bodyClass) {
+            case 'Sottopeso':
+                score -= 20;  // Penalità significativa per sottopeso
+                break;
+            case 'Normopeso':
+                score += 10;  // Bonus più alto per normopeso ottimale
+                break;
+            case 'Sovrappeso':
+                score -= 30;  // Penalità forte per sovrappeso
+                break;
+            case 'Obeso':
+                score -= 40;  // Penalità molto forte per obesità
+                break;
+        }
+    }
+    
+    // Limita il punteggio massimo a 100 e minimo a 0
+    return Math.min(Math.max(score, 0), 100);
+}
+
+function updateCalculations(data = null) {
+    const getV = (id) => document.getElementById(id)?.value;
+
+    const pAttuale = parseFloat(getV('weight')) || 0;
+    const pTarget = parseFloat(getV('targetWeight')) || 0;
+    const goal = getV('mainGoal');
+    const fat = parseFloat(getV('bodyFat')) || 0;
+    const lean = parseFloat(getV('leanMass')) || 0;
+    const hyd = parseFloat(getV('hydration')) || 0;
+    const visceralFat = parseFloat(getV('visceralFat')) || 0;
+    const boneMass = parseFloat(getV('boneMass')) || 0;
+    const metabolicAge = parseInt(getV('metabolicAge')) || 0;
+    
+    // Calcola età dell'utente dinamicamente
+    let userAge = 30;
+    const bDate = getV('birthDate');
+    if (bDate) {
+        userAge = calculateAge(bDate);
+    }
+    
+    // Estrai sesso dai dati o dal select
+    const gender = (data && data.gender) || document.getElementById('gender')?.value || 'male';
+    
+    // Calcola score BIA basato sui parametri con differenza sesso
+    const biaScore = calculateBIAScore(fat, hyd, lean, visceralFat, boneMass, metabolicAge, userAge, gender);
+    
+    // Aggiorna la barra di progresso del profilo
+    const levelBar = document.getElementById('levelBar');
+    const healthScoreLabel = document.getElementById('healthScoreLabel');
+    if (levelBar && healthScoreLabel) {
+        levelBar.style.width = biaScore + '%';
+        healthScoreLabel.textContent = 'Health Score: ' + Math.round(biaScore) + '%';
+    }
+    
+    // Aggiorna data compleanno formattata
+    const birthDate = getV('birthDate');
+    if (birthDate) {
+        const bdayDisplay = document.getElementById('bdayDisplay');
+        if (bdayDisplay) {
+            bdayDisplay.value = formatBirthday(birthDate);
+        }
+    }
+    
+    // Aggiorna età display
+    if (birthDate && document.getElementById('ageDisplay')) {
+        document.getElementById('ageDisplay').value = userAge;
+    }
+
+    // Sistema Badge OBBIETTIVO-CENTRICO - Valuta progresso verso obiettivo specifico
+    const cornerBadge = document.getElementById('cornerBadge');
+    if (cornerBadge && goal) {
+        cornerBadge.style.display = "flex";
+        const iconCont = document.getElementById('badgeIconContainer');
+        const labelTxt = document.getElementById('badgeLabelText');
+        
+        let badgeStatus = "waiting";
+        let badgeText = "PARTENZA";
+        let badgeColor = "#6c757d";
+        let progressInfo = "";
+        
+        if (goal === "Perdere Massa Grassa") {
+            // Target: massa grassa <= 20% per successo
+            const currentFat = fat || 0;
+            const targetFat = 20;
+            
+            if (currentFat <= 15) {
+                badgeStatus = "success";
+                badgeText = "OBIETTIVO RAGGIUNTO!";
+                badgeColor = "#28a745";
+                progressInfo = `Massa grassa: ${currentFat}% (Target: ${targetFat}%)`;
+            } else if (currentFat <= 18) {
+                badgeStatus = "process";
+                badgeText = "QUASI LI!";
+                badgeColor = "#ffc107";
+                progressInfo = `Massa grassa: ${currentFat}% (Target: ${targetFat}%)`;
+            } else if (currentFat <= 25) {
+                badgeStatus = "process";
+                badgeText = "A METÀ STRADA";
+                badgeColor = "#ff6b35";
+                progressInfo = `Massa grassa: ${currentFat}% (Target: ${targetFat}%)`;
+            } else {
+                badgeStatus = "waiting";
+                badgeText = "INIZIA IL VIAGGIO";
+                badgeColor = "#6c757d";
+                progressInfo = `Massa grassa: ${currentFat}% (Target: ${targetFat}%)`;
+            }
+        } 
+        else if (goal === "Aumentare Massa Magra") {
+            // Target: massa magra >= 80% per successo
+            const leanPercentage = pAttuale > 0 ? (lean / pAttuale) * 100 : 0;
+            const targetLean = 80;
+            
+            if (leanPercentage >= 85) {
+                badgeStatus = "success";
+                badgeText = "OBIETTIVO RAGGIUNTO!";
+                badgeColor = "#28a745";
+                progressInfo = `Massa magra: ${leanPercentage.toFixed(1)}% (Target: ${targetLean}%)`;
+            } else if (leanPercentage >= 75) {
+                badgeStatus = "process";
+                badgeText = "QUASI LI!";
+                badgeColor = "#ffc107";
+                progressInfo = `Massa magra: ${leanPercentage.toFixed(1)}% (Target: ${targetLean}%)`;
+            } else if (leanPercentage >= 65) {
+                badgeStatus = "process";
+                badgeText = "A METÀ STRADA";
+                badgeColor = "#ff6b35";
+                progressInfo = `Massa magra: ${leanPercentage.toFixed(1)}% (Target: ${targetLean}%)`;
+            } else {
+                badgeStatus = "waiting";
+                badgeText = "INIZIA IL VIAGGIO";
+                badgeColor = "#6c757d";
+                progressInfo = `Massa magra: ${leanPercentage.toFixed(1)}% (Target: ${targetLean}%)`;
+            }
+        } 
+        else if (goal === "Tonificazione") {
+            // Target: grasso <= 21% E idratazione >= 55%
+            const currentFat = fat || 0;
+            const currentHyd = hyd || 0;
+            const fatTarget = 21;
+            const hydTarget = 55;
+            
+            const fatOk = currentFat <= fatTarget;
+            const hydOk = currentHyd >= hydTarget;
+            
+            if (fatOk && hydOk) {
+                badgeStatus = "success";
+                badgeText = "OBIETTIVO RAGGIUNTO!";
+                badgeColor = "#28a745";
+                progressInfo = `Grasso: ${currentFat}% | Idratazione: ${currentHyd}%`;
+            } else if (currentFat <= 23 && currentHyd >= 50) {
+                badgeStatus = "process";
+                badgeText = "QUASI LI!";
+                badgeColor = "#ffc107";
+                progressInfo = `Grasso: ${currentFat}% | Idratazione: ${currentHyd}%`;
+            } else if (currentFat <= 25 && currentHyd >= 45) {
+                badgeStatus = "process";
+                badgeText = "A METÀ STRADA";
+                badgeColor = "#ff6b35";
+                progressInfo = `Grasso: ${currentFat}% | Idratazione: ${currentHyd}%`;
+            } else {
+                badgeStatus = "waiting";
+                badgeText = "INIZIA IL VIAGGIO";
+                badgeColor = "#6c757d";
+                progressInfo = `Grasso: ${currentFat}% | Idratazione: ${currentHyd}%`;
+            }
+        } 
+        else if (goal === "Mantenimento") {
+            // Target: peso attuale entro ±0.5kg dal target
+            const scarto = Math.abs(pAttuale - pTarget);
+            const tolerance = 0.5;
+            
+            if (pTarget > 0 && scarto <= tolerance) {
+                badgeStatus = "success";
+                badgeText = "OBIETTIVO RAGGIUNTO!";
+                badgeColor = "#28a745";
+                progressInfo = `Peso: ${pAttuale}kg (Target: ${pTarget}kg ±${tolerance}kg)`;
+            } else if (pTarget > 0 && scarto <= 1.5) {
+                badgeStatus = "process";
+                badgeText = "QUASI LI!";
+                badgeColor = "#ffc107";
+                progressInfo = `Peso: ${pAttuale}kg (Target: ${pTarget}kg ±${tolerance}kg)`;
+            } else if (pTarget > 0 && scarto <= 3) {
+                badgeStatus = "process";
+                badgeText = "A METÀ STRADA";
+                badgeColor = "#ff6b35";
+                progressInfo = `Peso: ${pAttuale}kg (Target: ${pTarget}kg ±${tolerance}kg)`;
+            } else {
+                badgeStatus = "waiting";
+                badgeText = "INIZIA IL VIAGGIO";
+                badgeColor = "#6c757d";
+                progressInfo = `Peso: ${pAttuale}kg (Target: ${pTarget}kg ±${tolerance}kg)`;
+            }
+        }
+
+        if(iconCont && labelTxt) {
+            iconCont.innerHTML = BADGE_ICONS[badgeStatus];
+            labelTxt.textContent = badgeText;
+            labelTxt.style.color = badgeColor;
+            
+            // Aggiungi tooltip o info extra se necessario
+            labelTxt.title = progressInfo;
+        }
+    }
+
+    if (pAttuale > 0) {
+        // Calcoli TANITA ufficiali per fabbisogno idrico e proteico
+        const waterCalc = calculateTanitaWaterRequirement(pAttuale, gender, leanMass);
+        const proteinCalc = calculateTanitaProteinRequirement(pAttuale, leanMass, gender, userAge);
+        
+        if(document.getElementById('waterCalc')) document.getElementById('waterCalc').textContent = waterCalc.toFixed(1);
+        if(document.getElementById('proteinCalc')) document.getElementById('proteinCalc').textContent = proteinCalc.toFixed(0);
+    }
+    
+    // Calcola e aggiorna classificazione corporea automaticamente
+    if (pAttuale > 0 && height > 0) {
+        const bmi = parseFloat(calculateBMI(pAttuale, height));
+        const bodyClassInput = document.getElementById('bodyClass');
+        
+        if (bodyClassInput && fat > 0) {
+            // Calcola classificazione automatica
+            const calculatedClass = calculateBodyClass(bmi, fat, gender);
+            
+            // Imposta il valore nell'input
+            bodyClassInput.value = calculatedClass;
+            
+            // Rendi il campo readonly/bloccato
+            bodyClassInput.setAttribute('readonly', true);
+            bodyClassInput.style.backgroundColor = '#f8f9fa';
+            bodyClassInput.style.cursor = 'not-allowed';
+        }
+    }
+    
+    // Aggiorna anche i parametri BIA quando l'utente modifica i campi
+    if (!data) {
+        // Crea oggetto dati dai campi correnti per updateBIAUI
+        const currentData = {
+            weight: pAttuale,
+            height: height,
+            bodyFat: fat,
+            hydration: hyd,
+            visceralFat: visceralFat,
+            leanMass: lean,
+            boneMass: boneMass,
+            metabolicAge: metabolicAge,
+            gender: gender,
+            birthDate: bDate
+        };
+        updateBIAUI(currentData);
+    }
+}
+
+export function setupProfiloActions() {
+    // Controlla se c'è un parametro UID nell'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetUid = urlParams.get('uid');
+    
+    const user = auth.currentUser;
+    if (!user) return;
+
+    // Usa UID target se presente, altrimenti usa utente autenticato
+    const uid = targetUid || user.uid;
+    const userRef = doc(db, "users", uid);
+    
+    console.log(`Caricamento profilo per UID: ${uid} ${targetUid ? '(utente specifico)' : '(utente autenticato)'}`);
+
+    // 1️⃣ ASCOLTO DATI IN TEMPO REALE
+    onSnapshot(userRef, (snap) => {
+        if (!snap.exists()) return;
+        const data = snap.data();
+        
+        // Popolamento campi (Usa FIELDS per coerenza)
+        FIELDS.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                // Gestione speciale per telefono (mappato come userPhone o phone)
+                if (id === 'userPhone') el.value = data.phone || data.userPhone || "";
+                // Gestione speciale per email (mappato come email)
+                else if (id === 'userEmail') el.value = data.email || "";
+                else el.value = data[id] || "";
+            }
+        });
+
+        // Aggiorna UI Estetica
+        if(document.getElementById("profileName")) {
+            document.getElementById("profileName").innerText = `${data.firstName || 'Utente'} ${data.lastName || ''}`;
+        }
+        
+        if(document.getElementById("profilePhotoImg")) {
+            const url = data.photoURL || "https://i.pravatar.cc/150";
+            document.getElementById("profilePhotoImg").src = url;
+            if(data.photoURL && document.getElementById("photoPlaceholderIcon")) {
+                document.getElementById("photoPlaceholderIcon").style.display = "none";
+            }
+        }
+
+        // Popola campi coach con dati dal documento utente (salvati dalla dashboard)
+        // IMPORTANTE: Carica dati coach SIA per profilo personale che per profili altrui
+        console.log('Caricamento dati coach per UID:', uid, 'targetUid:', targetUid);
+        console.log('Dati coach ricevuti:', {
+            coachFirstName: data.coachFirstName,
+            coachLastName: data.coachLastName,
+            coachEmail: data.coachEmail,
+            coachPhone: data.coachPhone
+        });
+        
+        // Verifica che gli elementi esistano prima di popolarli
+        const coachFirstNameEl = document.getElementById("coachFirstName");
+        const coachLastNameEl = document.getElementById("coachLastName");
+        const coachEmailEl = document.getElementById("coachEmail");
+        const coachPhoneEl = document.getElementById("coachPhone");
+        
+        // CORRETTO: Usa i campi coach se esistono, altrimenti usa i campi normali
+        if (coachFirstNameEl) coachFirstNameEl.value = data.coachFirstName || data.firstName || "";
+        if (coachLastNameEl) coachLastNameEl.value = data.coachLastName || data.lastName || "";
+        if (coachEmailEl) coachEmailEl.value = data.coachEmail || data.email || "";
+        if (coachPhoneEl) coachPhoneEl.value = data.coachPhone || data.userPhone || "";
+        
+        // AGGIUNTA: Assicura che dati coach rimangano memorizzati
+        if (data.keepCoachData === true) {
+            console.log('Dati coach devono rimanere memorizzati (keepCoachData = true)');
+            // Non fare nulla - i dati rimangono come sono
+        }
+        
+        console.log('Campi coach popolati:', {
+            firstName: coachFirstNameEl ? coachFirstNameEl.value : 'ELEMENTO NON TROVATO',
+            lastName: coachLastNameEl ? coachLastNameEl.value : 'ELEMENTO NON TROVATO',
+            email: coachEmailEl ? coachEmailEl.value : 'ELEMENTO NON TROVATO',
+            phone: coachPhoneEl ? coachPhoneEl.value : 'ELEMENTO NON TROVATO'
+        });
+        
+        // Carica e visualizza data e ora challenge
+        loadChallengeDateTime(data.challengeStartDate);
+
+        // Popola campi anagrafici
+        console.log('Tentativo popolamento campi anagrafici:', {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            userPhone: data.userPhone,
+            email: data.email
+        });
+        
+        // Verifica che gli elementi esistano prima di popolarli
+        const firstNameEl = document.getElementById("firstName");
+        const lastNameEl = document.getElementById("lastName");
+        const userPhoneEl = document.getElementById("userPhone");
+        const userEmailEl = document.getElementById("userEmail");
+        
+        console.log('Elementi trovati:', {
+            firstName: firstNameEl ? 'ESISTE' : 'NON TROVATO',
+            lastName: lastNameEl ? 'ESISTE' : 'NON TROVATO',
+            userPhone: userPhoneEl ? 'ESISTE' : 'NON TROVATO',
+            userEmail: userEmailEl ? 'ESISTE' : 'NON TROVATO'
+        });
+        
+        if (data.firstName) {
+            console.log('Popolamento firstName:', data.firstName);
+            firstNameEl.value = data.firstName;
+        } else {
+            console.log('firstName non popolato - data mancante');
+        }
+        
+        if (data.lastName) {
+            console.log('Popolamento lastName:', data.lastName);
+            lastNameEl.value = data.lastName;
+        } else {
+            console.log('lastName non popolato - data mancante');
+        }
+        
+        if (data.userPhone) {
+            console.log('Popolamento userPhone:', data.userPhone);
+            userPhoneEl.value = data.userPhone;
+        } else {
+            console.log('userPhone non popolato - data mancante');
+        }
+        
+        if (data.email) {
+            console.log('Popolamento email:', data.email);
+            userEmailEl.value = data.email;
+        } else {
+            console.log('email non popolato - data mancante');
+        }
+        if (data.birthDate) {
+            document.getElementById("birthDate").value = data.birthDate;
+            
+            // Calcola e mostra compleanno ed età automaticamente
+            const bdayDisplay = document.getElementById('birthdayDisplay');
+            const ageDisplay = document.getElementById('ageDisplay');
+            if (bdayDisplay) {
+                bdayDisplay.value = formatBirthday(data.birthDate);
+            }
+            if (ageDisplay) {
+                const userAge = calculateAge(data.birthDate);
+                ageDisplay.value = userAge + ' anni';
+            }
+        }
+        if (data.height) document.getElementById("height").value = data.height;
+        if (data.gender) document.getElementById("gender").value = data.gender;
+        if (data.startWeight) document.getElementById("startWeight").value = data.startWeight;
+
+        // Calcoli BIA & Badge (Logica recuperata)
+        updateBIAUI(data);
+        
+        // Calcoli automatici quando i dati cambiani
+        updateCalculations(data);
+        
+        // Calcola classificazione corporea al caricamento
+        if (data.weight && data.height && data.bodyFat) {
+            const bmi = parseFloat(calculateBMI(data.weight, data.height));
+            const bodyClassInput = document.getElementById('bodyClass');
+            const gender = data.gender || 'male';
+            
+            if (bodyClassInput) {
+                const calculatedClass = calculateBodyClass(bmi, data.bodyFat, gender);
+                bodyClassInput.value = calculatedClass;
+                bodyClassInput.setAttribute('readonly', true);
+                bodyClassInput.style.backgroundColor = '#f8f9fa';
+                bodyClassInput.style.cursor = 'not-allowed';
+            }
+        }
+    });
+
+    // Event listener per click sulla foto profilo
+    const uploadTrigger = document.getElementById('uploadTrigger');
+    const fileInput = document.getElementById('fileInput');
+    if (uploadTrigger && fileInput) {
+        uploadTrigger.addEventListener('click', () => {
+            fileInput.click();
+        });
+    }
+
+    // Event listener per upload foto
+    if (fileInput) {
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                try {
+                    // Mostra loading
+                    const uploadTrigger = document.getElementById('uploadTrigger');
+                    if (uploadTrigger) {
+                        uploadTrigger.style.opacity = '0.7';
+                        uploadTrigger.style.cursor = 'wait';
+                    }
+
+                    // Upload su Firebase Storage
+                    const storage = getStorage();
+                    const user = auth.currentUser;
+                    if (!user) throw new Error('Utente non autenticato');
+
+                    const storageRef = ref(storage, `profilePhotos/${user.uid}/${Date.now()}_${file.name}`);
+                    await uploadBytes(storageRef, file);
+                    
+                    // Ottieni URL download
+                    const downloadURL = await getDownloadURL(storageRef);
+                    
+                    // Aggiorna database
+                    const userRef = doc(db, "users", user.uid);
+                    await updateDoc(userRef, {
+                        photoURL: downloadURL,
+                        lastUpdated: serverTimestamp()
+                    });
+
+                    // Aggiorna immagine nella pagina
+                    const profileImg = document.getElementById('profilePhotoImg');
+                    const placeholderIcon = document.getElementById('photoPlaceholderIcon');
+                    
+                    if (profileImg) {
+                        profileImg.src = downloadURL;
+                        profileImg.style.display = 'block';
+                    }
+                    if (placeholderIcon) {
+                        placeholderIcon.style.display = 'none';
+                    }
+
+                    console.log('Foto caricata con successo:', downloadURL);
+
+                } catch (error) {
+                    console.error('Errore upload foto:', error);
+                    alert('Errore durante il caricamento della foto. Riprova.');
+                } finally {
+                    // Ripristina stato normale
+                    const uploadTrigger = document.getElementById('uploadTrigger');
+                    if (uploadTrigger) {
+                        uploadTrigger.style.opacity = '1';
+                        uploadTrigger.style.cursor = 'pointer';
+                    }
+                }
+            }
+        });
+    }
+
+    // Event listener per select sesso
+    const genderSelect = document.getElementById('gender');
+    if (genderSelect) {
+        genderSelect.addEventListener('change', () => {
+            updateCalculations(); // Ricalcola tutto quando cambia sesso
+        });
+    }
+
+    // Event listener per data di nascita (aggiorna compleanno ed età in real-time)
+    const birthDateInput = document.getElementById('birthDate');
+    if (birthDateInput) {
+        birthDateInput.addEventListener('change', (e) => {
+            const birthDate = e.target.value;
+            if (birthDate) {
+                const bdayDisplay = document.getElementById('birthdayDisplay');
+                const ageDisplay = document.getElementById('ageDisplay');
+                
+                if (bdayDisplay) {
+                    bdayDisplay.value = formatBirthday(birthDate);
+                }
+                if (ageDisplay) {
+                    const userAge = calculateAge(birthDate);
+                    ageDisplay.value = userAge + ' anni';
+                }
+            }
+        });
+    }
+
+    
+    // 3° SALVATAGGIO MISURAZIONI BIA
+    const saveBiaBtn = document.getElementById("saveBiaBtn");
+    if (saveBiaBtn) {
+        saveBiaBtn.onclick = async () => {
+            const updateObj = { updatedAt: serverTimestamp() };
+            
+            // Campi BIA
+            const biaFields = ['height', 'weight', 'bodyFat', 'hydration', 'visceralFat', 'leanMass', 'boneMass', 'metabolicAge', 'bodyClass'];
+            biaFields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    let val = el.value.trim();
+                    if (el.type === 'number') {
+                        const min = parseFloat(el.min);
+                        const max = parseFloat(el.max);
+                        let n = parseFloat(val) || 0;
+                        if (n < min) n = min;
+                        if (n > max) n = max;
+                        updateObj[id] = n;
+                    } else {
+                        updateObj[id] = val;
+                    }
+                }
+            });
+
+            try {
+                await updateDoc(userRef, updateObj);
+                showSuccess('bia');
+            } catch (e) { console.error(e); alert("Errore salvataggio misurazioni BIA"); }
+        };
+    }
+
+    // 4° SALVATAGGIO OBIETTIVI
+    const saveObiettiviBtn = document.getElementById("saveObiettiviBtn");
+    if (saveObiettiviBtn) {
+        saveObiettiviBtn.onclick = async () => {
+            
+            const updateObj = { updatedAt: serverTimestamp() };
+            
+            // Campi obiettivi
+            const obiettiviFields = ['mainGoal', 'targetWeight', 'bio'];
+            obiettiviFields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    let val = el.value.trim();
+                    if (el.type === 'number') {
+                        const min = parseFloat(el.min);
+                        const max = parseFloat(el.max);
+                        let n = parseFloat(val) || 0;
+                        if (n < min) n = min;
+                        if (n > max) n = max;
+                        updateObj[id] = n;
+                    } else {
+                        updateObj[id] = val;
+                    }
+                }
+            });
+
+            try {
+                await updateDoc(userRef, updateObj);
+                showSuccess('obiettivi');
+            } catch (e) { console.error(e); alert("Errore salvataggio obiettivi"); }
+        };
+    }
+
+    // 2. GESTIONE SALVATAGGIO DATI ANAGRAFICI (logica per tutti gli utenti)
+    if (!targetUid) {
+        // Profilo proprio: abilita tutto
+        setupAnagraficiSave(userRef);
+        setupBIASave(userRef);
+        
+        // IMPORTANTE: Assicura che i dati coach siano caricati per TUTTI gli utenti
+        console.log('Profilo personale rilevato, UID utente:', uid);
+        console.log('Caricamento dati coach per tutti gli utenti...');
+        
+        // Forza ricaricamento dati coach se non presenti (per tutti gli utenti)
+        const coachFirstNameEl = document.getElementById("coachFirstName");
+        const coachLastNameEl = document.getElementById("coachLastName");
+        const coachEmailEl = document.getElementById("coachEmail");
+        const coachPhoneEl = document.getElementById("coachPhone");
+        
+        console.log('Stato attuale campi coach:', {
+                        firstName: coachFirstNameEl ? coachFirstNameEl.value : 'ELEMENTO NON TROVATO',
+                        lastName: coachLastNameEl ? coachLastNameEl.value : 'ELEMENTO NON TROVATO',
+                        email: coachEmailEl ? coachEmailEl.value : 'ELEMENTO NON TROVATO',
+                        phone: coachPhoneEl ? coachPhoneEl.value : 'ELEMENTO NON TROVATO',
+                        coachLastName: data.coachLastName,
+                        coachEmail: data.coachEmail,
+                        coachPhone: data.coachPhone
+                    });
+                    
+                    if (coachFirstNameEl) coachFirstNameEl.value = data.coachFirstName || data.firstName || "";
+                    if (coachLastNameEl) coachLastNameEl.value = data.coachLastName || data.lastName || "";
+                    if (coachEmailEl) coachEmailEl.value = data.coachEmail || data.email || "";
+                    if (coachPhoneEl) coachPhoneEl.value = data.coachPhone || data.userPhone || "";
+                    
+                    console.log('Dati coach popolati con successo');
+                } else {
+                    console.log('ERRORE: Il documento utente non esiste!');
+                    console.log('Creazione automatica del documento utente...');
+                    
+                    // Recupero l'utente autenticato
+                    const auth = getAuth();
+                    const user = auth.currentUser;
+                    
+                    if (user) {
+                        // Creo il documento utente con dati di base
+                        await setDoc(doc(db, "users", user.uid), {
+                            uid: user.uid,
+                            email: user.email,
+                            nome: "",
+                            cognome: "",
+                            userPhone: "",
+                            phone: "",
+                            firstName: "",
+                            lastName: "",
+                            role: "user",
+                            createdAt: serverTimestamp(),
+                            keepCoachData: true
+                        });
+                        
+                        console.log('Documento utente creato con successo!');
+                        
+                        // Ricarico i dati dopo la creazione
+                        location.reload();
+                    } else {
+                        console.error('Nessun utente autenticato trovato!');
+                    }
+                }
+            }).catch((error) => {
+                console.error('Errore caricamento dati coach:', error);
+            });
+        } else {
+            console.log('Dati coach già presenti, non ricarico');
+        }
+    } else {
+        // Profilo altrui: logica differenziata per coach vs utente normale
+        
+        // Prima disabilita TUTTO i campi modificabili
+        const allEditableFields = ['firstName', 'lastName', 'userEmail', 'userPhone', 'birthDate', 'height', 'gender', 'startWeight', 'mainGoal', 'targetWeight', 'bio', 'weight', 'bodyFat', 'hydration', 'visceralFat', 'leanMass', 'boneMass', 'metabolicAge'];
+        allEditableFields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.setAttribute('readonly', true);
+                el.style.backgroundColor = '#f8f9fa';
+                el.style.cursor = 'not-allowed';
+                
+                // Per select (gender) disabilita completamente
+                if (el.tagName === 'SELECT') {
+                    el.disabled = true;
+                    el.style.backgroundColor = '#f8f9fa';
+                    el.style.cursor = 'not-allowed';
+                }
+            }
+        });
+        
+        // Verifica se l'utente corrente è un coach
+        // NOTA: Qui dovresti verificare il ruolo dell'utente corrente
+        // Per ora assumiamo che chi accede a profili altrui sia un coach
+        
+        // Abilita SOLO i campi BIA per il coach
+        const biaFields = ['height', 'weight', 'bodyFat', 'hydration', 'visceralFat', 'leanMass', 'boneMass', 'metabolicAge'];
+        biaFields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.removeAttribute('readonly');
+                el.style.backgroundColor = '#ffffff';
+                el.style.cursor = 'text';
+                el.style.border = '2px solid #28a745'; // Bordo verde per indicare che è modificabile dal coach
+            }
+        });
+        
+        // Nascondi tutti i pulsanti di salvataggio tranne BIA per coach
+        const allSaveButtons = document.querySelectorAll('button[id*="Btn"], button[id*="btn"]');
+        allSaveButtons.forEach(btn => {
+            // Mostra solo pulsante BIA, nascondi tutti gli altri
+            if (btn.id === 'saveBiaBtn') {
+                btn.style.display = 'block';
+                btn.style.background = '#28a745'; // Verde per indicare salvataggio BIA
+            } else {
+                btn.style.display = 'none';
+            }
+        });
+        
+        // Disabilita upload foto e altre funzioni non BIA
+        const uploadTrigger = document.getElementById('uploadTrigger');
+        if (uploadTrigger) {
+            uploadTrigger.style.pointerEvents = 'none';
+            uploadTrigger.style.opacity = '0.5';
+        }
+        
+        // Nascondi sezione sicurezza per coach
+        const passwordSection = document.querySelector('.password-section');
+        if (passwordSection) {
+            passwordSection.style.display = 'none';
+        }
+        
+        // Abilita solo salvataggio BIA
+        setupBIASave(userRef);
+        
+        // Mostra indicatore che il coach può modificare solo BIA
+        const indicator = document.getElementById('userProfileIndicator');
+        const indicatorText = document.getElementById('profileIndicatorText');
+        if (indicator && indicatorText) {
+            indicator.style.display = 'block';
+            indicator.style.background = '#28a745';
+            indicator.style.color = 'white';
+            indicatorText.textContent = 'Modalità Coach: Puoi modificare solo le misurazioni BIA (campi con bordo verde)';
+        }
+    }
+
+    // Mostra/nascondi indicatore profilo utente
+    const indicator = document.getElementById('userProfileIndicator');
+    const indicatorText = document.getElementById('profileIndicatorText');
+    if (indicator && indicatorText) {
+        if (targetUid) {
+            indicator.style.display = 'block';
+            indicatorText.textContent = 'Stai visualizzando il profilo di un utente (sola lettura)';
+        } else {
+            indicator.style.display = 'none';
+        }
+    }
+}
+
+function setupAnagraficiSave(userRef) {
+    // 2° SALVATAGGIO DATI ANAGRAFICI
+    const saveAnagraficiBtn = document.getElementById("saveAnagraficiBtn");
+    if (saveAnagraficiBtn) {
+        saveAnagraficiBtn.onclick = async () => {
+            const updateObj = { updatedAt: serverTimestamp() };
+            
+            // Campi anagrafici
+            const anagraficiFields = ['firstName', 'lastName', 'userEmail', 'userPhone', 'birthDate', 'height', 'gender', 'startWeight'];
+            anagraficiFields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    let val = el.value.trim();
+                    if (val) {
+                        if (id === 'height' || id === 'startWeight') val = parseFloat(val);
+                        updateObj[id] = val;
+                    }
+                }
+            });
+
+            try {
+                await updateDoc(userRef, updateObj);
+                showSuccess('anagrafici');
+            } catch (e) { console.error(e); alert("Errore salvataggio dati anagrafici"); }
+        };
+    }
+}
+
+function setupBIASave(userRef) {
+    // 3° SALVATAGGIO MISURAZIONI BIA
+    const saveBiaBtn = document.getElementById("saveBiaBtn");
+    if (saveBiaBtn) {
+        saveBiaBtn.onclick = async () => {
+            const updateObj = { updatedAt: serverTimestamp() };
+            
+            // Campi BIA
+            const biaFields = ['height', 'weight', 'bodyFat', 'hydration', 'visceralFat', 'leanMass', 'boneMass', 'metabolicAge', 'bodyClass'];
+            biaFields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    let val = el.value.trim();
+                    if (el.type === 'number') {
+                        const min = parseFloat(el.min);
+                        const max = parseFloat(el.max);
+                        const num = parseFloat(val);
+                        if (!isNaN(num) && num >= min && num <= max) {
+                            updateObj[id] = num;
+                        }
+                    } else if (val) {
+                        updateObj[id] = val;
+                    }
+                }
+            });
+            
+            try {
+                await updateDoc(userRef, updateObj);
+                showSuccess('bia');
+            } catch (e) { console.error(e); alert("Errore salvataggio BIA"); }
+        };
+    }
+}
+
+// --- FUNZIONI DI SUPPORTO ---
+
+function showSuccess(section = 'general') {
+    // Nascondi tutti i messaggi
+    const messages = [
+        'anagraficiSuccessMessage',
+        'passwordSuccessMessage', 
+        'biaSuccessMessage',
+        'obiettiviSuccessMessage'
+    ];
+    
+    messages.forEach(msgId => {
+        const msg = document.getElementById(msgId);
+        if (msg) msg.style.display = 'none';
+    });
+    
+    // Mostra il messaggio corretto
+    const targetMessage = document.getElementById(`${section}SuccessMessage`);
+    if (targetMessage) {
+        targetMessage.style.display = 'block';
+        // Nascondi dopo 3 secondi
+        setTimeout(() => {
+            targetMessage.style.display = 'none';
+        }, 3000);
+    }
+}
+
+function updateBIAUI(data) {
+    // Estrai i dati necessari
+    const fat = parseFloat(data.bodyFat) || 0;
+    const hyd = parseFloat(data.hydration) || 0;
+    const lean = parseFloat(data.leanMass) || 0;
+    const userAge = data.birthDate ? calculateAge(data.birthDate) : 30;
+    const gender = data.gender || 'male';
+    
+    // Calcola score BIA completo e livello
+    const biaScore = calculateBIAScore(
+        fat,
+        hyd,
+        lean,
+        data.visceralFat || 0,
+        data.boneMass || 0,
+        data.metabolicAge || 0,
+        userAge,
+        gender
+    );
+    
+    // Calcola classificazione corporea per il livello
+    const height = parseFloat(data.height || 0);
+    const weight = parseFloat(data.weight || 0);
+    let bodyClass = '';
+    
+    if (height > 0 && weight > 0) {
+        const bmi = parseFloat(calculateBMI(weight, height));
+        bodyClass = calculateBodyClass(bmi, data.bodyFat || 0, data.gender || 'male');
+    }
+    
+    // Calcolo livello basato sul score e classificazione corporea
+    const level = calculateLevel(biaScore, bodyClass);
+    
+    // Aggiorna UI profilo
+    const scoreLabel = document.getElementById("healthScoreLabel");
+    const levelBar = document.getElementById("levelBar");
+    const badgeIcon = document.getElementById("badgeIconContainer");
+    const biaList = document.getElementById("biaList");
+    if (scoreLabel) scoreLabel.innerText = `Health Score: ${Math.round(biaScore)}%`;
+    if (levelBar) levelBar.style.width = `${biaScore}%`;
+    // Rimuovo logica badge duplicata - gestita da updateCalculations
+
+    // Aggiorna livello nel profilo principale
+    const levelBadge = document.getElementById("levelBadge");
+    if (levelBadge) levelBadge.innerText = `LIVELLO ${level.label}`;
+
+    // Sistema di classificazione BIA con pallini e score
+    if (biaList) {
+        biaList.innerHTML = generateBIAClassification(data, biaScore, level);
+    }
+}
+
+function calculateLevel(score, bodyClass = '') {
+    // Se la classificazione corporea è problematica, abbassa il livello massimo
+    let maxLevel = 5; // ELITEe appunto io voglio che il sistema recuperi i dati anche se si registra dopo cog
+    let levelColor = '#28a745';
+    
+    switch (bodyClass) {
+        case 'Obeso':
+            maxLevel = 2; // Massimo SUFFICIENTE
+            levelColor = '#ffc107';
+            break;
+        case 'Sovrappeso':
+            maxLevel = 3; // Massimo BUONO
+            levelColor = '#ffc107';
+            break;
+        case 'Sottopeso':
+            maxLevel = 3; // Massimo BUONO
+            levelColor = '#ffc107';
+            break;
+        case 'Normopeso':
+            maxLevel = 5; // Può raggiungere ELITE
+            levelColor = '#28a745';
+            break;
+    }
+    
+    // Calcola il livello basato sul score ma limitato dalla classificazione
+    if (score >= 90 && maxLevel >= 5) return { label: 'ELITE', color: '#28a745', level: 5 };
+    if (score >= 75 && maxLevel >= 4) return { label: 'ECCELLENTE', color: '#28a745', level: 4 };
+    if (score >= 60 && maxLevel >= 3) return { label: 'BUONO', color: levelColor, level: 3 };
+    if (score >= 40 && maxLevel >= 2) return { label: 'SUFFICIENTE', color: '#ffc107', level: 2 };
+    if (score >= 20 && maxLevel >= 1) return { label: 'INSUFFICIENTE', color: '#fd7e14', level: 1 };
+    return { label: 'RISCHIO', color: '#dc3545', level: 0 };
+}
+
+function generateBIAClassification(data, biaScore, level) {
+    const gender = data.gender || 'male';
+    let html = '<div style="background: white; padding: 12px; border-radius: 6px; border-left: 4px solid #007bff;">';
+    
+    // Calcola classificazione corporea
+    let bodyClass = '';
+    let bodyClassLevel = 0;
+    let bodyClassColor = '#6c757d';
+    
+    if (data.height && data.weight && data.bodyFat) {
+        const bmi = parseFloat(calculateBMI(data.weight, data.height));
+        bodyClass = calculateBodyClass(bmi, data.bodyFat, gender);
+        
+        // Assegna livello e colore in base alla classificazione
+        switch (bodyClass) {
+            case 'Normopeso':
+                bodyClassLevel = 4;
+                bodyClassColor = '#28a745';
+                break;
+            case 'Sottopeso':
+                bodyClassLevel = 2;
+                bodyClassColor = '#fd7e14';
+                break;
+            case 'Sovrappeso':
+                bodyClassLevel = 2;
+                bodyClassColor = '#ffc107';
+                break;
+            case 'Obeso':
+                bodyClassLevel = 1;
+                bodyClassColor = '#dc3545';
+                break;
+        }
+    }
+    
+    // Calcola età dell'utente
+    let userAge = '';
+    if (data.birthDate) {
+        userAge = calculateAge(data.birthDate) + ' anni';
+    }
+    
+    // Header con score e livello
+    html += `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 10px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 8px;">
+            <div>
+                <div style="font-size: 14px; font-weight: 600; color: #495057;">Health Score: <span style="color: #007bff;">${Math.round(biaScore)}%</span></div>
+                <div style="font-size: 12px; color: #6c757d; margin-top: 2px;">Livello: <span style="color: ${level.color}; font-weight: 600;">${level.label}</span></div>
+                <div style="font-size: 11px; color: #6c757d; margin-top: 2px;">Età: <span style="color: #495057; font-weight: 500;">${userAge || 'N/D'}</span></div>
+                <div style="font-size: 11px; color: #6c757d; margin-top: 1px; font-style: italic;">Sesso: ${gender === 'female' ? 'Donna' : 'Uomo'}</div>
+            </div>
+            <div style="display: flex; align-items: center;">
+                ${createBullets(level.level)}
+            </div>
+        </div>
+    `;
+    
+    // Massa Grassa (con differenza sesso)
+    if (data.bodyFat) {
+        const fatClass = classifyBodyFat(data.bodyFat, gender);
+        html += createParameterRow('Massa Grassa', data.bodyFat + '%', fatClass);
+    }
+    
+    // Idratazione
+    if (data.hydration) {
+        const hydClass = classifyHydration(data.hydration);
+        html += createParameterRow('Idratazione', data.hydration + '%', hydClass);
+    }
+    
+    // Massa Magra (sempre in kg, mostra kg in analisi parametri)
+    if (data.leanMass) {
+        let leanPercent, displayValue;
+        
+        // Mostra SEMPRE in kg nell'analisi parametri
+        displayValue = data.leanMass + ' kg';
+        
+        // Calcola percentuale solo per classificazione
+        if (data.weight && data.weight > 0) {
+            leanPercent = ((data.leanMass / data.weight) * 100).toFixed(1);
+            
+            // VALIDAZIONE FISIOLOGICA: controlla percentuali realistiche
+            if (leanPercent > 95) {
+                // ATTENZIONE: percentuale fisiologicamente impossibile
+                console.warn(`ATTENZIONE: Massa magra ${leanPercent}% fisiologicamente impossibile!`);
+                displayValue = data.leanMass + ' kg ';
+            } else if (leanPercent < 30) {
+                // ATTENZIONE: percentuale troppo bassa per adulto
+                console.warn(`ATTENZIONE: Massa magra ${leanPercent}% troppo bassa per adulto!`);
+                displayValue = data.leanMass + ' kg ';
+            }
+        } else {
+            // Se non abbiamo il peso, usa solo kg
+            leanPercent = data.leanMass; // per classificazione
+        }
+        
+        const leanClass = classifyLeanMass(leanPercent, gender);
+        html += createParameterRow('Massa Magra', displayValue, leanClass);
+    }
+    
+    // Grasso Viscerale
+    if (data.visceralFat) {
+        const visceralClass = classifyVisceralFat(data.visceralFat);
+        html += createParameterRow('Grasso Viscerale', data.visceralFat, visceralClass);
+    }
+    
+    // Massa Ossea
+    if (data.boneMass) {
+        const boneClass = classifyBoneMass(data.boneMass);
+        html += createParameterRow('Massa Ossea', data.boneMass + ' kg', boneClass);
+    }
+    
+    // Età Metabolica
+    if (data.metabolicAge && data.birthDate) {
+        const actualAge = calculateAge(data.birthDate);
+        const metabolicClass = classifyMetabolicAge(data.metabolicAge, actualAge);
+        html += createParameterRow('Età Metabolica', data.metabolicAge + ' anni', metabolicClass);
+    }
+    
+    // Classificazione Corporea (in fondo come riassunto)
+    if (bodyClass) {
+        // Crea descrizione basata sulla classificazione
+        let description = '';
+        switch (bodyClass) {
+            case 'Normopeso':
+                description = 'Composizione corporea ideale e salutare';
+                break;
+            case 'Sottopeso':
+                description = 'Peso inferiore alla norma, attenzione alla nutrizione';
+                break;
+            case 'Sovrappeso':
+                description = 'Peso superiore alla norma, raccomandata attività fisica';
+                break;
+            case 'Obeso':
+                description = 'Condizione di rischio, consulto medico raccomandato';
+                break;
+        }
+        
+        html += createParameterRow('Classificazione Corporea', bodyClass, {
+            level: bodyClassLevel,
+            color: bodyClassColor,
+            label: bodyClass,
+            description: description
+        });
+    }
+    
+    html += '</div>';
+    return html;
+}
+
+function createParameterRow(name, value, classification) {
+    const showImprovement = classification.level <= 3; // Mostra note per Elite, Eccellente, Buono
+    
+    return `
+        <div style="display: flex; flex-direction: column; margin-bottom: 12px; padding: 8px; border-radius: 6px; background: #f8f9fa; border-left: 3px solid ${classification.color};">
+            <div style="display: flex; align-items: center; margin-bottom: 6px;">
+                <div style="flex: 0 0 120px; font-weight: 500; color: #495057; font-size: 13px;">${name}:</div>
+                <div style="flex: 0 0 60px; font-weight: 600; color: #007bff; font-size: 13px;">${value}</div>
+                <div style="flex: 1; display: flex; align-items: center;">
+                    ${createBullets(classification.level)}
+                    <span style="margin-left: 12px; font-size: 12px; color: ${classification.color}; font-weight: 600;">${classification.label}</span>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                ${classification.description ? `
+                    <div style="font-size: 11px; color: #6c757d; font-style: italic;">
+                        ${classification.description}
+                    </div>
+                ` : ''}
+                ${classification.suggestion ? `
+                    <div style="font-size: 11px; color: #6c757d; font-style: italic;">
+                        ${classification.suggestion}
+                    </div>
+                ` : ''}
+                ${showImprovement && classification.improvement ? `
+                    <div style="font-size: 11px; color: #007bff; font-weight: 500; padding: 4px 8px; background: rgba(0,123,255,0.1); border-radius: 4px; border-left: 2px solid #007bff;">
+                        <strong>Suggerimento:</strong> ${classification.improvement}
+                    </div>
+                ` : ''}
+            </div>
+        </div>
+    `;
+}
+
+function createBullets(level) {
+    const totalBullets = 5;
+    const filledBullets = level;
+    let html = '';
+    
+    for (let i = 1; i <= totalBullets; i++) {
+        if (i <= filledBullets) {
+            html += '<span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 3px; background: #28a745;"></span>';
+        } else {
+            html += '<span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 3px; background: #e9ecef; border: 1px solid #dee2e6;"></span>';
+        }
+    }
+    
+    return html;
+}
+
+function classifyBodyFat(percent, gender = 'male') {
+    // Standard TANITA differenziati per sesso
+    const maleRanges = [
+        { max: 12, level: 5, label: 'Elite', color: '#28a745', suggestion: 'Massa grassa da atleta professionista', improvement: 'Livello eccellente! Mantieni con alimentazione pulita e allenamento intenso' },
+        { max: 15, level: 4, label: 'Eccellente', color: '#28a745', suggestion: 'Massa grassa ottimale per prestazioni atletiche', improvement: 'Ottimo lavoro! Per mantenere: cardio 3x/settimana, proteine 1.6g/kg, riduci zuccheri' },
+        { max: 18, level: 3, label: 'Buono', color: '#28a745', suggestion: 'Massa grassa nella norma salutare', improvement: 'Per migliorare: HIIT 2x/settimana, deficit calorico 300-500 kcal, più verdure' },
+        { max: 22, level: 2, label: 'Sufficiente', color: '#ffc107', suggestion: 'Considerabile riduzione per migliorare salute', improvement: 'Aumenta cardio a 4x/settimana, riduci carboidrati la sera, dormi 7-8 ore' },
+        { max: 28, level: 1, label: 'Attenzione', color: '#fd7e14', suggestion: 'Riduzione raccomandata per salute', improvement: 'Intervento urgente: camminata 30min/giorno, elimina cibi processati, consulta nutrizionista' }
+    ];
+    
+    const femaleRanges = [
+        { max: 18, level: 5, label: 'Elite', color: '#28a745', suggestion: 'Massa grassa da atleta professionista femminile', improvement: 'Livello eccellente! Mantieni con alimentazione pulita e allenamento intenso' },
+        { max: 22, level: 4, label: 'Eccellente', color: '#28a745', suggestion: 'Massa grassa ottimale per prestazioni atletiche', improvement: 'Ottimo lavoro! Per mantenere: cardio 3x/settimana, proteine 1.5g/kg, riduci zuccheri' },
+        { max: 25, level: 3, label: 'Buono', color: '#28a745', suggestion: 'Massa grassa nella norma salutare femminile', improvement: 'Per migliorare: HIIT 2x/settimana, deficit calorico 300-500 kcal, più verdure' },
+        { max: 30, level: 2, label: 'Sufficiente', color: '#ffc107', suggestion: 'Considerabile riduzione per migliorare salute', improvement: 'Aumenta cardio a 4x/settimana, riduci carboidrati la sera, dormi 7-8 ore' },
+        { max: 35, level: 1, label: 'Attenzione', color: '#fd7e14', suggestion: 'Riduzione raccomandata per salute', improvement: 'Intervento urgente: camminata 30min/giorno, elimina cibi processati, consulta nutrizionista' }
+    ];
+    
+    const ranges = gender === 'female' ? femaleRanges : maleRanges;
+    
+    for (const range of ranges) {
+        if (percent <= range.max) {
+            return {
+                level: range.level,
+                label: range.label,
+                color: range.color,
+                suggestion: range.suggestion,
+                improvement: range.improvement
+            };
+        }
+    }
+    
+    return { 
+        level: 0, 
+        label: 'Rischio', 
+        color: '#dc3545', 
+        suggestion: 'Intervento necessario per salute',
+        improvement: 'Rischio elevato: medico immediatamente, piano alimentare strutturato, attività graduale'
+    };
+}
+
+function classifyHydration(percent) {
+    if (percent >= 65) return { 
+        level: 5, 
+        label: 'Elite', 
+        color: '#28a745', 
+        suggestion: 'Idratazione da atleta professionista',
+        improvement: 'Perfetto! Mantieni: 2.5-3L acqua/giorno, elettroliti post-allenamento, monitora peso'
+    };
+    if (percent >= 60) return { 
+        level: 4, 
+        label: 'Eccellente', 
+        color: '#28a745', 
+        suggestion: 'Idratazione ottimale',
+        improvement: 'Ottimo! Per mantenere: 2L acqua prima delle 14, 1L dopo, limone al risveglio'
+    };
+    if (percent >= 55) return { 
+        level: 3, 
+        label: 'Buono', 
+        color: '#28a745', 
+        suggestion: 'Buona idratazione',
+        improvement: 'Per migliorare: bottiglia sempre a portata, imposta allarmi ogni 2h, frutta zuccherina'
+    };
+    if (percent >= 50) return { 
+        level: 2, 
+        label: 'Sufficiente', 
+        color: '#ffc107', 
+        suggestion: 'Aumenta leggermente l\'assunzione di acqua',
+        improvement: 'Aumenta a 2L/giorno, evita alcol, aggiungi cetriolo e anguria, riduci caffè'
+    };
+    if (percent >= 45) return { 
+        level: 1, 
+        label: 'Attenzione', 
+        color: '#fd7e14', 
+        suggestion: 'Aumenta significativamente l\'assunzione di acqua',
+        improvement: 'Disidratazione in arrivo: 2.5L minimo, no alcol, elettroliti, più verdure'
+    };
+    return { 
+        level: 0, 
+        label: 'Rischio', 
+        color: '#dc3545', 
+        suggestion: 'Disidratazione, reintegra immediatamente',
+        improvement: 'Pericolo: 3L acqua/giorno, soluzione salina immediata, medico se sintomi'
+    };
+}
+
+function classifyLeanMass(percent, gender = 'male') {
+    // Standard TANITA differenziati per sesso
+    const maleRanges = [
+        { min: 85, level: 5, label: 'Elite', color: '#28a745', suggestion: 'Massa magra da atleta professionista', improvement: 'Eccezionale! Mantieni: forza 3x/settimana, proteine 2g/kg, recupero ottimale, carboidrati timing' },
+        { min: 80, level: 4, label: 'Eccellente', color: '#28a745', suggestion: 'Massa magra atletica', improvement: 'Ottimo! Continua: progressive overload, creatina 5g/giorno, dormi 8h, carboidrati post-workout' },
+        { min: 75, level: 3, label: 'Buono', color: '#28a745', suggestion: 'Buona composizione corporea', improvement: 'Per migliorare: aumenta forza 4x/settimana, proteine 1.8g/kg, meno cardio, più riposo' },
+        { min: 70, level: 2, label: 'Sufficiente', color: '#ffc107', suggestion: 'Potrebbe essere migliorata con esercizio', improvement: 'Inizia: pesi 3x/settimana, BCAA 10g pre-allenamento, +500 kcal proteiche, riduci alcol' },
+        { min: 65, level: 1, label: 'Attenzione', color: '#fd7e14', suggestion: 'Aumenta massa muscolare con allenamento', improvement: 'Intervieni: calistenica 2x/settimana, proteine a ogni pasto, creatina, più calorie' }
+    ];
+    
+    const femaleRanges = [
+        { min: 75, level: 5, label: 'Elite', color: '#28a745', suggestion: 'Massa magra da atleta professionista femminile', improvement: 'Eccezionale! Mantieni: forza 3x/settimana, proteine 1.8g/kg, recupero ottimale, carboidrati timing' },
+        { min: 70, level: 4, label: 'Eccellente', color: '#28a745', suggestion: 'Massa magra atletica femminile', improvement: 'Ottimo! Continua: progressive overload, creatina 5g/giorno, dormi 8h, carboidrati post-workout' },
+        { min: 65, level: 3, label: 'Buono', color: '#28a745', suggestion: 'Buona composizione corporea femminile', improvement: 'Per migliorare: aumenta forza 4x/settimana, proteine 1.6g/kg, meno cardio, più riposo' },
+        { min: 60, level: 2, label: 'Sufficiente', color: '#ffc107', suggestion: 'Potrebbe essere migliorata con esercizio', improvement: 'Inizia: pesi 3x/settimana, BCAA 10g pre-allenamento, +500 kcal proteiche, riduci alcol' },
+        { min: 55, level: 1, label: 'Attenzione', color: '#fd7e14', suggestion: 'Aumenta massa muscolare con allenamento', improvement: 'Intervieni: calistenica 2x/settimana, proteine a ogni pasto, creatina, più calorie' }
+    ];
+    
+    const ranges = gender === 'female' ? femaleRanges : maleRanges;
+    
+    for (const range of ranges) {
+        if (percent >= range.min) {
+            return {
+                level: range.level,
+                label: range.label,
+                color: range.color,
+                suggestion: range.suggestion,
+                improvement: range.improvement
+            };
+        }
+    }
+    
+    return { 
+        level: 0, 
+        label: 'Rischio', 
+        color: '#dc3545', 
+        suggestion: 'Massa muscolare insufficiente, intervenire',
+        improvement: 'Sarcopenia: medico immediato, esercizi graduati, proteine 2.5g/kg, vitamina D'
+    };
+}
+
+function classifyVisceralFat(level) {
+    if (level <= 3) return { 
+        level: 5, 
+        label: 'Elite', 
+        color: '#28a745', 
+        suggestion: 'Grasso viscerale da atleta',
+        improvement: 'Perfetto! Mantieni: omega-3 quotidiano, niente zuccheri, esercizio HIIT, stress management'
+    };
+    if (level <= 5) return { 
+        level: 4, 
+        label: 'Eccellente', 
+        color: '#28a745', 
+        suggestion: 'Grasso viscerale ottimale',
+        improvement: 'Ottimo! Continua: fibre 30g/giorno, grassi sani, attività fisica regolare, sonno 7-8h'
+    };
+    if (level <= 8) return { 
+        level: 3, 
+        label: 'Buono', 
+        color: '#28a745', 
+        suggestion: 'Livello salutare di grasso viscerale',
+        improvement: 'Per migliorare: riduci zuccheri raffinati, aumenta fibre, camminata 30min/giorno, meno stress'
+    };
+    if (level <= 10) return { 
+        level: 2, 
+        label: 'Sufficiente', 
+        color: '#ffc107', 
+        suggestion: 'Monitorare e ridurre con dieta',
+        improvement: 'Attenzione: elimina fritti, dolci, alcol. Aggiungi: omega-3, verdure, attività 45min/giorno'
+    };
+    if (level <= 12) return { 
+        level: 1, 
+        label: 'Attenzione', 
+        color: '#fd7e14', 
+        suggestion: 'Ridurre con alimentazione ed esercizio',
+        improvement: 'Intervento: dieta anti-infiammatoria, cardio 45min/giorno, niente alcol, medico'
+    };
+    return { 
+        level: 0, 
+        label: 'Rischio', 
+        color: '#dc3545', 
+        suggestion: 'Livello pericoloso, intervenire subito',
+        improvement: 'Pericolo: medico immediato, dieta strutturata, attività graduale, monitoraggio costante'
+    };
+}
+
+function classifyBoneMass(kg) {
+    if (kg >= 4.0) return { 
+        level: 5, 
+        label: 'Elite', 
+        color: '#28a745', 
+        suggestion: 'Densità ossea da atleta',
+        improvement: 'Eccezionale! Mantieni: calcio 1200mg, vitamina D, esercizi impatto, equilibrio ormonale'
+    };
+    if (kg >= 3.5) return { 
+        level: 4, 
+        label: 'Eccellente', 
+        color: '#28a745', 
+        suggestion: 'Densità ossea ottimale',
+        improvement: 'Ottimo! Continua: latticini, verdure a foglia, sole 15min/giorno, pesi 2x/settimana'
+    };
+    if (kg >= 3.0) return { 
+        level: 3, 
+        label: 'Buono', 
+        color: '#28a745', 
+        suggestion: 'Buona densità ossea',
+        improvement: 'Per migliorare: calcio 1000mg, vitamina D 2000UI, salti, corsa, niente fumo'
+    };
+    if (kg >= 2.5) return { 
+        level: 2, 
+        label: 'Sufficiente', 
+        color: '#ffc107', 
+        suggestion: 'Considerare integrazione di calcio',
+        improvement: 'Aumenta: latticini, mandorle, pesce, verdure, vitamina K, esercizi impatto, sole'
+    };
+    if (kg >= 2.0) return { 
+        level: 1, 
+        label: 'Attenzione', 
+        color: '#fd7e14', 
+        suggestion: 'Aumentare calcio e vitamina D',
+        improvement: 'Attenzione: calcio 1500mg, vitamina D 4000UI, esercizi impatto, medico, densitometria'
+    };
+    return { 
+        level: 0, 
+        label: 'Rischio', 
+        color: '#dc3545', 
+        suggestion: 'Rischio osteoporosi, consultare medico',
+        improvement: 'Osteoporosi: medico immediato, calcio 2000mg, vitamina D, farmaci, esercizi sicuri'
+    };
+}
+
+function classifyMetabolicAge(metabolic, actual) {
+    const diff = metabolic - actual;
+    if (diff <= -8) return { 
+        level: 5, 
+        label: 'Elite', 
+        color: '#28a745', 
+        suggestion: 'Metabolismo da atleta professionista',
+        improvement: 'Eccezionale! Mantieni: HIIT 3x/settimana, proteine 2g/kg, sonno 8h, gestione stress'
+    };
+    if (diff <= -5) return { 
+        level: 4, 
+        label: 'Eccellente', 
+        color: '#28a745', 
+        suggestion: 'Metabolismo più giovane dell\'età biologica',
+        improvement: 'Ottimo! Continua: muscoli attivi, alimentazione regolare, idratazione, niente alcol'
+    };
+    if (diff <= -2) return { 
+        level: 3, 
+        label: 'Buono', 
+        color: '#28a745', 
+        suggestion: 'Metabolismo efficiente',
+        improvement: 'Per migliorare: forza 2x/settimana, proteine distribuite, meno zuccheri, più movimento'
+    };
+    if (diff <= 0) return { 
+        level: 2, 
+        label: 'Sufficiente', 
+        color: '#ffc107', 
+        suggestion: 'Metabolismo nella norma',
+        improvement: 'Attenzione: aumenta massa muscolare, attività 30min/giorno, riduci sedentarietà, sonno regolare'
+    };
+    if (diff <= 5) return { 
+        level: 1, 
+        label: 'Attenzione', 
+        color: '#fd7e14', 
+        suggestion: 'Metabolismo leggermente rallentato',
+        improvement: 'Intervieni: HIIT 2x/settimana, forza 3x, proteine 1.6g/kg, niente spuntini notturni'
+    };
+    return { 
+        level: 0, 
+        label: 'Rischio', 
+        color: '#dc3545', 
+        suggestion: 'Metabolismo rallentato, intervenire',
+        improvement: 'Rischio metabolico: medico endocrinologo, piano alimentare strutturato, attività graduale, monitoraggio'
+    };
+}
+
+function calculateScore(data) {
+    let s = 0;
+    if (data.weight) s += 20;
+    if (data.bodyFat) s += 30;
+    if (data.hydration) s += 20;
+    if (data.height) s += 30;
+    return s;
+}
+
+// --- EVENT LISTENERS PER CALCOLI AUTOMATICI ---
+function setupCalculationListeners() {
+    FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', () => {
+                updateCalculations(null);
+            });
+        }
+    });
+    
+    // Setup per textarea bio con contatore caratteri
+    const bioTextarea = document.getElementById('bio');
+    const bioCharCount = document.getElementById('bioCharCount');
+    
+    if (bioTextarea && bioCharCount) {
+        // Funzione per auto-expanding
+        function autoResize() {
+            // Salva lo scroll position
+            const scrollTop = bioTextarea.scrollTop;
+            
+            // Resetta l'altezza per calcolare correttamente
+            bioTextarea.style.height = 'auto';
+            
+            // Imposta l'altezza basata sul contenuto
+            bioTextarea.style.height = bioTextarea.scrollHeight + 'px';
+            
+            // Ripristina lo scroll position
+            bioTextarea.scrollTop = scrollTop;
+        }
+        
+        // Aggiorna contatore caratteri e auto-resize
+        bioTextarea.addEventListener('input', () => {
+            const currentLength = bioTextarea.value.length;
+            bioCharCount.textContent = currentLength;
+            
+            // Auto-expanding
+            autoResize();
+            
+            // Rimuovi classi precedenti
+            bioTextarea.classList.remove('too-short', 'valid-length');
+            
+            // Aggiungi classe basata sulla lunghezza
+            if (currentLength > 0 && currentLength < 50) {
+                bioTextarea.classList.add('too-short');
+            } else if (currentLength >= 50) {
+                bioTextarea.classList.add('valid-length');
+            } else {
+                bioTextarea.classList.remove('too-short', 'valid-length');
+            }
+        });
+        
+        // Auto-resize anche su paste
+        bioTextarea.addEventListener('paste', () => {
+            setTimeout(() => {
+                autoResize();
+                const event = new Event('input');
+                bioTextarea.dispatchEvent(event);
+            }, 10);
+        });
+        
+        // Auto-resize anche su cut
+        bioTextarea.addEventListener('cut', () => {
+            setTimeout(() => {
+                autoResize();
+                const event = new Event('input');
+                bioTextarea.dispatchEvent(event);
+            }, 10);
+        });
+        
+        // Auto-resize iniziale
+        autoResize();
+        
+        // Inizializza contatore
+        const initialLength = bioTextarea.value.length;
+        bioCharCount.textContent = initialLength;
+        if (initialLength > 0 && initialLength < 50) {
+            bioTextarea.classList.add('too-short');
+        } else if (initialLength >= 50) {
+            bioTextarea.classList.add('valid-length');
+        }
+    }
+}
+
+function setupPasswordLogic(user) {
+    const btn = document.getElementById("updatePassBtn");
+    if (!btn) return;
+    btn.onclick = async () => {
+        const oldP = document.getElementById('oldPassword')?.value;
+        const newP = document.getElementById('newPassword')?.value;
+        if (!oldP || !newP) {
+            // Mostra messaggio di errore nel form
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = 'Compila tutti i campi della password';
+            
+            // Rimuovi messaggi precedenti
+            const existingError = document.querySelector('.password-section .error-message');
+            if (existingError) existingError.remove();
+            
+            // Aggiungi nuovo messaggio
+            const form = document.getElementById('passwordForm');
+            form.appendChild(errorDiv);
+            
+            // Rimuovi dopo 3 secondi
+            setTimeout(() => errorDiv.remove(), 3000);
+            return;
+        }
+        try {
+            const cred = EmailAuthProvider.credential(user.email, oldP);
+            await reauthenticateWithCredential(user, cred);
+            await updatePassword(user, newP);
+            showSuccess('password');
+            // Pulisci campi dopo successo
+            document.getElementById('oldPassword').value = '';
+            document.getElementById('newPassword').value = '';
+        } catch (e) { 
+            console.error("Errore password:", e);
+            alert("Errore nell'aggiornamento della password. Verifica i dati e riprova."); 
+        }
+    };
+}
+
+export async function handlePhotoUpload(file) {
+    const user = auth.currentUser;
+    if (!user) return;
+    try {
+        const storage = getStorage();
+        const fileRef = ref(storage, `users/${user.uid}/profile.jpg`);
+        const snap = await uploadBytes(fileRef, file);
+        const url = await getDownloadURL(snap.ref);
+        await updateDoc(doc(db, "users", user.uid), { photoURL: url });
+        alert("Foto aggiornata!");
+    } catch (e) { console.error(e); }
+}
+
+// --- ESPORTAZIONE FUNZIONI ---
+export { 
+    calculateBMI, 
+    calculateAge, 
+    updateCalculations,
+    showSuccess
+};

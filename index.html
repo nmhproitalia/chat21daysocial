@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - #21GIORNIFIT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<div class="login-container">
+
+    <div id="registerCard" class="card auth-container">
+        <h2 style="color:#28a745;">Registrati alla<br>#21GIORNIFIT - CHALLENGE</h2>
+        
+        <!-- Counter Countdown Challenge -->
+        <div id="challengeCounter" class="challenge-counter" style="display: none;">
+            <div class="counter-title" style="color:#666; font-size: 14px; margin-bottom: 10px;">La Challenge inizia tra:</div>
+            <div class="counter-display" style="display: flex; justify-content: center; gap: 15px; margin-bottom: 20px;">
+                <div class="counter-unit">
+                    <div class="counter-value" id="counterDays" style="font-size: 24px; font-weight: bold; color: #28a745;">0</div>
+                    <div class="counter-label" style="font-size: 12px; color: #666;">Giorni</div>
+                </div>
+                <div class="counter-unit">
+                    <div class="counter-value" id="counterHours" style="font-size: 24px; font-weight: bold; color: #28a745;">0</div>
+                    <div class="counter-label" style="font-size: 12px; color: #666;">Ore</div>
+                </div>
+                <div class="counter-unit">
+                    <div class="counter-value" id="counterMinutes" style="font-size: 24px; font-weight: bold; color: #28a745;">0</div>
+                    <div class="counter-label" style="font-size: 12px; color: #666;">Minuti</div>
+                </div>
+                <div class="counter-unit">
+                    <div class="counter-value" id="counterSeconds" style="font-size: 24px; font-weight: bold; color: #28a745;">0</div>
+                    <div class="counter-label" style="font-size: 12px; color: #666;">Secondi</div>
+                </div>
+            </div>
+        </div>
+        
+        <p style="color:#666; margin-bottom:20px;">Unisciti alla nostra community</p>
+        
+        <form id="registerForm" onsubmit="return false;">
+            <input id="regNome" type="text" placeholder="Nome" required>
+            <input id="regCognome" type="text" placeholder="Cognome" required>
+            <input id="regEmail" type="email" placeholder="Email" required>
+<input id="regTelefono" 
+       type="tel" 
+       placeholder="Telefono (es. +39 333 123 4567)" 
+       required 
+       pattern="[0-9+ ]{9,16}" 
+       title="Inserisci un numero di telefono valido (minimo 9 cifre)">
+            
+<div class="password-wrapper">
+    <input id="regPassword" type="password" placeholder="Scegli Password" required>
+    <i class="fa-regular fa-eye toggle-eye" data-target="regPassword"></i>
+</div>
+
+<small id="registerStrengthText" style="display: block; margin: 5px 0 15px 2px; color: #666; font-size: 12px; line-height: 1.3;">
+    Min. 8 caratteri, 2 maiuscole e 2 numeri.
+</small>
+            
+            <button id="registerBtn" type="button" style="background:#28a745;">Completa Registrazione</button>
+            
+            <p style="margin-top:15px; font-size:14px;">
+                Hai già un account? 
+                <a href="#" onclick="toggleAuth(false)" style="color:#28a745; font-weight:bold; text-decoration:none;">Accedi</a>
+            </p>
+        </form>
+    </div>
+
+    <div id="loginCard" class="card auth-container hidden">
+        <h2 style="color:#28a745;">Accedi alla<br>#21GIORNIFIT - CHALLENGE</h2>
+        
+        <!-- Counter Countdown Challenge -->
+        <div id="loginChallengeCounter" class="challenge-counter" style="display: none;">
+            <div class="counter-title" style="color:#666; font-size: 14px; margin-bottom: 10px;">La Challenge inizia tra:</div>
+            <div class="counter-display" style="display: flex; justify-content: center; gap: 15px; margin-bottom: 20px;">
+                <div class="counter-unit">
+                    <div class="counter-value" id="loginCounterDays" style="font-size: 24px; font-weight: bold; color: #28a745;">0</div>
+                    <div class="counter-label" style="font-size: 12px; color: #666;">Giorni</div>
+                </div>
+                <div class="counter-unit">
+                    <div class="counter-value" id="loginCounterHours" style="font-size: 24px; font-weight: bold; color: #28a745;">0</div>
+                    <div class="counter-label" style="font-size: 12px; color: #666;">Ore</div>
+                </div>
+                <div class="counter-unit">
+                    <div class="counter-value" id="loginCounterMinutes" style="font-size: 24px; font-weight: bold; color: #28a745;">0</div>
+                    <div class="counter-label" style="font-size: 12px; color: #666;">Minuti</div>
+                </div>
+                <div class="counter-unit">
+                    <div class="counter-value" id="loginCounterSeconds" style="font-size: 24px; font-weight: bold; color: #28a745;">0</div>
+                    <div class="counter-label" style="font-size: 12px; color: #666;">Secondi</div>
+                </div>
+            </div>
+        </div>
+        
+        <p style="color:#666; margin-bottom:20px;">Live Your Best Life</p>
+        
+        <form id="loginForm" onsubmit="return false;">
+            <input id="email" type="email" placeholder="Email" required autocomplete="username">
+            
+<div class="password-wrapper">
+    <input id="password" type="password" placeholder="Password" required autocomplete="current-password">
+    <i class="fa-regular fa-eye toggle-eye" data-target="password"></i>
+</div>
+            
+            <button id="loginBtn" type="button">Entra</button>
+            
+            <p style="margin-top:15px; font-size:14px;">
+                <a href="#" onclick="showPasswordReset()" style="color:#6c757d; font-size:12px; text-decoration:none;">Password dimenticata?</a>
+            </p>
+            
+            <p style="margin-top:10px; font-size:14px;">
+                Non hai un account? 
+                <a href="#" onclick="toggleAuth(true)" style="color:#28a745; font-weight:bold; text-decoration:none;">Crea Account</a>
+            </p>
+        </form>
+    </div>
+
+    <!-- Form Recupero Password -->
+    <div id="passwordResetCard" class="card auth-container hidden">
+        <h2 style="color:#28a745;">Recupera Password</h2>
+        
+        <p style="color:#666; margin-bottom:20px; font-size:14px;">Inserisci la tua email per ricevere le istruzioni di recupero</p>
+        
+        <form id="passwordResetForm" onsubmit="return false;">
+            <input id="resetEmail" type="email" placeholder="La tua email" required autocomplete="email">
+            
+            <button id="resetPasswordBtn" type="button" style="background:#6c757d;">Invia Email di Recupero</button>
+            
+            <p style="margin-top:15px; font-size:14px;">
+                <a href="#" onclick="showLogin()" style="color:#28a745; font-weight:bold; text-decoration:none;">Torna al Login</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+<script>
+function toggleAuth(showRegister) {
+    const loginCard = document.getElementById('loginCard');
+    const registerCard = document.getElementById('registerCard');
+    const passwordResetCard = document.getElementById('passwordResetCard');
+    
+    console.log('toggleAuth chiamato con showRegister:', showRegister);
+    console.log('Stato elementi prima:', {
+        loginCard: loginCard ? loginCard.className : 'non trovato',
+        registerCard: registerCard ? registerCard.className : 'non trovato',
+        passwordResetCard: passwordResetCard ? passwordResetCard.className : 'non trovato'
+    });
+    
+    // Nascondi sempre il form di recupero password
+    passwordResetCard.classList.add('hidden');
+    
+    if (showRegister) {
+        // Mostra registrazione
+        console.log('Mostro registrazione');
+        loginCard.classList.add('hidden');
+        loginCard.style.display = 'none !important'; // Nascondo completamente
+        registerCard.classList.remove('hidden');
+        registerCard.style.display = 'block !important'; // Forzo visibilità
+        // Ferma counter login e avvia counter registrazione
+        stopLoginCounter();
+        startChallengeCounter('register');
+    } else {
+        // Mostra login
+        console.log('Mostro login');
+        registerCard.classList.add('hidden');
+        loginCard.classList.remove('hidden');
+        loginCard.style.display = 'block !important'; // Forzo visibilità con !important
+        // Ferma counter registrazione e avvia counter login
+        stopRegisterCounter();
+        startChallengeCounter('login');
+    }
+    
+    console.log('Stato elementi dopo:', {
+        loginCard: loginCard ? loginCard.className : 'non trovato',
+        registerCard: registerCard ? registerCard.className : 'non trovato',
+        passwordResetCard: passwordResetCard ? passwordResetCard.className : 'non trovato'
+    });
+
+    // Forza il ricaricamento della logica UI
+    if (typeof window.initUI === 'function') {
+        window.initUI();
+    }
+}
+
+// Funzione per mostrare il form di recupero password
+function showPasswordReset() {
+    const loginCard = document.getElementById('loginCard');
+    const registerCard = document.getElementById('registerCard');
+    const passwordResetCard = document.getElementById('passwordResetCard');
+    
+    // Nascondi login e registrazione
+    loginCard.classList.add('hidden');
+    registerCard.classList.add('hidden');
+    
+    // Mostra recupero password
+    passwordResetCard.classList.remove('hidden');
+    
+    // Ferma tutti i counter
+    stopLoginCounter();
+    stopRegisterCounter();
+}
+
+// Funzione per tornare al login
+function showLogin() {
+    const loginCard = document.getElementById('loginCard');
+    const registerCard = document.getElementById('registerCard');
+    const passwordResetCard = document.getElementById('passwordResetCard');
+    
+    // Nascondi registrazione e recupero password
+    registerCard.classList.add('hidden');
+    passwordResetCard.classList.add('hidden');
+    
+    // Mostra login
+    loginCard.classList.remove('hidden');
+    
+    // Avvia counter login
+    startChallengeCounter('login');
+}
+
+// Funzioni per il counter countdown
+let loginCounterInterval = null;
+let registerCounterInterval = null;
+
+async function startChallengeCounter(type) {
+    console.log(`Avvio counter per tipo: ${type}`);
+    
+    // Prima prova con localStorage per testing immediato
+    const savedDate = localStorage.getItem('challengeStartDate');
+    console.log('Data in localStorage:', savedDate);
+    
+    if (savedDate) {
+        const startDate = new Date(savedDate);
+        const now = new Date();
+        
+        console.log('Data challenge:', startDate.toLocaleString('it-IT'));
+        console.log('Data attuale:', now.toLocaleString('it-IT'));
+        console.log('Data futura?', startDate > now);
+        
+        if (startDate > now) {
+            console.log('Counter da mostrare - data futura');
+            
+            if (type === 'login') {
+                const counter = document.getElementById('loginChallengeCounter');
+                console.log('Elemento counter login:', counter);
+                if (counter) {
+                    counter.style.display = 'block';
+                    console.log('Counter login mostrato');
+                    updateLoginCounter(startDate);
+                    loginCounterInterval = setInterval(() => updateLoginCounter(startDate), 1000);
+                } else {
+                    console.error('Elemento loginChallengeCounter non trovato!');
+                }
+            } else {
+                const counter = document.getElementById('challengeCounter');
+                console.log('Elemento counter registrazione:', counter);
+                if (counter) {
+                    counter.style.display = 'block';
+                    console.log('Counter registrazione mostrato');
+                    updateRegisterCounter(startDate);
+                    registerCounterInterval = setInterval(() => updateRegisterCounter(startDate), 1000);
+                } else {
+                    console.error('Elemento challengeCounter non trovato!');
+                }
+            }
+        } else {
+            console.log('Counter da nascondere - data passata o presente');
+            // Nascondi counter se la challenge è iniziata
+            const loginCounter = document.getElementById('loginChallengeCounter');
+            const regCounter = document.getElementById('challengeCounter');
+            console.log('Elementi counter trovati:', { loginCounter, regCounter });
+            if (loginCounter) loginCounter.style.display = 'none';
+            if (regCounter) regCounter.style.display = 'none';
+            stopLoginCounter();
+            stopRegisterCounter();
+        }
+        return;
+    } else {
+        console.log('Nessuna data in localStorage - provo Firebase...');
+    }
+    
+    // Se non c'è localStorage, prova con Firebase
+    try {
+        const { auth } = await import('./firebase.js');
+        const { getDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+        const { db } = await import('./firebase.js');
+        
+        if (auth.currentUser) {
+            const userDoc = await getDoc(doc(db, "users", auth.currentUser.uid));
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                
+                if (userData.challengeStartDate) {
+                    const startDate = new Date(userData.challengeStartDate);
+                    
+                    if (startDate > new Date()) {
+                        if (type === 'login') {
+                            const counter = document.getElementById('loginChallengeCounter');
+                            if (counter) {
+                                counter.style.display = 'block';
+                                updateLoginCounter(startDate);
+                                loginCounterInterval = setInterval(() => updateLoginCounter(startDate), 1000);
+                            }
+                        } else {
+                            const counter = document.getElementById('challengeCounter');
+                            if (counter) {
+                                counter.style.display = 'block';
+                                updateRegisterCounter(startDate);
+                                registerCounterInterval = setInterval(() => updateRegisterCounter(startDate), 1000);
+                            }
+                        }
+                    } else {
+                        // Nascondi entrambi i counter se la challenge è iniziata
+                        const loginCounter = document.getElementById('loginChallengeCounter');
+                        const regCounter = document.getElementById('challengeCounter');
+                        if (loginCounter) loginCounter.style.display = 'none';
+                        if (regCounter) regCounter.style.display = 'none';
+                        stopLoginCounter();
+                        stopRegisterCounter();
+                    }
+                } else {
+                    // Nessuna data challenge impostata
+                    const loginCounter = document.getElementById('loginChallengeCounter');
+                    const regCounter = document.getElementById('challengeCounter');
+                    if (loginCounter) loginCounter.style.display = 'none';
+                    if (regCounter) regCounter.style.display = 'none';
+                }
+            }
+        }
+    } catch (error) {
+        console.log('Counter Firebase non disponibile:', error);
+        // Nascondi counter in caso di errore
+        const loginCounter = document.getElementById('loginChallengeCounter');
+        const regCounter = document.getElementById('challengeCounter');
+        if (loginCounter) loginCounter.style.display = 'none';
+        if (regCounter) regCounter.style.display = 'none';
+    }
+}
+
+function updateLoginCounter(startDate) {
+    const now = new Date();
+    const diff = startDate - now;
+    
+    if (diff <= 0) {
+        document.getElementById('loginChallengeCounter').style.display = 'none';
+        stopLoginCounter();
+        return;
+    }
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    document.getElementById('loginCounterDays').textContent = days;
+    document.getElementById('loginCounterHours').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('loginCounterMinutes').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('loginCounterSeconds').textContent = seconds.toString().padStart(2, '0');
+}
+
+function updateRegisterCounter(startDate) {
+    const now = new Date();
+    const diff = startDate - now;
+    
+    if (diff <= 0) {
+        document.getElementById('challengeCounter').style.display = 'none';
+        stopRegisterCounter();
+        return;
+    }
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    document.getElementById('counterDays').textContent = days;
+    document.getElementById('counterHours').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('counterMinutes').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('counterSeconds').textContent = seconds.toString().padStart(2, '0');
+}
+
+function stopLoginCounter() {
+    if (loginCounterInterval) {
+        clearInterval(loginCounterInterval);
+        loginCounterInterval = null;
+    }
+}
+
+function stopRegisterCounter() {
+    if (registerCounterInterval) {
+        clearInterval(registerCounterInterval);
+        registerCounterInterval = null;
+    }
+}
+
+// Funzionalità occhietto show/hide password
+document.addEventListener('DOMContentLoaded', function() {
+    // Avvia counter registrazione al caricamento della pagina
+    startChallengeCounter('register');
+    
+    // Implementa occhietto show/hide password
+    const toggleEyes = document.querySelectorAll('.toggle-eye');
+    
+    toggleEyes.forEach(eye => {
+        eye.addEventListener('click', function(e) {
+            e.preventDefault(); // Previeni scroll
+            e.stopPropagation(); // Previeni propagazione
+            
+            const targetId = this.getAttribute('data-target');
+            const targetInput = document.getElementById(targetId);
+            
+            if (targetInput) {
+                // Toggle tipo input
+                if (targetInput.type === 'password') {
+                    targetInput.type = 'text';
+                    this.classList.remove('fa-regular');
+                    this.classList.add('fa-solid');
+                } else {
+                    targetInput.type = 'password';
+                    this.classList.remove('fa-solid');
+                    this.classList.add('fa-regular');
+                }
+            }
+        });
+    });
+});
+
+// testCounter() rimossa per fermare loop infinito
+</script>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
