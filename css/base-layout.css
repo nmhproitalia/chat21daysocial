@@ -1,0 +1,223 @@
+/* ############################################################ */
+/* #                                                          # */
+/* #           BASE-LAYOUT: STRUTTURA FONDAMENTALE            # */
+/* #                                                          # */
+/* ############################################################ */
+
+:root {
+--radius-lg: 12px;
+--shadow-sm: 0 4px 6px rgba(0,0,0,0.1);
+--form-gap: 1.5rem; /* Gap universale per i form */
+}
+
+/* RESET MARGINI BODY PER HEADER FISSO */
+body {
+margin: 0 !important;
+padding: 0 !important;
+overflow-x: hidden !important;
+opacity: 1 !important;
+font-family: var(--font-primary) !important;
+background: var(--succulent) !important;
+}
+
+/* CURSOR POINTER PER BUTTON ATTIVI */
+button:not([disabled]), .btn:not([disabled]), a[role="button"]:not([disabled]), a[href]:not([disabled]) {
+cursor: pointer !important;
+}
+
+/* 1. TITOLI BRAND */
+h1 {
+    font-family: var(--font-display) !important;
+    color: var(--garden-green);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+}
+
+h2 {
+    font-family: var(--font-display) !important;
+    color: var(--garden-green);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    margin: 0 !important;
+}
+
+ h3 {
+    font-family: var(--font-display) !important;
+    color: var(--deep-grey);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+}
+
+.page-wrapper {
+width: 100%;
+min-height: 100vh;
+display: block;
+box-sizing: border-box;
+padding-bottom: 60px;
+}
+
+.page-main {
+width: 100%;
+display: block;
+}
+
+.container {
+max-width: 1200px;
+width: 100%;
+margin: 0 auto;
+padding: 0 30px !important;
+box-sizing: border-box;
+}
+
+.content {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 156px 0 62px;
+    background: var(--succulent) !important;
+}
+
+.card {
+max-width: 100%;
+margin-top: 0 !important;
+margin-bottom: 30px !important;
+background: #ffffff !important;
+border-radius: 12px !important;
+box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+}
+
+/* 2. GRIGLIA E GRUPPI FORM GLOBALI */
+.form-header {
+text-align: center !important;
+margin-bottom: 2rem !important;
+}
+
+.form-header h1 {
+color: var(--garden-green) !important;
+font-size: 1.5rem !important;
+font-weight: 900 !important; /* Grassettissimo */
+text-transform: uppercase !important;
+margin-bottom: 0.2rem !important; /* Più vicino al sottotitolo */
+letter-spacing: 1px !important;
+font-family: var(--font-display) !important;
+}
+
+.form-header p {
+color: var(--medium-grey) !important;
+font-size: 0.9rem !important;
+font-weight: 500 !important;
+margin-top: 0 !important;
+}
+
+.form-grid {
+display: flex !important;
+flex-wrap: wrap !important;
+gap: 8px !important;
+width: 100% !important;
+}
+
+.form-grid .form-group {
+width: calc(50% - 4px) !important;
+}
+
+.form-group {
+position: relative !important;
+display: flex !important;
+flex-direction: column !important;
+gap: 6px !important;
+margin: 0 !important;
+text-align: left !important;
+}
+
+.form-group.full-width {
+grid-column: span 2 !important;
+}
+
+label {
+display: block !important;
+font-size: 0.8rem !important;
+font-weight: 800 !important;
+color: var(--medium-grey) !important;
+text-transform: uppercase !important;
+letter-spacing: 0.5px !important;
+margin-bottom: 4px !important;
+}
+
+/* 3. INPUT, SELECT, TEXTAREA UNIVERSALI */
+input, select, textarea {
+display: block !important;
+box-sizing: border-box !important;
+width: 100% !important;
+padding: 16px 16px 16px 48px !important; /* Spazio icone */
+border: 2px solid #edf2f7 !important;
+border-radius: 12px !important; 
+font-size: 1rem !important;
+background: #f8fafc !important;
+color: var(--deep-grey) !important;
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+-webkit-appearance: none !important;
+appearance: none !important;
+font-family: var(--font-primary) !important;
+}
+
+input:focus, select:focus, textarea:focus {
+outline: none !important;
+background: #ffffff !important;
+border-color: var(--grass) !important;
+box-shadow: 0 0 0 4px rgba(66, 160, 70, 0.1) !important;
+}
+
+/* Icone generali nei campi */
+.form-group::before {
+font-family: "Font Awesome 6 Free";
+font-weight: 900;
+position: absolute;
+left: 18px;
+top: 42px; /* Allineato sotto label */
+color: var(--medium-grey);
+font-size: 1.1rem;
+z-index: 10;
+transition: color 0.3s ease;
+pointer-events: none;
+}
+
+input:focus + label, .form-group:focus-within label {
+color: var(--grass) !important;
+}
+
+/* 4. PULSANTI BRAND UNIFICATI */
+.btn-discord {
+width: 100% !important;
+padding: 16px !important;
+border: none !important;
+border-radius: 10px !important;
+font-weight: 900 !important;
+text-transform: uppercase !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+gap: 12px !important;
+background: var(--garden-green) !important;
+color: white !important;
+font-size: 1rem !important;
+letter-spacing: 1px !important;
+font-family: var(--font-display) !important;
+}
+
+.btn-discord:hover {
+background: var(--grass) !important;
+transform: translateY(-2px) !important;
+box-shadow: 0 6px 15px rgba(38, 100, 49, 0.25) !important;
+}
+
+/* RESPONSIVE */
+.form-grid {
+grid-template-columns: 1fr !important;
+}
+.card {
+padding: 1.5rem !important;
+}

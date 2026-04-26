@@ -1,0 +1,122 @@
+/* ############################################################ */
+/* #                                                          # */
+/* #           WELCOME PAGE - STILI DEDICATI                  # */
+/* #                                                          # */
+/* ############################################################ */
+
+.welcome-hero {
+text-align: center !important;
+padding: 4rem 1rem !important;
+background: #fdf8e6 !important;
+border-radius: var(--radius-lg) !important;
+margin-bottom: 2rem !important;
+box-shadow: var(--shadow-lg) !important;
+border: 1px solid #e6d5a3 !important;
+}
+
+.welcome-hero h1 {
+font-size: clamp(2rem, 8vw, 3.5rem) !important;
+color: var(--primary-color) !important;
+margin-bottom: 1rem !important;
+text-transform: uppercase !important;
+}
+
+.hero-badge {
+display: inline-block !important;
+padding: 6px 15px !important;
+background: var(--primary-color) !important;
+color: white !important;
+border-radius: 50px !important;
+font-size: 0.8rem !important;
+font-weight: 900 !important;
+letter-spacing: 1px !important;
+margin-bottom: 1.5rem !important;
+box-shadow: var(--shadow-sm) !important;
+}
+
+.hero-description {
+font-size: 1.2rem !important;
+color: #1a1a1a !important;
+max-width: 850px !important;
+margin: 0 auto 2rem !important;
+line-height: 1.6 !important;
+font-weight: 600 !important;
+}
+
+.hero-description strong {
+color: var(--primary-color) !important;
+font-weight: 800 !important;
+}
+
+.cta-section {
+text-align: center !important;
+margin-top: 0 !important;
+padding: 3rem !important;
+}
+
+.challenge-details {
+display: grid !important;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+gap: 1.5rem !important;
+margin-bottom: 2rem !important;
+}
+
+.challenge-description {
+background: #fff !important;
+padding: 2.5rem !important;
+margin-bottom: 2rem !important;
+border: 1px solid #dcc48e !important;
+}
+
+.challenge-description h2 {
+margin-bottom: 1.5rem !important;
+font-weight: 800 !important;
+color: var(--primary-color) !important;
+}
+
+.challenge-description p {
+color: #1a1a1a !important;
+line-height: 1.8 !important;
+font-weight: 500 !important;
+font-size: 1.1rem !important;
+}
+
+.cta-buttons-container {
+margin-top: 2rem !important;
+display: flex !important;
+gap: 1rem !important;
+justify-content: center !important;
+flex-wrap: wrap !important;
+}
+
+.detail-card {
+text-align: center !important;
+padding: 2rem !important;
+background: #fff !important;
+border-radius: 12px !important;
+box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+transition: transform 0.3s ease !important;
+}
+
+.detail-card:hover {
+transform: translateY(-5px) !important;
+}
+
+.detail-card i {
+font-size: 2.5rem !important;
+color: var(--primary-color) !important;
+margin-bottom: 1rem !important;
+}
+
+.detail-card h3 {
+color: var(--primary-color) !important;
+margin-bottom: 0.5rem !important;
+}
+
+.btn-discord--info {
+background: #3498db !important;
+}
+
+.btn-discord--success {
+background: #27ae60 !important;
+}

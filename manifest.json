@@ -1,0 +1,24 @@
+{
+  "name": "21GIORNIFIT Challenge",
+  "short_name": "21GIORNIFIT",
+  "description": "Trasforma la tua composizione corporea in 21 giorni con il supporto dei nostri Coach.",
+  "start_url": "/chat21daysocial/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#266431",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://www.progettobenessere.info/ico/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://www.progettobenessere.info/ico/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

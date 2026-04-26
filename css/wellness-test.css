@@ -1,0 +1,92 @@
+/* ############################################################ */
+/* #                                                          # */
+/* #           1. LAYOUT SEZIONE TEST BENESSERE              # */
+/* #                                                          # */
+/* ############################################################ */
+.wellness-test-section {
+max-width: 800px;
+margin: var(--spacing-xl) auto;
+background: var(--bg-secondary);
+border-radius: var(--radius-lg);
+box-shadow: var(--shadow-lg);
+padding: var(--padding-xl);
+}
+
+
+
+/* ############################################################ */
+/* #                                                          # */
+/* #           2. INDICATORI DI PROGRESSO                    # */
+/* #                                                          # */
+/* ############################################################ */
+.progress-container {
+margin-bottom: var(--spacing-xl);
+}
+
+
+.progress-bar {
+height: 8px;
+background: var(--bg-tertiary);
+border-radius: var(--radius-full);
+overflow: hidden;
+margin-top: var(--spacing-sm);
+}
+
+
+.progress-fill {
+height: 100%;
+background: var(--success-color);
+transition: width var(--transition-normal);
+}
+
+
+
+/* ############################################################ */
+/* #                                                          # */
+/* #           3. STILI DOMANDE E RISPOSTE                   # */
+/* #                                                          # */
+/* ############################################################ */
+.question-card {
+margin-bottom: var(--spacing-xl);
+text-align: center;
+}
+
+
+.question-text {
+font-size: var(--font-size-2xl);
+font-weight: var(--font-weight-bold);
+color: var(--text-primary);
+}
+
+
+.answer-options-container {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: var(--spacing-md);
+margin-bottom: var(--spacing-xl);
+}
+
+
+
+/* ############################################################ */
+/* #                                                          # */
+/* #           4. NAVIGAZIONE E BOTTONI                      # */
+/* #                                                          # */
+/* ############################################################ */
+.navigation-buttons {
+display: flex;
+justify-content: space-between;
+gap: var(--spacing-md);
+}
+
+
+.btn-nav {
+flex: 1;
+padding: var(--padding-md);
+border-radius: var(--radius-md);
+font-weight: var(--font-weight-semibold);
+display: flex;
+align-items: center;
+justify-content: center;
+gap: var(--spacing-sm);
+}

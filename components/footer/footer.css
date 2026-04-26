@@ -1,0 +1,36 @@
+/* ############################################################ */
+/* #                                                          # */
+/* #           COMPONENT: UNIFIED FOOTER                      # */
+/* #                                                          # */
+/* ############################################################ */
+.page-footer-fixed {
+position: fixed !important;
+bottom: 0 !important;
+left: 0 !important;
+width: 100% !important;
+height: 60px !important;
+background: #1a1a1a !important;
+z-index: 3000 !important;
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+border: none !important;
+padding: 0 !important;
+box-sizing: border-box !important;
+}
+.footer-brand {
+color: #8e8e93 !important;
+font-weight: 800 !important;
+font-size: 0.85rem !important;
+letter-spacing: 2px !important;
+text-transform: uppercase !important;
+}
+/* RESPONSIVE FOOTER */
+@media screen and (max-width: 600px) {
+.page-footer-fixed {
+height: 40px !important;
+}
+.footer-brand {
+font-size: 0.75rem !important;
+}
+}

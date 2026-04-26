@@ -1,89 +1,173 @@
+<!-- ############################################################ -->
+<!-- #                           BACHECA                        # -->
+<!-- ############################################################ -->
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <title>Bacheca #21GIORNIFIT</title>
-    
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-   
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Bacheca #21GIORNIFIT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="96x96" href="https://www.progettobenessere.info/ico/favicon-96x96.png">
+<link rel="icon" type="image/svg+xml" href="https://www.progettobenessere.info/ico/favicon.svg">
+<link rel="shortcut icon" href="https://www.progettobenessere.info/ico/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.progettobenessere.info/ico/favicon-180x180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.progettobenessere.info/ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.progettobenessere.info/ico/favicon-16x16.png">
+<link rel="apple-touch-icon" href="https://www.progettobenessere.info/ico/favicon-512x512.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://www.progettobenessere.info/ico/favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.progettobenessere.info/ico/favicon-512x512.png">
+<link rel="apple-touch-startup-image" href="https://www.progettobenessere.info/ico/favicon-512x512.png">
+<link rel="apple-touch-startup-image" href="https://www.progettobenessere.info/ico/favicon-512x512.png" media="(device-width: 375px) and (device-height: 812px)">
+<link rel="apple-touch-startup-image" href="https://www.progettobenessere.info/ico/favicon-512x512.png" media="(device-width: 768px) and (device-height: 1024px)">
+<link rel="stylesheet" href="css/style-variables.css?v=12.0">
+<link rel="stylesheet" href="css/base-layout.css?v=12.2">
+<link rel="stylesheet" href="css/style.css?v=12.2">
+<link rel="stylesheet" href="css/user-roles.css?v=6.0">
+<link rel="stylesheet" href="components/header/header.css?v=15.0">
+<link rel="stylesheet" href="components/footer/footer.css?v=10.5">
+<link rel="stylesheet" href="components/posts/bottom-input-bar.css?v=10.8">
+<link rel="stylesheet" href="components/general/user-manager.css?v=7.0">
+<link rel="stylesheet" href="css/identity-system.css?v=5.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body>
 
+
+
+<!-- SEZIONE BODY -->
+<body class="auth-page loading">
+<div id="loading-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#ffffff; display:flex; align-items:center; justify-content:center; z-index:99999;">
+<div style="text-align:center;">
+<i class="fas fa-spinner fa-spin" style="font-size:3rem; color:#266431;"></i>
+<p style="margin-top:1rem; color:#666; font-weight:600;">Caricamento...</p>
+</div>
+</div>
+<div id="unified-header"></div>
+
+
+
+<!-- SEZIONE PAGE WRAPPER -->
+<div class="page-wrapper">
+<main class="page-main">
+<div class="container">
 <div id="app">
 
-<div class="page-header">   
-    <div class="page-menu">
-        <a href="posts.html" class="nav-link">
-            <i class="fas fa-comments"></i>
-            <span>Posts</span>
-        </a>
-        <a href="profile.html" class="nav-link">
-            <i class="fas fa-user"></i>
-            <span>Profilo</span>
-        </a>
-        
-        <a id="adminBtn" href="admin.html" class="hidden admin-link">
-            <i class="fas fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-        </a>
-        
-        <button id="logoutBtn">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Logout</span>
-        </button>
-    </div>
+
+
+<!-- SEZIONE FEED POST -->
+<div id="adminControls" class="admin-controls" style="display:none; margin-bottom:20px; padding:15px; background:#fff3cd; border:1px solid #ffc107; border-radius:8px;">
+<div style="display:flex; align-items:center; justify-content:space-between;">
+<span style="font-weight:600; color:#856404;"><i class="fas fa-shield-alt"></i> Pannello Admin</span>
+<button onclick="window.clearAllPosts()" style="padding:8px 16px; background:#dc3545; color:white; border:none; border-radius:6px; font-weight:600; cursor:pointer;">
+<i class="fas fa-trash"></i> Svuota Feed
+</button>
+</div>
 </div>
 
-<div class="feed-header">
-    <div class="feed-header-content">
-        <h1>#21GIORNIFIT - CHALLENGE</h1>
-        <div class="feed-content">
-        <h2>Informazioni Challenge</h2>
-        <p>Benvenuto nella tua sfida! Qui troverai tutti gli aggiornamenti e i contenuti esclusivi per i tuoi 21 giorni di trasformazione.</p>
-    </div>
-    </div>
-</div>
-
-        <div class="post-creation-card">
-            <div class="input-container">
-                <textarea id="postText" placeholder="Condividi i tuoi progressi di oggi... "></textarea>
-                <i class="far fa-smile emoji-trigger" data-input="postText"></i>
-            </div>
-            
-            <div id="mediaPreview" class="media-preview"></div>
-
-            <div class="post-actions-row">
-                <button id="fotovideoBtn" type="button" class="media-button">
-                    <i class="fas fa-image"></i> Foto/Video
-                </button>
-                
-                <input type="file" id="media-input" class="media-input" accept="image/*,video/*">
-
-                <button id="postBtn" class="post-button">
-                    Pubblica
-                </button>
-            </div>
-        </div>
-
-        <div id="posts"></div>
-
-<div class="disclaimer-box">
-<div class="disclaimer-logo">
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCdYWyZoOZCg8DrzFDhefnTltbGePZMC8cpw&s" alt="Logo Herbalife" />
-</div>
-<div class="disclaimer-text">
-<strong>Disclaimer:</strong>
-I risultati variano da persona a persona. Tempi e quantità della perdita di massa grassa e aumento di massa magra variano in base al metabolismo individuale, allo stile di vita, al riposo e all'esercizio fisico.
-</div>
+<div id="postsFeed" class="posts-feed">
 </div>
 
 </div>
 </div>
+</main>
+</div>
 
-<script type="module" src="js/app.js?v=1.4"></script>
+
+
+<!-- SEZIONE INPUT FISSO IN BASSO -->
+<div class="bottom-input-bar">
+<div id="mediaPreviewInline" class="media-preview-inline"></div>
+<div class="input-container-main">
+<div id="inputContainerUser" class="input-user-container"></div>
+<div class="input-wrapper">
+<textarea id="postContent" class="post-textarea" placeholder="Aggiornaci!..." rows="1" onclick="window.openPostModal()"></textarea>
+</div>
+<button id="fotovideoBtn" class="btn-icon" onclick="window.openPostModal()">
+<i class="fas fa-paperclip"></i>
+</button>
+<input type="file" id="media-input" accept="image/*,video/*" multiple class="media-input">
+</div>
+<div id="emojiPicker" class="emoji-picker">
+<span class="emoji-item" onclick="window.insertEmoji('😊')">😊</span>
+<span class="emoji-item" onclick="window.insertEmoji('😂')">😂</span>
+<span class="emoji-item" onclick="window.insertEmoji('❤️')">❤️</span>
+<span class="emoji-item" onclick="window.insertEmoji('🔥')">🔥</span>
+<span class="emoji-item" onclick="window.insertEmoji('💪')">💪</span>
+<span class="emoji-item" onclick="window.insertEmoji('🙌')">🙌</span>
+<span class="emoji-item" onclick="window.insertEmoji('🥗')">🥗</span>
+<span class="emoji-item" onclick="window.insertEmoji('🌿')">🌿</span>
+<span class="emoji-item" onclick="window.insertEmoji('✨')">✨</span>
+<span class="emoji-item" onclick="window.insertEmoji('🎯')">🎯</span>
+<span class="emoji-item" onclick="window.insertEmoji('🏆')">🏆</span>
+<span class="emoji-item" onclick="window.insertEmoji('👏')">👏</span>
+<span class="emoji-item" onclick="window.insertEmoji('👍')">👍</span>
+<span class="emoji-item" onclick="window.insertEmoji('😎')">😎</span>
+<span class="emoji-item" onclick="window.insertEmoji('🤩')">🤩</span>
+<span class="emoji-item" onclick="window.insertEmoji('🚀')">🚀</span>
+</div>
+</div>
+
+<!-- MODAL PER COMPILAZIONE POST (STILE FACEBOOK) -->
+<div id="postModal" class="post-modal">
+<div class="post-modal-overlay" onclick="window.closePostModal()"></div>
+<div class="post-modal-content">
+<div class="post-modal-header">
+<h3>Crea Post</h3>
+<button class="post-modal-close" onclick="window.closePostModal()">&times;</button>
+</div>
+<div id="modalErrorMessage" class="post-modal-error-message"></div>
+<div class="post-modal-body">
+<div class="post-modal-user" id="modalUserContainer"></div>
+<div class="post-modal-content-wrapper">
+<div class="post-modal-textarea-wrapper">
+<div id="modalPostContent" class="post-modal-textarea" contenteditable="true" placeholder="Aggiornaci!..."></div>
+<div class="post-modal-emoji-btn" onclick="window.toggleEmojiPicker()">
+<i class="fas fa-smile"></i>
+</div>
+</div>
+<div id="modalMediaPreview" class="post-modal-media-preview"></div>
+</div>
+<div id="emojiPickerPopover" class="emoji-picker-popover"></div>
+</div>
+<div class="post-modal-footer">
+<button class="post-modal-media-btn" onclick="document.getElementById('modalMediaInput').click()">
+<i class="fas fa-paperclip"></i>
+</button>
+<input type="file" id="modalMediaInput" accept="image/*,video/*" multiple class="hidden-input">
+<button class="post-modal-submit-btn" onclick="window.submitPost()">Pubblica</button>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</main>
+</div>
+
+
+
+<!-- SEZIONE SCRIPT -->
+<script type="module">
+import { auth, db, storage } from "./js/firebase.js?v=10.7";
+import { initHeader } from "./components/header/header.js?v=6.0";
+import { initFooter } from "./components/footer/footer-brand.js?v=4.0";
+import { initPosts, cleanupPosts, setupMediaUpload, deleteNode } from "./js/posts.js?v=34.0";
+import { initBottomInputBar } from "./components/posts/bottom-input-bar.js?v=11.0";
+import { loadUserData as loadUserDataFromManager, formatDisplayName, getPhotoURL, getUserDataForUI, renderUserHTML, getRoleStyles, initUserListener, updateUI } from "./components/general/user-manager.js?v=12.0";
+window.auth = auth;
+window.db = db;
+window.storage = storage;
+document.addEventListener('DOMContentLoaded', () => {
+initHeader();
+initBottomInputBar();
+initPosts();
+});
+</script>
+
+
+
 </body>
 </html>

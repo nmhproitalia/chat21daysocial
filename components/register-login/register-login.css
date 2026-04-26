@@ -1,0 +1,162 @@
+/* ############################################################ */
+/* #                                                          # */
+/* #           COMPONENT: AUTH-FORMS DESIGN SYSTEM            # */
+/* #                                                          # */
+/* ############################################################ */
+
+/* 1. HEADER E TITOLI FORM */
+.auth-header {
+text-align: center !important;
+margin-bottom: 2rem !important;
+}
+
+.auth-header h1 {
+color: var(--garden-green) !important;
+font-size: 1.5rem !important;
+font-weight: 900 !important;
+text-transform: uppercase !important;
+margin-bottom: 0.5rem !important;
+letter-spacing: 1px !important;
+}
+
+.auth-header p {
+color: var(--medium-grey) !important;
+font-size: 0.9rem !important;
+font-weight: 500 !important;
+}
+
+/* Nota: .form-grid e .form-group sono ora in base-layout.css */
+
+/* 2. MAPPATURA ICONE SPECIFICA AUTH */
+#registerForm .form-group:nth-child(1)::before { content: "\f007"; } /* User */
+#registerForm .form-group:nth-child(2)::before { content: "\f007"; } /* User */
+#registerForm .form-group:nth-child(3)::before { content: "\f0e0"; } /* Envelope */
+#registerForm .form-group:nth-child(4)::before { content: "\f023"; } /* Lock */
+
+#loginForm .form-group:nth-child(1)::before { content: "\f0e0"; } /* Envelope */
+#loginForm .form-group:nth-child(2)::before { content: "\f023"; } /* Lock */
+
+.password-field-wrapper {
+position: relative !important;
+width: 100% !important;
+}
+
+.eye-toggle {
+position: absolute !important;
+right: 16px !important;
+top: 50% !important;
+transform: translateY(-50%) !important;
+color: var(--medium-grey) !important;
+cursor: pointer !important;
+z-index: 20 !important;
+padding: 10px !important;
+}
+
+.eye-toggle:hover {
+color: var(--grass) !important;
+}
+
+input::placeholder {
+color: #a0aec0 !important;
+opacity: 0.8 !important;
+}
+
+/* 4. PULSANTI SPECIFICI AUTH */
+.btn-discord {
+margin-top: 0.5rem !important;
+}
+
+.btn-discord:hover {
+background: var(--grass) !important;
+transform: translateY(-2px) !important;
+box-shadow: 0 6px 15px rgba(38, 100, 49, 0.25) !important;
+}
+
+/* 5. FOOTER E LINK */
+.auth-footer {
+margin-top: 2.5rem !important;
+text-align: center !important;
+font-size: 0.9rem !important;
+color: var(--medium-grey) !important;
+border-top: 1px solid #edf2f7 !important;
+padding-top: 1.5rem !important;
+display: flex !important;
+flex-direction: column !important;
+gap: 8px !important;
+}
+
+.forgot-link {
+display: inline-block !important;
+padding: 5px !important;
+margin-top: 0 !important;
+}
+
+.auth-footer a, .forgot-link {
+    color: var(--lake) !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+}
+
+/* 6. REGOLE SICUREZZA */
+.security-rules-box {
+margin: 0.5rem 0 !important;
+padding: 1rem !important;
+background: #f8fafc !important;
+border-radius: 8px !important;
+}
+
+.rules-title {
+font-size: 0.7rem !important;
+font-weight: 900 !important;
+color: var(--garden-green) !important;
+margin-bottom: 0.5rem !important;
+text-transform: uppercase !important;
+}
+
+.password-rules {
+list-style: none !important;
+padding: 0 !important;
+margin: 0 !important;
+}
+
+.password-rules li {
+font-size: 0.75rem !important;
+color: var(--medium-grey) !important;
+display: flex !important;
+align-items: center !important;
+gap: 8px !important;
+margin-bottom: 4px !important;
+}
+
+.password-rules li.valid {
+color: var(--grass) !important;
+}
+
+/* 7. MESSAGGI DI SISTEMA */
+.system-message {
+padding: 14px !important;
+border-radius: 8px !important;
+font-size: 0.85rem !important;
+font-weight: 700 !important;
+margin: 1rem 0 !important;
+text-align: center !important;
+}
+
+.system-message.error {
+background: #fff5f5 !important;
+color: var(--danger-color) !important;
+border: 1px solid #feb2b2 !important;
+}
+
+.system-message.success {
+background: #f0fff4 !important;
+color: var(--grass) !important;
+border: 1px solid #9ae6b4 !important;
+}
+
+/* 8. RESPONSIVE */
+@media screen and (max-width: 600px) {
+.form-grid {
+grid-template-columns: 1fr !important;
+}
+}

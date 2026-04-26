@@ -1,0 +1,125 @@
+<!-- ############################################################ -->
+<!-- #                        COACH DASHBOARD                   # -->
+<!-- ############################################################ -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coach Dashboard - #21GIORNIFIT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="96x96" href="https://www.progettobenessere.info/ico/favicon-96x96.png">
+<link rel="icon" type="image/svg+xml" href="https://www.progettobenessere.info/ico/favicon.svg">
+<link rel="shortcut icon" href="https://www.progettobenessere.info/ico/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.progettobenessere.info/ico/favicon-180x180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.progettobenessere.info/ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.progettobenessere.info/ico/favicon-16x16.png">
+<link rel="apple-touch-icon" href="https://www.progettobenessere.info/ico/favicon-512x512.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://www.progettobenessere.info/ico/favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.progettobenessere.info/ico/favicon-512x512.png">
+<link rel="apple-touch-startup-image" href="https://www.progettobenessere.info/ico/favicon-512x512.png">
+<link rel="apple-touch-startup-image" href="https://www.progettobenessere.info/ico/favicon-512x512.png" media="(device-width: 375px) and (device-height: 812px)">
+<link rel="apple-touch-startup-image" href="https://www.progettobenessere.info/ico/favicon-512x512.png" media="(device-width: 768px) and (device-height: 1024px)">
+<link rel="stylesheet" href="css/style-variables.css?v=12.0">
+<link rel="stylesheet" href="css/base-layout.css?v=12.0">
+<link rel="stylesheet" href="css/style.css?v=12.0">
+<link rel="stylesheet" href="css/dashboard-page.css?v=12.0">
+<link rel="stylesheet" href="css/user-roles.css?v=4.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="components/header/header.css?v=15.0">
+<script type="module">
+  import { getPhotoURL, getRoleStyles, renderUserHTML, getRankClass } from "../components/general/user-manager.js";
+</script>
+<link rel="stylesheet" href="components/general/user-manager.css?v=6.0">
+<link rel="stylesheet" href="components/footer/footer.css?v=12.0">
+</head>
+
+
+
+<!-- SEZIONE BODY -->
+<body>
+<div id="unified-header"></div>
+
+
+
+<!-- SEZIONE PAGE WRAPPER -->
+<div class="page-wrapper">
+<main class="page-main">
+<div class="container">
+<div id="app">
+
+
+
+ <!-- SEZIONE STATISTICHE -->
+<h3><i class="fas fa-chart-pie"></i> Statistiche Challengers Iscritti</h3>
+<div class="card" style="margin-top: 20px;">
+<h4 style="margin: 0 0 15px 0; font-size: 1rem; font-weight: 700; color: var(--garden-green);">Conteggio Iscritti Effettivi</h4>
+<div style="display: flex; gap: 20px; flex-wrap: wrap;">
+<div style="flex: 1; min-width: 150px;">
+<p style="margin: 0 0 5px 0; font-size: 0.85rem; color: #666; font-weight: 600;">Totale Challengers:</p>
+<h3 id="totalChallengersCount" style="margin: 0; font-size: 2rem; font-weight: 900; color: var(--garden-green);">0</h3>
+</div>
+<div style="flex: 1; min-width: 150px;">
+<p style="margin: 0 0 5px 0; font-size: 0.85rem; color: #666; font-weight: 600;">Totale Assistenti:</p>
+<h3 id="totalAssistantsCount" style="margin: 0; font-size: 2rem; font-weight: 900; color: var(--grass);">0</h3>
+</div>
+</div>
+</div>
+
+
+
+<!-- SEZIONE IMPOSTAZIONI COACH -->
+<h3><i class="fas fa-user-gear"></i> Impostazioni Pubbliche Coach & Challenge</h3>
+<div class="card">
+<form id="coachSettingsForm">
+<div class="form-grid">
+<div class="form-group"><label>Nome Coach</label><input type="text" id="setCoachFirstName" placeholder="Nome"></div>
+<div class="form-group"><label>Cognome Coach</label><input type="text" id="setCoachLastName" placeholder="Cognome"></div>
+<div class="form-group"><label>Email Pubblica</label><input type="email" id="setCoachEmail" placeholder="email@coach.com"></div>
+<div class="form-group"><label>Telefono Pubblico</label><input type="tel" id="setCoachPhone" placeholder="+39 000 0000000"></div>
+<div class="form-group"><label>Data Inizio Challenge</label><input type="date" id="setChallengeDate"></div>
+<div class="form-group"><label>Ora Inizio Challenge</label><input type="time" id="setChallengeTime"></div>
+</div>dahbod-submtbn
+<button type="submit" class="btn-discord" style="margin-top: 1.5rem;">Salva Impostazioni Globali</button>
+</form>
+</div>
+
+
+
+<!-- SEZIONE GESTIONE CHALLENGERS -->
+<h3><i class="fas fa-users-gear"></i> Gestione Challengers</h3>
+<div class="card" id="userGrid"></div>
+
+
+
+</div>
+</div>
+</main>
+</div>
+
+
+
+<!-- SEZIONE FOOTER -->
+<div id="unified-footer"></div>
+
+
+
+<!-- SEZIONE SCRIPT -->
+<script type="module">
+import "./js/app.js?v=1.0";
+import { initHeader } from "./components/header/header.js?v=6.0";
+import { initFooter } from "./components/footer/footer-brand.js?v=4.0";
+import { initDashboard } from "./js/dashboard-manager.js?v=9.0";
+document.addEventListener('DOMContentLoaded', () => {
+initHeader();
+initFooter();
+initDashboard();
+});
+</script>
+
+
+
+</body>
+</html>

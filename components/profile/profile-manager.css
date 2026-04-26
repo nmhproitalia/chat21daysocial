@@ -1,0 +1,156 @@
+/* ############################################################ */
+/* #                                                          # */
+/* #           PROFILE MANAGER CSS - STYLE ISOLATED           # */
+/* #                                                          # */
+/* ############################################################ */
+
+/* PROFILE HEADER CARD */
+.profile-header-card {
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 40px 20px;
+margin-bottom: 30px;
+}
+
+.profile-header-main {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 5px;
+width: 100%;
+max-width: 500px;
+margin-top: 1.5rem;
+}
+
+/* RANKING BAR */
+.ranking-bar-container {
+width: 100%;
+height: 8px;
+background: #e0e0e0;
+border-radius: 4px;
+overflow: hidden;
+margin-top: 8px;
+}
+
+.ranking-bar {
+height: 100%;
+width: 0%;
+background: linear-gradient(90deg, #266431, #42a046);
+border-radius: 4px;
+transition: width 0.3s ease;
+}
+
+/* ACTION BUTTONS */
+.user-action-menu {
+display: flex;
+flex-direction: row;
+gap: 12px;
+margin-top: 1rem;
+width: 100%;
+justify-content: center;
+}
+
+.action-btn-mini {
+padding: 12px;
+font-size: 0.8rem;
+font-weight: 800;
+text-align: center;
+border-radius: 10px;
+text-decoration: none;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 5px;
+transition: all 0.2s ease;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn-mini i {
+font-size: 1.2rem;
+}
+
+.btn-challenge {
+background-color: #3498db;
+color: white;
+}
+
+.btn-privilege {
+background-color: #9b59b6;
+color: white;
+}
+
+.btn-become-coach {
+background-color: #27ae60;
+color: white;
+}
+
+.action-btn-mini:hover {
+transform: translateY(-2px);
+}
+
+/* PROFILE SECTIONS */
+.profile-section {
+width: 100%;
+max-width: 500px;
+margin: 0 auto;
+}
+
+.profile-group {
+margin-bottom: 30px;
+}
+
+/* COACH INFO CARD */
+.coach-info-card {
+background: #ffffff !important;
+}
+
+/* FORM GROUPS */
+.form-group-mt {
+margin-top: 1rem;
+}
+
+.btn-mt {
+margin-top: 1rem;
+}
+
+/* WELLNESS STATUS */
+.wellness-status-card {
+background: white !important;
+}
+
+.wellness-info {
+font-size: 0.8rem;
+text-align: center;
+margin-top: 0.5rem;
+color: #666;
+}
+
+/* PASSWORD RULES */
+.password-rules {
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+.password-rules li {
+font-size: 0.75rem;
+margin-bottom: 5px;
+color: #666;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.password-rules li.valid {
+color: var(--success-color);
+}
+
+.password-rules li i {
+font-size: 0.7rem;
+}
+
+/* SECURITY SECTION */
+.security-section {
+margin-top: 2rem;
+}

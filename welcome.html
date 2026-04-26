@@ -1,0 +1,113 @@
+<!-- ############################################################ -->
+<!-- #                        WELCOME PAGE                      # -->
+<!-- ############################################################ -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benvenuto nella Challenge - #21GIORNIFIT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="96x96" href="https://www.progettobenessere.info/ico/favicon-96x96.png">
+<link rel="icon" type="image/svg+xml" href="https://www.progettobenessere.info/ico/favicon.svg">
+<link rel="shortcut icon" href="https://www.progettobenessere.info/ico/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.progettobenessere.info/ico/favicon-180x180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.progettobenessere.info/ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.progettobenessere.info/ico/favicon-16x16.png">
+<link rel="apple-touch-icon" href="https://www.progettobenessere.info/ico/favicon-512x512.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://www.progettobenessere.info/ico/favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.progettobenessere.info/ico/favicon-512x512.png">
+<link rel="apple-touch-startup-image" href="https://www.progettobenessere.info/ico/favicon-512x512.png">
+<link rel="apple-touch-startup-image" href="https://www.progettobenessere.info/ico/favicon-512x512.png" media="(device-width: 375px) and (device-height: 812px)">
+<link rel="apple-touch-startup-image" href="https://www.progettobenessere.info/ico/favicon-512x512.png" media="(device-width: 768px) and (device-height: 1024px)">
+<link rel="stylesheet" href="css/style-variables.css?v=12.0">
+<link rel="stylesheet" href="css/base-layout.css?v=12.0">
+<link rel="stylesheet" href="css/style.css?v=12.0">
+<link rel="stylesheet" href="css/welcome-page.css?v=12.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="components/header/header.css?v=15.0">
+<link rel="stylesheet" href="components/footer/footer.css?v=12.0">
+
+
+<!-- SEZIONE BODY -->
+<body>
+<div id="unified-header"></div>
+
+
+
+<!-- SEZIONE PAGE WRAPPER -->
+<div class="page-wrapper">
+<main class="page-main">
+<div class="container">
+<div id="app">
+
+
+
+<!-- SEZIONE WELCOME HERO -->
+<section class="welcome-hero card">
+<div class="hero-content">
+<h1><i class="fas fa-medal hero-icon"></i> SCOPRI LA TUA TRASFORMAZIONE</h1>
+<div class="hero-badge">PERCORSO ELITE 21 GIORNI</div>
+<p class="hero-description">Inizia oggi il percorso d'élite per la tua migliore versione di sempre.<br><strong>21 giorni</strong> di nutrizione, allenamento e supporto costante.</p>
+</div>
+</section>
+
+
+
+<!-- SEZIONE DESCRIZIONE CHALLENGE -->
+<section class="challenge-description card">
+<h2><i class="fas fa-info-circle"></i> LA TUA TRASFORMAZIONE INIZIA QUI</h2>
+<p>La <strong>#21GIORNIFIT Challenge</strong> è un protocollo intensivo progettato per chi vuole finalmente vedere risultati reali. In soli 21 giorni, resetterai le tue abitudini, eliminerai i cali di energia e ritroverai la tua forma fisica ideale.</p>
+</section>
+
+
+
+<!-- SEZIONE DETTAGLI CHALLENGE -->
+<div class="challenge-details">
+<div class="detail-card card"><i class="fas fa-apple-alt"></i><h3>Nutrizione</h3><p>Protocollo cellulare Herbalife su misura.</p></div>
+<div class="detail-card card"><i class="fas fa-dumbbell"></i><h3>Allenamento</h3><p>Piani mirati per ogni livello.</p></div>
+<div class="detail-card card"><i class="fas fa-users"></i><h3>Supporto</h3><p>Coach dedicato e community attiva.</p></div>
+</div>
+
+
+
+<!-- SEZIONE CTA -->
+<section class="cta-section card">
+<h2><i class="fas fa-rocket"></i> Pronto?</h2>
+<div class="cta-buttons-container">
+<a href="profile.html" class="btn-discord">Il Mio Profilo</a>
+<a href="bia-input.html" class="btn-discord btn-discord--info">Test & BIA</a>
+<a href="posts.html" class="btn-discord btn-discord--success">Bacheca Social</a>
+</div>
+</section>
+
+
+
+</div>
+</div>
+</main>
+</div>
+
+
+
+<!-- SEZIONE FOOTER -->
+<div id="unified-footer"></div>
+
+
+
+<!-- SEZIONE SCRIPT -->
+<script type="module">
+import { initHeader } from "./components/header/header.js?v=4.0";
+import { initFooter } from "./components/footer/footer-brand.js?v=4.0";
+document.addEventListener('DOMContentLoaded', () => {
+initHeader();
+initFooter();
+});
+</script>
+
+
+
+</body>
+</html>

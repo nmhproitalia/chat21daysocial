@@ -1,0 +1,49 @@
+📜 IL DECALOGO DI SVILUPPO E RIFERIMENTO (Fonti e Pattern di Sviluppo)
+
+Da seguire rigorosamente anche per l'implementazione e il debugging.
+
+### 1. MDN Web Docs come "Sacra Scrittura"
+Per ogni manipolazione del DOM, del cursore o degli eventi browser, consulta **MDN Web Docs**.
+- **Focus:** API `Selection`, `Range`, e proprietà `selectionStart` / `selectionEnd`.
+- **Obiettivo:** Gestire il testo in modo nativo e performante.
+
+### 2. Standardizzazione CSS (Web.dev)
+Segui le best practice di Google Developers (**Web.dev**) per il layout.
+- Usa `CSS Grid` e `Aspect Ratio` per le gallerie media.
+- Evita hack CSS obsoleti; prediligi soluzioni moderne e responsive.
+
+### 3. Pattern UI "Facebook-Style"
+Replica fedelmente la gerarchia visiva standard:
+- **Struttura:** Header (User) → Content (Testo) → Media Gallery (Full-Bleed) → Link Preview → Footer (Interazioni).
+- Analizza il codice sorgente reale tramite "Ispeziona Elemento" per capire classi e nesting.
+
+### 4. Controllo del Cursore (Caret Logic)
+L'inserimento di emoji o simboli **non deve mai** avvenire in coda al testo per impostazione predefinita.
+- Identifica la posizione esatta del cursore.
+- Inietta il carattere Unicode e riposiziona il focus immediatamente dopo l'elemento inserito.
+
+### 5. Architettura dei Componenti (UI Kit)
+Ispirati alla struttura DOM di **MUI**, **Ant Design** o **Chakra UI**.
+- Per evitare il clipping dei menu (es. Emoji Picker), usa i **Portals** per renderizzare i popover fuori dal contenitore con `overflow: hidden`.
+
+### 6. Debugging via Stack Overflow
+Utilizza **Stack Overflow** esclusivamente per risolvere bug specifici o casi limite (edge cases).
+- Verifica sempre che la soluzione sia aggiornata alle ultime versioni di React/Vue/JS.
+
+### 7. Iconografia Coerente
+Utilizza esclusivamente set di icone standard (es. **Lucide-React**, **FontAwesome**).
+- Raggruppa i trigger (emoji, upload, location) in una toolbar coerente sotto l'area di testo.
+
+### 8. Normalizzazione Media (Bounding Box)
+I contenuti multimediali devono adattarsi a uno standard prefissato.
+- Applica `max-height` e `object-fit: cover`.
+- Le immagini devono riempire lo spazio assegnato senza deformarsi (Normalization).
+
+### 9. Link Preview Intelligence
+Implementa la logica delle anteprime link basandoti sugli standard **Open Graph**.
+- Layout: Immagine grande → Dominio (Upper) → Titolo (Bold) → Descrizione.
+- L'intera area deve essere un unico blocco interattivo.
+
+### 10. Principio WYSIWYG
+L'anteprima nell'area di creazione (Composer) deve essere lo specchio esatto della Card nel Main.
+- Qualsiasi modifica stilistica alla card deve riflettersi immediatamente nell'anteprima di caricamento.

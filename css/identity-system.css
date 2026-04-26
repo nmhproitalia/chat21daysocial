@@ -1,0 +1,70 @@
+/* UNICA FONTE DI VERITÀ PER GLI AVATAR */
+/* Base: pulita ma pronta a ricevere il bordo dalle classi rank */
+.user-avatar {
+border-radius: 50% !important;
+object-fit: cover !important;
+padding: 2px !important;
+background-color: white !important;
+border: 3px solid transparent;
+box-shadow: none !important;
+}
+
+/* Le classi rank devono avere la priorità assoluta sul colore */
+.user-avatar.rank-coach { border: 3px solid #b1933a !important; }
+.user-avatar.rank-assistant { border: 3px solid #6B3E26 !important; }
+.user-avatar.rank-challenger { border: 3px solid #7a7a7a !important; }
+
+/* Testo dei ruoli (sempre coordinato) */
+.rank-coach { color: #b1933a !important; }
+.rank-assistant { color: #6B3E26 !important; }
+.rank-challenger { color: #7a7a7a !important; }
+
+/* Placeholder grigio */
+.user-avatar.placeholder {
+background-color: #e1e1e1 !important;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.user-avatar.placeholder i {
+font-size: 32px;
+color: #666;
+}
+
+/* Dimensioni specifiche per il Profilo */
+.profile-avatar-big {
+width: 150px !important;
+height: 150px !important;
+}
+
+.profile-avatar-big i {
+font-size: 60px;
+}
+
+/* Schede Challenger - Schema Atomico Globale */
+.challenger-card {
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 20px;
+}
+
+.avatar-container {
+margin-bottom: 12px;
+}
+
+.user-name-bold {
+margin: 0 0 4px 0;
+font-size: 1.2rem;
+font-weight: 700;
+color: #1a1a1a;
+text-align: center;
+}
+
+.role-display {
+margin: 0;
+font-size: 0.9rem;
+font-weight: 600;
+text-align: center;
+}

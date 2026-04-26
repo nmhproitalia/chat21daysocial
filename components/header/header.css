@@ -1,0 +1,224 @@
+/* ############################################################ */
+/* #                                                          # */
+/* #           MODULO HEADER & BANNER UNIFICATO (VERDE)       # */
+/* #                                                          # */
+/* ############################################################ */
+
+.header-fixed-block {
+width: 100% !important;
+position: fixed !important;
+top: 0 !important;
+left: 0 !important;
+z-index: 10000 !important;
+display: flex !important;
+flex-direction: column !important;
+background: #266431 !important; /* Garden Green */
+}
+
+/* TITOLO BRAND BIANCO */
+.challenge-banner-title {
+background: #266431 !important;
+color: #ffffff !important;
+text-align: center !important;
+font-weight: 900 !important;
+padding: 0 10px !important;
+margin: 0 !important;
+font-size: 1.4rem !important;
+letter-spacing: 2px !important;
+text-transform: uppercase !important;
+width: 100% !important;
+height: 50px !important;
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+box-sizing: border-box !important;
+}
+
+/* SOTTOTITOLO E TIMER */
+#challenge-banner-container {
+background: #266431 !important;
+width: 100% !important;
+}
+
+.challenge-banner, .challenge-banner-index {
+background: #266431 !important;
+color: #ffffff !important;
+padding: 0 0 15px 0 !important;
+text-align: center !important;
+font-weight: 700 !important;
+display: flex !important;
+flex-direction: column !important;
+align-items: center !important;
+justify-content: center !important;
+height: 70px !important;
+box-sizing: border-box !important;
+}
+
+.challenge-banner span, .challenge-banner-index span {
+font-size: 0.75rem !important;
+font-weight: 600 !important;
+letter-spacing: 1px !important;
+color: #ffffff !important;
+opacity: 0.9 !important;
+}
+
+.banner-timer {
+display: flex !important;
+gap: 10px !important;
+justify-content: center !important;
+margin-top: 5px !important;
+}
+
+.banner-timer div {
+background: rgba(255,255,255,0.2) !important;
+padding: 5px 10px !important;
+border-radius: 6px !important;
+font-weight: 900 !important;
+color: rgb(255, 215, 0) !important;
+min-width: 45px !important;
+border: 1px solid rgba(255,255,255,0.3) !important;
+font-size: 1.2rem !important;
+}
+
+/* MENU DI NAVIGAZIONE NERO */
+.page-header {
+width: 100% !important;
+background: #1a1a1a !important;
+height: 65px !important;
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+border: none !important;
+padding: 0 !important;
+box-sizing: border-box !important;
+}
+
+.page-menu {
+max-width: 1200px !important;
+width: 100% !important;
+height: 65px !important;
+display: flex !important;
+justify-content: center !important;
+align-items: center !important;
+gap: 0 !important;
+padding: 0 !important;
+margin: 0 auto !important;
+}
+
+.auth-text {
+color: #8e8e93 !important;
+font-size: 0.75rem !important;
+font-weight: 700 !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+}
+
+.nav-link {
+color: #8e8e93 !important;
+display: flex !important;
+flex-direction: column !important;
+align-items: center !important;
+justify-content: center !important;
+text-decoration: none !important;
+min-width: 70px !important;
+height: 65px !important;
+gap: 2px !important;
+margin: 0 !important;
+padding: 0 !important;
+text-align: center !important;
+}
+
+.nav-link i {
+font-size: 1.3rem !important;
+height: 28px !important;
+width: 30px !important;
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+margin: 0 !important;
+}
+
+.nav-link span {
+font-size: 0.7rem !important;
+font-weight: 700 !important;
+text-transform: uppercase !important;
+}
+
+/* STATI ATTIVI E ICONE */
+.nav-link, .nav-link i {
+color: #8e8e93 !important;
+}
+
+.nav-link.active, .nav-link.active i {
+color: #ffffff !important;
+}
+
+#logoutBtn, #logoutBtn i {
+color: #ff3b30 !important;
+background: transparent !important;
+}
+
+/* CHALLENGERS COUNTER */
+.challengers-wrapper {
+position: relative;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+min-width: 70px;
+height: 65px;
+gap: 2px;
+margin: 0;
+padding: 0;
+text-align: center;
+}
+
+.challengers-counter {
+position: absolute;
+top: 2px;
+right: 9px;
+background: #ff3b30;
+color: #ffffff;
+font-size: 8px;
+font-weight: 700;
+padding: 1px 3px;
+border-radius: 8px;
+min-width: 14px;
+text-align: center;
+border: 1px solid #1a1a1a;
+}
+
+/* ############################################################ */
+/* #           PWA ADAPTIVE LAYOUT (MOBILE BOTTOM MENU)       # */
+/* ############################################################ */
+
+@media screen and (max-width: 600px) {
+.header-fixed-block {
+position: fixed !important; /* Forza fisso anche su mobile per visibilità banner */
+top: 0 !important;
+}
+
+.page-header {
+position: fixed !important;
+bottom: 0 !important;
+top: auto !important;
+height: 65px !important;
+padding-bottom: env(safe-area-inset-bottom) !important;
+border-top: 1px solid rgba(255,255,255,0.1) !important;
+z-index: 10001 !important;
+}
+
+.page-menu {
+justify-content: space-around !important;
+gap: 0 !important;
+}
+
+.nav-link {
+min-width: 60px !important;
+height: 65px !important;
+}
+
+.challenge-banner-title {
+font-size: 1.2rem !important;
+}
+}

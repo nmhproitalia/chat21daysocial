@@ -1,0 +1,21 @@
+# Regole di Layout: Card Post (Stile Facebook)
+
+Queste regole definiscono lo standard visivo per il componente Card nel Feed Principale (Main).
+
+## 1. Gestione Media (Immagini/Video)
+- **Contenitore:** Altezza massima fissa (es. 500px). Se il media eccede, usare `object-fit: cover`.
+- **Layout Full-Bleed:** Il contenitore media deve avere margine 0 rispetto ai bordi laterali della card.
+- **Griglia Dinamica:**
+  - 1 item: 100% width.
+  - 2 item: 50% width ciascuno, stessa altezza.
+  - 3+ item: Layout collage (1 grande a sinistra, 2+ piccole impilate a destra).
+- **Gap:** Spazio di 2px tra i media.
+
+## 2. Anteprima Link (Link Card)
+- **Struttura:** Immagine anteprima (top) + Box info (bottom).
+- **Stile Box:** Sfondo grigio chiarissimo (#f0f2f5), Titolo in grassetto, Dominio in maiuscolo.
+- **Interazione:** L'intera area deve essere un anchor tag verso l'URL.
+
+## 3. Formattazione Testo
+- **Post Brevi:** Se testo < 80 char e zero media, font-size: 24px.
+- **Post Lunghi:** Oltre le 5 righe, applicare `line-clamp` e mostrare il tasto "Altro...".

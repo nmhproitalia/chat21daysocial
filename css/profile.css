@@ -1,0 +1,21 @@
+/* ############################################################ */
+/* #                    PROFILE PAGE STYLES                      # */
+/* ############################################################ */
+
+/* Profile Card styles moved to components/profile/profile-manager.css */
+
+#photoInput {
+display: none !important;
+visibility: hidden !important;
+opacity: 0 !important;
+position: absolute !important;
+left: -9999px !important;
+}
+
+.profile-info-basic {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
+width: 100%;
+}

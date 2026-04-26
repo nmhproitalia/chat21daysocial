@@ -1,0 +1,53 @@
+/* ============================================================================
+   USER MANAGER CSS - Stili per modulo gestione dati utente
+   ============================================================================ */
+
+.modal-user-info {
+display: flex !important;
+flex-direction: column !important;
+gap: 2px !important;
+}
+
+/* ############################################################ */
+/* #                                                          # */
+/* #           NODE ACTIONS (POST E COMMENTI)                   # */
+/* #                                                          # */
+/* ############################################################ */
+
+/* Container icone azione (modifica/elimina) */
+.node-actions {
+display: flex;
+gap: 8px;
+}
+
+/* Pulsante modifica */
+.edit-btn {
+background: transparent;
+border: none;
+color: #666;
+cursor: pointer;
+padding: 4px;
+border-radius: 4px;
+transition: all 0.2s ease;
+}
+
+.edit-btn:hover {
+background: #f0f0f0;
+color: #333;
+}
+
+/* Pulsante elimina */
+.del-btn {
+background: transparent;
+border: none;
+color: #ff3b30;
+cursor: pointer;
+padding: 4px;
+border-radius: 4px;
+transition: all 0.2s ease;
+}
+
+.del-btn:hover {
+background: #fff0f0;
+color: #ff0000;
+}

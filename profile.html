@@ -1,272 +1,247 @@
+<!-- ############################################################ -->
+<!-- #                          PROFILO                         # -->
+<!-- ############################################################ -->
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profilo Tecnico - #21GIORNIFIT</title>
-
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profilo Personale - #21GIORNIFIT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="96x96" href="https://www.progettobenessere.info/ico/favicon-96x96.png">
+<link rel="icon" type="image/svg+xml" href="https://www.progettobenessere.info/ico/favicon.svg">
+<link rel="shortcut icon" href="https://www.progettobenessere.info/ico/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.progettobenessere.info/ico/favicon-180x180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.progettobenessere.info/ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.progettobenessere.info/ico/favicon-16x16.png">
+<link rel="apple-touch-icon" href="https://www.progettobenessere.info/ico/favicon-512x512.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://www.progettobenessere.info/ico/favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.progettobenessere.info/ico/favicon-512x512.png">
+<link rel="apple-touch-startup-image" href="https://www.progettobenessere.info/ico/favicon-512x512.png">
+<link rel="apple-touch-startup-image" href="https://www.progettobenessere.info/ico/favicon-512x512.png" media="(device-width: 375px) and (device-height: 812px)">
+<link rel="apple-touch-startup-image" href="https://www.progettobenessere.info/ico/favicon-512x512.png" media="(device-width: 768px) and (device-height: 1024px)">
+<link rel="stylesheet" href="css/style-variables.css?v=12.0">
+<link rel="stylesheet" href="css/base-layout.css?v=12.2">
+<link rel="stylesheet" href="css/style.css?v=12.2">
+<link rel="stylesheet" href="css/user-roles.css?v=4.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="components/header/header.css?v=15.0">
+<link rel="stylesheet" href="components/footer/footer.css?v=12.0">
+<link rel="stylesheet" href="components/general/user-manager.css?v=6.0">
+<link rel="stylesheet" href="components/profile/profile-manager.css?v=1.0">
+<link rel="stylesheet" href="css/profile.css?v=7.0">
+<link rel="stylesheet" href="css/identity-system.css?v=5.0">
 </head>
 
+
+
+<!-- SEZIONE BODY -->
 <body>
+<div id="unified-header"></div>
+
+
+
+<!-- SEZIONE PAGE WRAPPER -->
+<div class="page-wrapper">
+<main class="page-main">
+<div class="container">
 <div id="app">
 
-<div class="page-header">
-    <div class="page-menu">
-        <a href="posts.html" class="nav-link">
-            <i class="fas fa-comments"></i>
-            <span>Posts</span>
-        </a>
-        <a href="profile.html" class="nav-link">
-            <i class="fas fa-user"></i>
-            <span>Profilo</span>
-        </a>
-        
-        <a id="adminBtn" href="admin.html" class="hidden admin-link">
-            <i class="fas fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-        </a>
-        
-        <button id="logoutBtn">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Logout</span>
-        </button>
-    </div>
+
+
+<!-- SEZIONE HEADER CARD -->
+<div class="profile-header-card card">
+<div class="profile-header-main">
+<div id="profileImg" class="user-avatar"><i class="fas fa-user"></i></div>
+<h2 id="userNameDisplay">Caricamento...</h2>
+<p id="userRoleDisplay"><i class="fas fa-user"></i> Challenger</p>
+<div class="ranking-bar-container">
+<div class="ranking-bar" id="rankingBar"></div>
 </div>
-
-<div class="feed-header">
-    <div class="feed-header-content">
-        <h1>#21GIORNIFIT - CHALLENGE</h1>
-        <div class="feed-content">
-        <h2>Informazioni Challenge</h2>
-        <p>Benvenuto nella tua sfida! Qui troverai tutti gli aggiornamenti e i contenuti esclusivi per i tuoi 21 giorni di trasformazione.</p>
-    </div>
-    </div>
+<input type="file" id="photoInput" accept="image/*" style="display: none;">
+<div class="user-action-menu">
+<a href="welcome.html" class="action-btn-mini btn-challenge"><i class="fas fa-rocket"></i><span>Info Challenge</span></a>
+<a href="https://www.herbalife.it/iscriviti-come-cliente-privilegiato/" target="_blank" class="action-btn-mini btn-privilege"><i class="fas fa-gem"></i><span>Cliente Privilegiato</span></a>
+<a href="https://www.herbalife.it/iscriviti-come-incaricato-alle-vendite/" target="_blank" class="action-btn-mini btn-become-coach"><i class="fas fa-user-tie"></i><span>Diventa Coach</span></a>
 </div>
-
-<!-- Indicatore profilo utente specifico (nascosto di default) -->
-<div id="userProfileIndicator" style="display: none; background: #ffc107; color: #212529; padding: 10px 20px; margin: 0 25px 20px 25px; border-radius: 8px; text-align: center; font-weight: 600;">
-    <i class="fas fa-eye" style="margin-right: 8px;"></i>
-    <span id="profileIndicatorText">Stai visualizzando il profilo di un utente</span>
-</div>
-
-    <div class="card profile-main-card">
-        <!-- Badge angolo in basso a sinistra -->
-        <div id="cornerBadge" class="corner-badge-group">
-            <div id="badgeIconContainer"></div>
-            <div id="badgeLabelText" class="badge-label"></div>
-        </div>
-
-        <!-- Health Score in alto senza sfondo -->
-        <div class="profile-health-score">
-            <div class="health-score-content">
-                <div class="health-score-header">
-                    <span id="levelBadge" class="level-label">LIVELLO --</span>
-                    <span id="healthScoreLabel" class="score-label">Score: 0/100</span>
-                </div>
-                <div class="level-bar-bg">
-                    <div id="levelBar" class="level-bar-fill"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Area centrale con foto, nome e badge -->
-        <div class="profile-main-content">
-            <div class="avatar-wrapper" id="uploadTrigger">
-                <img id="profilePhotoImg" src="" alt="">
-                <i id="photoPlaceholderIcon" class="fas fa-camera" style="font-size: 2rem; color: #bcc0c4;"></i>
-            </div>
-
-            <input type="file" id="fileInput" style="display:none" accept="image/*">
-
-            <div class="profile-info-section">
-                <h2 id="profileName" style="margin:0;">Utente</h2>
-            </div>
-
-            <div class="profile-badge-section">
-                <!-- Badge principale a destra -->
-            </div>
-        </div>
-
-        <!-- Area bassa con pulsanti -->
-        <div class="profile-bottom-actions">
-            <button class="buy-program-btn" id="buyProgramBtn">
-                <span>Acquista il tuo<br>Programma</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- Casella Orizzontale Challenge -->
-    <div class="card challenge-info-section">
-        <label>#21GIORNIFIT - CHALLENGE</label>
-        <div class="challenge-datetime-container">
-            <div class="challenge-datetime-display" id="challengeDateTimeDisplay">
-                <i class="fas fa-calendar-alt" style="color: #28a745; margin-right: 10px; font-size: 18px;"></i>
-                <span id="challengeDateTimeText">Caricamento...</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="card coach-section">
-        <label>Il Tuo Coach</label>
-        <div class="input-grid">
-            <div><label>Nome</label><input type="text" id="coachFirstName" class="read-only" readonly></div>
-            <div><label>Cognome</label><input type="text" id="coachLastName" class="read-only" readonly></div>
-            <div><label>Email</label><input type="text" id="coachEmail" class="read-only" readonly></div>
-            <div><label>Telefono</label><input type="text" id="coachPhone" class="read-only" readonly></div>
-        </div>
-    </div>
-
-<div class="card anagrafici-section">
-    <label>Dati Anagrafici</label>
-    <div class="input-grid">
-        <div><label>Nome</label><input type="text" id="firstName" placeholder="Nome" autocomplete="given-name"></div>
-        <div><label>Cognome</label><input type="text" id="lastName" placeholder="Cognome" autocomplete="family-name"></div>
-        <div><label>Email</label><input type="email" id="userEmail" placeholder="Email" autocomplete="email"></div>
-        <div><label>Telefono</label><input type="tel" id="userPhone" placeholder="Telefono (es. +39 333 123 4567)" autocomplete="tel" pattern="[0-9+ ]{9,16}" title="Inserisci un numero di telefono valido (minimo 9 cifre)"></div>
-        <div><label>Data di Nascita</label><input type="date" id="birthDate" autocomplete="bday"></div>
-
-        <!-- Campi bloccati calcolati automaticamente -->
-        <div><label>Compleanno</label><input type="text" id="birthdayDisplay" class="read-only" readonly></div>
-        <div><label>Età</label><input type="text" id="ageDisplay" class="read-only" readonly></div>
-
-        <!-- Peso Iniziale per sfida -->
-        <div>
-            <label>Peso Iniziale (kg)</label>
-            <input type="number" id="startWeight" min="30" max="300" oninput="if(value > 300) value = 300;" step="0.1" placeholder="Peso iniziale - 0.0" autocomplete="off">
-        </div>
-
-        <!-- Sesso per sfida -->
-        <div>
-            <label>Sesso</label>
-            <select id="gender" autocomplete="sex">
-                <option value="">Seleziona...</option>
-                <option value="male">Uomo</option>
-                <option value="female">Donna</option>
-            </select>
-        </div>
-    </div>
-    <button id="saveAnagraficiBtn" class="btn-save">SALVA DATI ANAGRAFICI</button>
-<p id="anagraficiSuccessMessage" class="success-message" style="display:none;">Dati anagrafici salvati con successo!</p>
-</div>
-
-    <div class="card obiettivi-section">
-        <label>Obiettivi</label>
-        <div class="input-grid">
-            <div>
-                <label>Obiettivo Principale</label>
-                <select id="mainGoal" autocomplete="off">
-                    <option>Perdere Massa Grassa</option>
-                    <option>Aumentare Massa Magra</option>
-                    <option>Tonificazione</option>
-                    <option>Mantenimento</option>
-                </select>
-            </div>
-            <div>
-                <label>Peso Target (kg)</label>
-                <input type="number" id="targetWeight" min="30" max="300" oninput="if(value > 300) value = 300;" step="0.1" placeholder="Peso - 0.0" autocomplete="off">
-            </div>
-            <div class="full-width">
-                <label>Il tuo stile di vita e abitudini attuali <span class="char-count"><span id="bioCharCount">0</span>/400</span></label>
-                <textarea id="bio" rows="2" autocomplete="off" minlength="0" maxlength="400" placeholder="Scrivi i tuoi obiettivi (max 400 caratteri)..."></textarea>
-            </div>
-        </div>
-    <button id="saveObiettiviBtn" class="btn-save">AGGIORNA OBIETTIVI</button>
-<p id="obiettiviSuccessMessage" class="success-message" style="display:none;">Obiettivi salvati con successo!</p>
-    </div>
-
-<div class="card bia-section">
-        <label>Misurazioni BIA</label>
-
-        <div class="input-grid">
-            <div><label>Altezza (cm)</label><input type="number" id="height" min="100" max="250" oninput="if(value > 250) value = 250;" step="0.01" placeholder="Altezza (cm) - 0.00" autocomplete="off"></div>
-            <div><label>Peso Attuale (kg)</label><input type="number" id="weight" min="30" max="300" oninput="if(value > 300) value = 300;" step="0.1" placeholder="Peso (kg) - 0.1" autocomplete="off"></div>
-            <div><label>% Massa Grassa</label><input type="number" id="bodyFat" min="3" max="75" oninput="if(value > 75) value = 75;" step="0.1" placeholder="Grasso % - 0.1" autocomplete="off"></div>
-            <div><label>% Idratazione</label><input type="number" id="hydration" min="20" max="90" oninput="if(value > 90) value = 90;" step="0.1" placeholder="Idratazione % - 55.0" autocomplete="off"></div>
-            <div><label>Grasso Viscerale</label><input type="number" id="visceralFat" min="1" max="50" oninput="if(value > 50) value = 50;" step="1" placeholder="Grasso Viscerale - 0" autocomplete="off"></div>
-            <div><label>Kg Massa Magra</label><input type="number" id="leanMass" min="20" max="200" oninput="if(value > 200) value = 200;" step="0.1" placeholder="Muscolo (kg) - 0.1" autocomplete="off"></div>
-            <div><label>Massa Ossea (kg)</label><input type="number" id="boneMass" min="1" max="10" oninput="if(value > 10) value = 10;" step="0.1" placeholder="Ossa - 3.0" autocomplete="off"></div>
-            <div><label>Età Metabolica</label><input type="number" id="metabolicAge" min="12" max="100" oninput="if(value > 100) value = 100;" step="0" placeholder="Matabolica - 0" autocomplete="off"></div>
-
-            <div>
-                <label>Classificazione Corporea</label>
-                <input type="text" id="bodyClass" readonly placeholder="Calcolata automaticamente..." style="background-color: #f8f9fa; cursor: not-allowed; color: #495057; font-weight: 500;">
-            </div>
-        </div>
-
-        <div class="bia-calculations">
-            <div class="calc-row">
-                <span class="calc-label">Fabbisogno Idrico Personale: </span><span class="calc-prefix">Almeno </span>  
-                <span class="calc-value" id="waterCalc">--</span> 
-                <span class="calc-unit">lt. al giorno</span>
-            </div>
-            <div class="calc-row">
-                <span class="calc-label">Fabbisogno Proteico Personale: </span><span class="calc-prefix">Almeno </span> 
-                <span class="calc-value" id="proteinCalc">--</span> 
-                <span class="calc-unit">gr. al giorno</span>
-            </div>
-        </div>
-
-        <button id="saveBiaBtn" class="btn-save">AGGIORNA MISURAZIONI BIA</button>
-<p id="biaSuccessMessage" class="success-message" style="display:none;">Misurazioni BIA salvate con successo!</p>
-    </div>
-
-<div class="card bia-analysis-section">
-    <label>ANALISI PARAMETRI BIA</label>
-    <div id="biaList"></div>
-</div>
-
-<div class="card program-section">
-    <label>PROGRAMMA PERSONALIZZATO CONSIGLIATO</label>
-    <div id="programContent">
-        <div class="program-placeholder">
-            <i class="fas fa-dumbbell" style="font-size: 48px; color: #28a745; margin-bottom: 15px;"></i>
-            <h4 style="color: #495057; margin-bottom: 10px;">Programma in elaborazione</h4>
-            <p style="color: #6c757d; font-size: 0.9rem;">Il tuo coach sta creando un programma personalizzato basato sui tuoi obiettivi e parametri BIA.</p>
-        </div>
-    </div>
-</div>
-
-<div class="card password-section">
-    <h3>SICUREZZA ACCOUNT</h3>
-    <form id="passwordForm" onsubmit="return false;"> 
-        
-        <div class="password-wrapper">
-            <input type="password" id="oldPassword" placeholder="Password attuale" autocomplete="current-password">
-            <i class="fa-regular fa-eye toggle-eye" data-target="oldPassword"></i>
-        </div>
-
-        <div class="password-wrapper">
-            <input type="password" id="newPassword" placeholder="Nuova password" autocomplete="new-password">
-            <i class="fa-regular fa-eye toggle-eye" data-target="newPassword"></i>
-        </div>
-        
-<small id="strengthText" style="display: block; margin: 5px 0 15px 2px; color: #65676b; line-height: 1.4;">
-    Requisiti: min. 8 caratteri, 2 maiuscole e 2 numeri.<br>
-    <strong>Lascia vuoto se non vuoi modificarla.</strong>
-</small>
-
-        <button type="button" id="updatePassBtn" class="btn-save">AGGIORNA PASSWORD</button>
-<p id="passwordSuccessMessage" class="success-message" style="display:none;">Password aggiornata con successo!</p>
-    </form>
-</div>
-
-    
-<div class="disclaimer-box">
-<div class="disclaimer-logo">
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCdYWyZoOZCg8DrzFDhefnTltbGePZMC8cpw&s" alt="Logo Herbalife" />
-</div>
-<div class="disclaimer-text">
-<strong>Disclaimer:</strong>
-I risultati variano da persona a persona. Tempi e quantità della perdita di massa grassa e aumento di massa magra variano in base al metabolismo individuale, allo stile di vita, al riposo e all'esercizio fisico.
 </div>
 </div>
 
+<!-- SEZIONE COACH -->
+<div class="profile-section">
+<h3><i class="fas fa-user-tie"></i> Il Tuo Coach</h3>
+<div class="card coach-info-card">
+<div class="form-grid">
+<div class="form-group"><label>Nome Coach</label><input type="text" id="coachFirstName" readonly value="..."></div>
+<div class="form-group"><label>Cognome Coach</label><input type="text" id="coachLastName" readonly value="..."></div>
+<div class="form-group"><label>Email Coach</label><input type="email" id="coachEmail" readonly value="..."></div>
+<div class="form-group"><label>Telefono Coach</label><input type="tel" id="coachPhone" readonly value="..."></div>
+</div>
+</div>
 </div>
 
-<script type="module" src="js/profile.js"></script>
-<script type="module" src="js/app.js"></script>
+
+
+<!-- SEZIONE INFORMAZIONI PERSONALI -->
+<div class="profile-section">
+<h3><i class="fas fa-id-card"></i> Informazioni Personali</h3>
+<div class="card coach-info-card">
+<div class="form-grid">
+<div class="form-group"><label>Nome</label><input type="text" id="firstName"></div>
+<div class="form-group"><label>Cognome</label><input type="text" id="lastName"></div>
+<div class="form-group"><label>Email</label><input type="email" id="userEmail"></div>
+<div class="form-group"><label>Telefono</label><input type="tel" id="userPhone"></div>
+<div class="form-group"><label>Data di Nascita</label><input type="date" id="birthDate"></div>
+<div class="form-group"><label>Età Calcolata</label><input type="number" id="age" readonly></div>
+<div class="form-group"><label>Altezza (cm)</label><input type="number" id="height"></div>
+<div class="form-group"><label>Genere</label><select id="gender"><option value="male">Uomo</option><option value="female">Donna</option></select></div>
+</div>
+<div class="form-group form-group-mt"><label>La tua storia/bio</label><textarea id="bio" rows="4"></textarea></div>
+<button id="saveAnagraficiBtn" class="btn-discord btn-mt">Salva Anagrafica</button>
+</div>
+</div>
+
+
+
+<!-- SEZIONE OBIETTIVI -->
+<div class="profile-section">
+<h3><i class="fas fa-bullseye"></i> I Tuoi Obiettivi</h3>
+<div class="profile-group card">
+<div class="form-grid">
+<div class="form-group">
+<label>Obiettivo Principale</label>
+<select id="mainGoal">
+<option value="fat_loss">Diminuzione della massa grassa</option>
+<option value="muscle_gain">Aumento della massa magra</option>
+<option value="toning">Tonificazione</option>
+<option value="maintenance">Mantenimento</option>
+</select>
+</div>
+<div class="form-group"><label>Peso Target (kg)</label><input type="number" id="target_weight" step="0.1"></div>
+</div>
+<button id="saveObiettiviBtn" class="btn-discord btn-discord--info btn-mt">Salva Obiettivi</button>
+</div>
+</div>
+
+
+
+<!-- SEZIONE RIEPILOGO BENESSERE -->
+<div class="profile-section">
+<h3><i class="fas fa-heartbeat"></i> Riepilogo Benessere</h3>
+<div class="profile-group card">
+<div id="wellnessSummary" class="card wellness-status-card"><p style="text-align: center; color: #666;">Caricamento dati benessere...</p></div>
+<p class="wellness-info">Puoi aggiornare la valutazione nella sezione <a href="bia-input.html" style="color: var(--primary-color); font-weight: bold;">BIA</a>.</p>
+</div>
+</div>
+
+
+
+<!-- SEZIONE METRICHE BIA -->
+<div class="profile-section">
+<h3><i class="fas fa-scale-balanced"></i> Metriche BIA</h3>
+<div class="profile-group card">
+<div class="form-grid">
+<div class="form-group"><label>Peso (kg)</label><input type="number" id="weight" step="0.1"></div>
+<div class="form-group"><label>Massa Grassa (%)</label><input type="number" id="bodyFat" step="0.1"></div>
+<div class="form-group"><label>Idratazione (%)</label><input type="number" id="hydration" step="0.1"></div>
+<div class="form-group"><label>Grasso Viscerale</label><input type="number" id="visceralFat"></div>
+<div class="form-group"><label>Massa Magra (kg)</label><input type="number" id="leanMass" step="0.1"></div>
+<div class="form-group"><label>Massa Ossea (kg)</label><input type="number" id="boneMass" step="0.1"></div>
+<div class="form-group"><label>Età Metabolica</label><input type="number" id="metabolicAge"></div>
+<div class="form-group"><label>BMI (Calcolato)</label><input type="number" id="bmi" readonly></div>
+</div>
+<button id="saveBiaBtn" class="btn-discord btn-discord--success" style="margin-top: 1.5rem;">Salva Dati BIA</button>
+</div>
+</div>
+
+
+
+<!-- SEZIONE PARAMETRI FABBISOGNI -->
+<div class="profile-section">
+<h3><i class="fas fa-calculator"></i> Parametri e Fabbisogni</h3>
+<div class="profile-group card">
+<div id="biaParamsContainer" class="form-grid">
+<div class="bia-param-card card"><label>Fabbisogno Acqua</label><div id="waterNeedsDisplay" class="param-value" style="font-size: 1.5rem; font-weight: 800; color: var(--primary-color);">-- L/giorno</div></div>
+<div class="bia-param-card card"><label>Fabbisogno Proteico</label><div id="proteinNeedsDisplay" class="param-value" style="font-size: 1.5rem; font-weight: 800; color: var(--primary-color);">-- g/giorno</div></div>
+<div class="bia-param-card card"><label>Metabolismo Basale</label><div id="bmrDisplay" class="param-value" style="font-size: 1.5rem; font-weight: 800; color: var(--primary-color);">-- kcal</div></div>
+</div>
+</div>
+</div>
+
+
+
+<!-- SEZIONE SICUREZZA ACCOUNT -->
+<div class="profile-section">
+<h3><i class="fas fa-shield-alt"></i> Sicurezza Account</h3>
+<div class="profile-group security-section card">
+<div class="card" style="background: rgba(255,255,255,0.5);">
+<p style="font-size: 0.85rem; margin-bottom: 1.5rem; color: #333; font-weight: 600;">⚠️ Il cambio password richiede la ri-autenticazione per sicurezza.</p>
+<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+<div class="form-group">
+<label>Password Attuale</label>
+<div class="password-field-wrapper">
+<input type="password" id="currentPassword" placeholder="Inserisci la password corrente">
+<i class="fas fa-eye eye-toggle" data-target="currentPassword"></i>
+</div>
+</div>
+<div class="form-group">
+<label>Nuova Password</label>
+<div class="password-field-wrapper">
+<input type="password" id="newPassword" placeholder="Inserisci la nuova password">
+<i class="fas fa-eye eye-toggle" data-target="newPassword"></i>
+</div>
+<div style="margin-top: 10px; padding: 12px; background: rgba(255,255,255,0.8); border-radius: 8px; border-left: 4px solid var(--primary-color);">
+<p style="font-size: 0.75rem; font-weight: 800; margin-bottom: 5px; color: var(--primary-color);">REGOLE DI SICUREZZA:</p>
+<ul class="password-rules">
+<li id="rule-length"><i class="fas fa-circle"></i> Almeno 8 caratteri</li>
+<li id="rule-upper"><i class="fas fa-circle"></i> Una lettera MAIUSCOLA</li>
+<li id="rule-number"><i class="fas fa-circle"></i> Almeno un NUMERO (0-9)</li>
+<li id="rule-special"><i class="fas fa-circle"></i> Un carattere speciale (!@#$%^&*)</li>
+</ul>
+</div>
+</div>
+</div>
+<button id="changePasswordBtn" class="btn-discord" style="margin-top: 2rem; background: #1a1a1a; letter-spacing: 1px;">Sincronizza Nuova Password</button>
+<p id="passwordStatusMsg" style="margin-top: 10px; font-size: 0.8rem; text-align: center;"></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+
+
+<!-- SEZIONE FOOTER -->
+<div id="unified-footer"></div>
+</div>
+
+
+
+<!-- SEZIONE SCRIPT -->
+<script type="module">
+import "./js/app.js?v=1.0";
+import { loadUserData as loadUserDataFromManager, formatDisplayName, getPhotoURL, getUserDataForUI, renderUserHTML, getRoleStyles, initUserListener, updateUI, getRankClass } from "./components/general/user-manager.js?v=10.0";
+import { initHeader } from "./components/header/header.js?v=6.0";
+import { initFooter } from "./components/footer/footer-brand.js?v=4.0";
+import { setupProfiloActions } from "./components/profile/profile-manager.js?v=14.0";
+import { initGlobalEyes } from "./js/ui-helper.js?v=4.0";
+document.addEventListener('DOMContentLoaded', () => {
+initHeader();
+initFooter();
+setupProfiloActions();
+initGlobalEyes();
+});
+</script>
+
+
+
 </body>
 </html>

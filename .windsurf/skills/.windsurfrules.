@@ -1,7 +1,0 @@
-- Rispondi sempre in italiano.
-- Prima di ogni modifica, controlla l'ultima issue su GitHub tramite MCP.
-- Se trovi un bug, proponi la soluzione prima di scrivere il codice.
-- Commenta il codice in italiano usando uno stile conciso.
-- Usa sempre il comando "npx" per testare le dipendenze.
-- Ogni volta che inizio una sessione di lavoro, controlla l'ultima issue aperta sul repository corrente usando lo strumento GitHub MCP. Se la issue contiene un bug segnalato, analizza il codice e proponimi subito una soluzione o una correzione diretta.
-- Controlla l'ultima issue su GitHub tramite MCP e proponi la soluzione

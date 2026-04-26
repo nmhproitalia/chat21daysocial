@@ -1,0 +1,38 @@
+# 📱 Ottimizzazione PWA Avanzata & Native Feel
+
+Utilizza questo documento come riferimento tecnico per trasformare la struttura PWA esistente in un'esperienza indistinguibile da un'app nativa per iOS e Android.
+
+---
+
+### 🔗 Riferimenti Tecnici Ufficiali
+*   **Layout & Notch (WebKit):** [Designing Websites for iPhone X](https://webkit.org)
+*   **Touch Targets (Material Design):** [Accessible Tap Targets](https://web.dev)
+*   **UX Web App (Google):** [App-like UX checklist](https://web.dev)
+
+---
+
+### 🛠️ Direttive di Ottimizzazione per Windsurf
+
+**1. Gestione Safe Areas (Notch & System Bars)**
+- Applica le variabili `env(safe-area-inset-top)` e `env(safe-area-inset-bottom)` a tutti i componenti con posizionamento fisso (`fixed`) o assoluto (`absolute`).
+- Interessa specificamente: **Header**, **Bottom Toolbar** e **Modale "Crea Post"**.
+- Il contenuto non deve mai essere coperto dal notch o dalla barra di navigazione del sistema.
+
+**2. Fluidità e Risposta al Tocco (Native Feel)**
+- **Eliminazione Delay:** Applica `touch-action: manipulation` a tutti gli elementi cliccabili per rimuovere il ritardo di 300ms del tap.
+- **Highlight:** Rimuovi il fastidioso riquadro grigio di sistema al tocco usando `-webkit-tap-highlight-color: transparent;`.
+- **Interazione Visiva:** Implementa stati `:active` (es. `transform: scale(0.97)` o `opacity: 0.8`) per fornire un feedback tattile immediato.
+- **Scroll:** Assicura lo scrolling fluido usando `overscroll-behavior-y: contain` sul body per prevenire il pull-to-refresh indesiderato.
+
+**3. Controllo dell'Interfaccia**
+- **User Selection:** Disabilita la selezione del testo (`user-select: none`) su icone, bottoni e menu. Mantieni la selezione attiva **solo** per il contenuto testuale dei post.
+- **Input & Tastiera:** Forza un `font-size: 16px` minimo su tutti gli input e le textarea. Questo previene lo zoom automatico forzato su iOS che rompe il layout.
+
+**4. Splash Screen & Branding (No White Screen)**
+- Configura nel `manifest.json` e nei meta tag iOS una **background_color** e un **theme_color** coerenti con il branding.
+- Assicurati che le icone Apple (`apple-touch-icon`) siano correttamente linkate nell'head per generare lo splash screen automatico durante il caricamento della PWA.
+
+---
+
+### 💬 Comando per l'Esecuzione
+"Windsurf, leggi le specifiche nel file di ottimizzazione PWA e applica queste regole al CSS globale e ai componenti dell'interfaccia. Priorità assoluta alla gestione delle Safe Areas e alla prevenzione dello zoom sugli input."

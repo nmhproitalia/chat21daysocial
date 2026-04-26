@@ -1,251 +1,219 @@
+/* ############################################################ */
+/* #                                                          # */
+/* #           1. IMPORTAZIONE MODULI E CONFIGURAZIONE       # */
+/* ############################################################ */
 import { auth, db } from "./firebase.js";
-import { initAuth, handleRegister } from "./auth.js";
-import { initPosts, cleanupPosts, createNewPost, uploadMedia, setupMediaUpload } from "./posts.js";
-import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { doc, setDoc, deleteDoc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { initAuth, handleRegister, handleLogin } from "./auth.js";
+import { initPosts, cleanupPosts, setupMediaUpload } from "./posts.js";
+import { signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { initGlobalEyes, initUnifiedHeader } from "./ui-helper.js";
+// import { setupProfiloActions } from "./profile-manager.js"; // Rimosso per evitare errore MIME
 
-import { initGlobalEyes, setupPasswordValidation } from "./ui-helper.js";
-import { setupProfiloActions } from "./profile-manager.js";
 
-// =========================
-// STATE
-// =========================
+
+/* ############################################################ */
+/* #                                                          # */
+/* #           2. INIZIALIZZAZIONE APPLICAZIONE              # */
+/* ############################################################ */
+// --- GLOBAL ERROR HANDLING ---
+window.onerror = function(message, source, lineno, colno, error) {
+console.error("Irina GLOBAL ERROR:", message);
+console.error("Source:", source);
+console.error("Line:", lineno, "Column:", colno);
+console.error("Error object:", error);
+return false;
+};
+
+window.addEventListener('unhandledrejection', function(event) {
+console.error("Irina UNHANDLED PROMISE REJECTION:", event.reason);
+console.error("Promise:", event.promise);
+});
+
+// --- FUNZIONE INIZIALIZZAZIONE GLOBALE ---
+document.addEventListener('DOMContentLoaded', () => {
 document.body.classList.add("app-ready");
+setActiveNavigation();
+setupEventListeners();
+initGlobalEyes();
+forceCursorPointer();
 
-// Set active navigation state
-function setActiveNavigation() {
-    const currentPath = window.location.pathname;
-    const navLinks = document.querySelectorAll('.page-menu .nav-link');
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        
-        if (currentPath.includes('posts.html') && link.textContent.includes('Posts')) {
-            link.classList.add('active');
-        } else if (currentPath.includes('profile.html') && link.textContent.includes('Profilo')) {
-            link.classList.add('active');
-        } else if (currentPath.includes('admin.html') && link.textContent.includes('Dashboard')) {
-            link.classList.add('active');
-        }
-    });
+// BLINDAGGIO: Inizializzazione Header Unificato (Banner + Menu + Auto-Padding)
+try {
+initUnifiedHeader();
+} catch (e) {
+console.error("Errore inizializzazione header:", e);
 }
 
-// Initialize active state
-setActiveNavigation();
+initAuthHandler();
+});
 
-let selectedFile = null;
+// Chiama forceCursorPointer anche se DOM già caricato (per import come modulo)
+if (document.readyState === 'loading') {
+document.addEventListener('DOMContentLoaded', forceCursorPointer);
+} else {
+forceCursorPointer();
+}
 
-// =========================
-// AUTH INIT
-// =========================
-initAuth((user, role) => {
+// Esponi globalmente per chiamata manuale
+window.forceCursorPointer = forceCursorPointer;
 
-    initGlobalEyes();
-    setupPasswordValidation();
+// --- FORZATURA CURSOR POINTER ---
+function forceCursorPointer() {
+const clickableElements = document.querySelectorAll('button, input, select, textarea, .btn, a[href], a[role="button"], .nav-link, .interaction-btn, label');
+clickableElements.forEach(el => {
+el.style.cursor = 'pointer';
+});
+console.log(`Forzato cursor-pointer su ${clickableElements.length} elementi cliccabili`);
+}
 
-    if (user) {
 
-        const isAuthPage =
-            window.location.pathname.includes("index.html") ||
-            window.location.pathname.endsWith("/");
+// --- FUNZIONE IMPOSTAZIONE NAVIGAZIONE ATTIVA ---
+function setActiveNavigation() {
+const currentPath = window.location.pathname;
+const navLinks = document.querySelectorAll('.page-menu .nav-link');
+navLinks.forEach(link => {
+const href = link.getAttribute('href');
+if (href && currentPath.includes(href)) {
+link.classList.add('active');
+}
+});
+}
 
-        if (isAuthPage) {
-            window.location.replace("posts.html");
-            return;
-        }
 
-        const postsBox = document.getElementById("posts");
-        if (postsBox) {
-            initPosts(postsBox);
-            setupMediaUpload();
-        }
 
-        if (window.location.pathname.includes("profile.html")) {
-            setTimeout(() => {
-                setupProfiloActions();
-            }, 300);
-        }
+/* ############################################################ */
+/* #                                                          # */
+/* #           3. GESTIONE AUTENTICAZIONE E STATO            # */
+/* ############################################################ */
+// --- FUNZIONE GESTORE STATO AUTENTICAZIONE ---
+function initAuthHandler() {
+initAuth(async (user) => {
+if (user) {
+console.log("Utente loggato:", user.email);
+try {
+const userDoc = await getDoc(doc(db, "users", user.uid));
+if (userDoc.exists()) {
+const userData = userDoc.data();
 
-        const adminBtn = document.getElementById("adminBtn");
-        if (adminBtn) {
-            adminBtn.classList.toggle("hidden", role !== "coach");
-        }
+// --- FIX REDIRECT: SINCRONIZZAZIONE RUOLO PER MODULI BIA/ACCESS ---
+localStorage.setItem('userRole', userData.role || 'user');
 
-    } else {
-        const isIndex =
-            window.location.pathname.includes("index.html") ||
-            window.location.pathname.endsWith("/");
+if (userData.role === 'admin') {
+const adminBtns = document.querySelectorAll('#adminBtn, .admin-link');
+adminBtns.forEach(btn => {
+btn.classList.remove('hidden');
+btn.style.display = 'flex';
+});
+}
+}
+} catch (error) {
+console.error("Errore recupero dati utente:", error);
+}
 
-        if (!isIndex) window.location.replace("index.html");
-    }
+// Inizializza i post solo se siamo nella bacheca
+const postsBox = document.getElementById('postsFeed');
+if (postsBox) {
+initPosts(postsBox);
+setupMediaUpload();
+}
 
-}, () => cleanupPosts());
+// setupProfiloActions(user.uid); // Rimosso per evitare errore
 
-// =========================
-// CLICK EVENTS
-// =========================
-document.addEventListener("click", async (e) => {
+} else {
+// Utente non loggato: redirect solo se NON già su index.html
+const isIndex = window.location.pathname.includes('index.html') || window.location.pathname.endsWith('/');
+if (!isIndex) {
+window.location.replace('index.html');
+}
+}
+});
+}
 
-    // POST CREATE
-    const postBtn = e.target.closest("#postBtn");
-    if (postBtn) {
-        const input = document.getElementById("postText");
-        const fileInput = document.getElementById("media-input");
 
-        if (!input) return;
 
-        const text = input.value.trim();
-
-        if (!text && !selectedFile) {
-            alert("Scrivi qualcosa prima di pubblicare!");
-            return;
-        }
-
-        postBtn.disabled = true;
-        postBtn.classList.add("loading");
-
-        try {
-            let mediaUrls = [];
-
-            if (selectedFile) {
-                const url = await uploadMedia(selectedFile);
-                mediaUrls.push(url);
-            }
-
-            const success = await createNewPost(text, mediaUrls);
-
-            if (success) {
-                input.value = "";
-                selectedFile = null;
-                document.getElementById("mediaPreview").innerHTML = "";
-            }
-
-        } catch (err) {
-            console.error(err);
-            alert("Errore nel caricamento del post.");
-        } finally {
-            postBtn.disabled = false;
-            postBtn.classList.remove("loading");
-        }
-        return;
-    }
-
-    // POST INTERACTIONS
-    const interactionBtn = e.target.closest('.interaction-btn, .fa-star, .edit-btn, .del-btn');
-    if (interactionBtn && auth.currentUser) {
-        try {
-            // LIKE
-            if (interactionBtn.classList.contains('interaction-btn') && interactionBtn.dataset.type === "like") {
-                const lRef = doc(db, `${interactionBtn.dataset.p}/likes`, auth.currentUser.uid);
-                const snap = await getDoc(lRef);
-                snap.exists() ? await deleteDoc(lRef) : await setDoc(lRef, { t: serverTimestamp() });
-            }
-            
-            // RATING
-            if (interactionBtn.classList.contains('fa-star')) {
-                const wrapper = interactionBtn.closest('.star-rating-icons');
-                await setDoc(doc(db, `${wrapper.dataset.path}/ratings`, auth.currentUser.uid), { 
-                    rating: parseInt(interactionBtn.dataset.v), 
-                    t: serverTimestamp() 
-                });
-            }
-            
-            // DELETE
-            if (interactionBtn.classList.contains('del-btn')) {
-                if (confirm("Eliminare questo post?")) {
-                    await deleteDoc(doc(db, interactionBtn.dataset.p));
-                }
-            }
-            
-            // EDIT
-            if (interactionBtn.classList.contains('edit-btn')) {
-                const newText = prompt("Modifica post:", interactionBtn.dataset.text);
-                if (newText && newText.trim()) {
-                    await updateDoc(doc(db, interactionBtn.dataset.p), { text: newText.trim() });
-                }
-            }
-            
-        } catch (err) { 
-            console.error("Errore interazione:", err); 
-            alert("Errore nell'operazione");
-        }
-        return;
-    }
-
-    // REPLY TOGGLE
-    const repTrig = e.target.closest(".rep-trig");
-    if (repTrig) {
-        const id = repTrig.dataset.id;
-        const box = document.getElementById(`rep-box-${id}`);
-        if (box) box.classList.toggle("active");
-        return;
-    }
-
-    // REGISTER PAGE RESET UI
-    if (e.target.tagName === "A" && e.target.innerText.includes("Registrati")) {
-        setTimeout(() => {
-            initGlobalEyes();
-            setupPasswordValidation();
-        }, 50);
-    }
-
-    // REGISTER USER
-    if (e.target.id === "registerBtn") {
-        const elEmail = document.getElementById("regEmail");
-        const elPass = document.getElementById("regPassword");
-        const elNome = document.getElementById("regNome");
-        const elTel = document.getElementById("regTelefono");
-
-        if (elNome && !elNome.checkValidity()) return elNome.reportValidity();
-        if (elEmail && !elEmail.checkValidity()) return elEmail.reportValidity();
-        if (elTel && !elTel.checkValidity()) return elTel.reportValidity();
-        if (elPass && !elPass.checkValidity()) return elPass.reportValidity();
-
-        const email = elEmail?.value.trim();
-        const pass = elPass?.value.trim();
-        const nome = elNome?.value.trim();
-        const cognome = document.getElementById("regCognome")?.value.trim();
-        const telefono = elTel?.value.trim();
-
-        try {
-            e.target.disabled = true;
-            e.target.classList.add("loading");
-            await handleRegister(email, pass, { nome, cognome, telefono });
-
-        } catch (err) {
-            console.error(err);
-            e.target.disabled = false;
-            e.target.classList.remove("loading");
-        }
-    }
-
-    // LOGOUT
-    const logoutBtn = e.target.closest("#logoutBtn");
-    if (logoutBtn) {
+/* ############################################################ */
+/* #                                                          # */
+/* #           4. EVENT LISTENERS E AZIONI UI                # */
+/* ############################################################ */
+window.handleLogout = async function() {
+    try {
+        localStorage.removeItem('userRole'); // Pulisci ruolo al logout
         await signOut(auth);
-        window.location.replace("index.html");
+        window.location.replace('index.html');
+    } catch (error) {
+        console.error("Errore logout:", error);
     }
-});
+};
 
-// FILE CHANGE
-document.addEventListener("change", (e) => {
-    if (e.target.id === "fileInput") {
-        selectedFile = e.target.files[0];
+// --- FUNZIONE SETUP EVENT LISTENERS ---
+function setupEventListeners() {
+// LOGOUT
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+logoutBtn.addEventListener('click', window.handleLogout);
+}
 
-        const preview = document.getElementById("mediaPreview");
-        if (preview) {
-            preview.classList.add("active");
-            preview.textContent = selectedFile
-                ? `File pronto: ${selectedFile.name}`
-                : "";
-        }
-    }
-});
+// REGISTRAZIONE (FORM INDEX)
+const registerForm = document.getElementById('registerForm');
+if (registerForm) {
+registerForm.addEventListener('submit', async (e) => {
+e.preventDefault();
+const submitBtn = e.target.querySelector('button[type="submit"]');
+const originalText = submitBtn.innerHTML;
 
-// DOM READY
-window.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => {
-        initGlobalEyes();
-        setupPasswordValidation();
-    }, 300);
+const email = document.getElementById('regEmail').value;
+const pass = document.getElementById('regPassword').value;
+const firstName = document.getElementById('regFirstName').value;
+const lastName = document.getElementById('regLastName').value;
+
+try {
+submitBtn.disabled = true;
+submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registrazione...';
+await handleRegister(email, pass, { firstName, lastName });
+window.location.href = 'welcome.html';
+} catch (err) {
+submitBtn.disabled = false;
+submitBtn.innerHTML = originalText;
+const statusEl = document.getElementById('registerStatus');
+if (statusEl) {
+statusEl.textContent = "Errore registrazione: " + err.message;
+statusEl.classList.remove('hidden');
+statusEl.classList.add('error');
+}
+}
 });
+}
+
+// LOGIN (FORM INDEX)
+const loginForm = document.getElementById('loginForm');
+if (loginForm) {
+loginForm.addEventListener('submit', async (e) => {
+e.preventDefault();
+const submitBtn = e.target.querySelector('button[type="submit"]');
+const originalText = submitBtn.innerHTML;
+
+const email = document.getElementById('loginEmail').value;
+const pass = document.getElementById('loginPassword').value;
+
+try {
+submitBtn.disabled = true;
+submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Accesso...';
+await handleLogin(email, pass);
+window.location.href = 'posts.html';
+} catch (err) {
+submitBtn.disabled = false;
+submitBtn.innerHTML = originalText;
+const statusEl = document.getElementById('loginStatus');
+if (statusEl) {
+statusEl.textContent = "Errore accesso: " + err.message;
+statusEl.classList.remove('hidden');
+statusEl.classList.add('error');
+}
+}
+});
+}
+}
+
+
+// --- FUNZIONE ESECUZIONE LOGOUT RIMOSSA PERCHÉ SPOSTATA IN WINDOW.HANDLELOGOUT ---
