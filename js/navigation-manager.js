@@ -39,7 +39,7 @@ const pageMap = {
 'index': 'home',
 'profile': 'profile',
 'wellness-test': 'wellness',
-'bia-input': 'bia',
+'tanita': 'bia',
 'social': 'social',
 'dashboard': 'admin',
 'challengers': 'challengers',

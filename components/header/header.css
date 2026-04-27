@@ -156,6 +156,7 @@ color: #ffffff !important;
 #logoutBtn, #logoutBtn i {
 color: #ff3b30 !important;
 background: transparent !important;
+border: none !important;
 }
 
 /* CHALLENGERS COUNTER */
@@ -181,9 +182,39 @@ background: #ff3b30;
 color: #ffffff;
 font-size: 8px;
 font-weight: 700;
-padding: 1px 3px;
-border-radius: 8px;
-min-width: 14px;
+padding: 2px 5px;
+border-radius: 10px;
+min-width: 16px;
+text-align: center;
+border: 1px solid #1a1a1a;
+}
+
+/* POSTS COUNTER */
+.posts-wrapper {
+position: relative;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+min-width: 70px;
+height: 65px;
+gap: 2px;
+margin: 0;
+padding: 0;
+text-align: center;
+}
+
+.posts-counter {
+position: absolute;
+top: 2px;
+right: 9px;
+background: #3498db;
+color: #ffffff;
+font-size: 8px;
+font-weight: 700;
+padding: 2px 5px;
+border-radius: 10px;
+min-width: 16px;
 text-align: center;
 border: 1px solid #1a1a1a;
 }

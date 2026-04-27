@@ -12,10 +12,60 @@ position: absolute !important;
 left: -9999px !important;
 }
 
+.badge-status {
+position: absolute;
+top: -8px;
+right: -8px;
+width: 32px;
+height: 32px;
+border-radius: 50%;
+background: #666;
+color: white;
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: bold;
+font-size: 14px;
+border: 2px solid #fff;
+box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+z-index: 10;
+}
+
+.badge-status.gold {
+border: 3px solid #ffd700;
+box-shadow: 0 0 10px #ffd700, 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.badge-status.level-0 { background: #666; }
+.badge-status.level-1 { background: #42a046; }
+.badge-status.level-2 { background: #ff9800; }
+.badge-status.level-3 { background: #266431; }
+
 .profile-info-basic {
 display: flex;
 flex-direction: column;
 align-items: center;
 gap: 4px;
 width: 100%;
+}
+
+/* Coach & Assistant Card Styles */
+.coach-card {
+background: rgba(255,255,255,0.8);
+padding: 12px;
+border-radius: 8px;
+border-left: 3px solid #b1933a;
+min-width: 180px;
+flex: 0 0 auto;
+text-align: left;
+}
+
+.assistant-card {
+background: rgba(255,255,255,0.8);
+padding: 12px;
+border-radius: 8px;
+border-left: 3px solid #6B3E26;
+min-width: 180px;
+flex: 0 0 auto;
+text-align: left;
 }

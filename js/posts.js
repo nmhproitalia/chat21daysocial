@@ -222,6 +222,11 @@ setTimeout(() => initPosts(), 100);
 return;
 }
 
+// Marca post come letti aggiornando timestamp
+const currentTimestamp = Date.now();
+localStorage.setItem('lastPostReadTimestamp', currentTimestamp.toString());
+console.log('Post marcati come letti, timestamp:', currentTimestamp);
+
 // Mostra loader
 const loader = document.getElementById('loading-overlay');
 if (loader) loader.style.display = 'flex';

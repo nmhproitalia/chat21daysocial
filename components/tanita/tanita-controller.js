@@ -1,19 +1,8 @@
-/* ############################################################ */
-/* #                                                          # */
-/* #           1. IMPORTAZIONE E CONFIGURAZIONE CONTROLLER    # */
-/* #                                                          # */
-/* ############################################################ */
-import { auth, db } from "../firebase.js";
-import { doc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-import { showServiceMessage } from "../ui-helper.js";
-import { calculateBMI, calculateAge, calculateNeeds } from "../profile-manager.js";
+import { auth, db } from "../../js/firebase.js";
+import { doc, getDoc, updateDoc, serverTimestamp, setDoc, collection } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { showServiceMessage } from "../../js/ui-helper.js";
+import { calculateBMI, calculateAge, calculateNeeds } from "../profile/profile-manager.js";
 
-
-/* ############################################################ */
-/* #                                                          # */
-/* #           2. DEFINIZIONE CLASSE CONTROLLER BIA           # */
-/* #                                                          # */
-/* ############################################################ */
 export class BIAInputController {
 constructor() {
 this.currentUser = null;
@@ -28,6 +17,7 @@ this.init();
 async init() {
 try {
 await this.loadUserData();
+await this.migrateBiaDataIfNecessary();
 this.setupEventListeners();
 this.loadReadOnlyData();
 this.updateBIAParamsUI();
@@ -58,6 +48,56 @@ const userDoc = await getDoc(doc(db, "users", this.targetUid));
 if (userDoc.exists()) {
 this.userProfile = userDoc.data();
 this.fillFormWithExistingData();
+}
+}
+
+
+// --- FUNZIONE MIGRAZIONE AUTOMATICA DATI BIA ---
+async migrateBiaDataIfNecessary() {
+if (!this.userProfile) return;
+
+const biaFields = ['weight', 'bodyFat', 'hydration', 'visceralFat', 'leanMass', 'boneMass', 'metabolicAge', 'bmi', 'bmr', 'waterNeeds', 'proteinNeeds'];
+const hasBiaData = biaFields.some(field => this.userProfile[field] !== undefined && this.userProfile[field] !== null);
+
+if (!hasBiaData) {
+console.log('Nessun dato BIA da migrare');
+return;
+}
+
+const userRef = doc(db, "users", this.targetUid);
+const biaData = {
+weight: this.userProfile.weight,
+bodyFat: this.userProfile.bodyFat,
+hydration: this.userProfile.hydration,
+visceralFat: this.userProfile.visceralFat,
+leanMass: this.userProfile.leanMass,
+boneMass: this.userProfile.boneMass,
+metabolicAge: this.userProfile.metabolicAge,
+bmi: this.userProfile.bmi,
+bmr: this.userProfile.bmr,
+waterNeeds: this.userProfile.waterNeeds,
+proteinNeeds: this.userProfile.proteinNeeds,
+data: this.userProfile.biaLastUpdate || this.userProfile.lastBiaUpdate || serverTimestamp()
+};
+
+try {
+if (!this.userProfile.initial_bia) {
+await updateDoc(userRef, {
+initial_bia: biaData
+});
+console.log('Creato initial_bia');
+}
+
+await updateDoc(userRef, {
+latest_bia: biaData
+});
+console.log('Aggiornato latest_bia');
+
+const historyRef = doc(collection(db, "users", this.targetUid, "bia_history"));
+await setDoc(historyRef, biaData);
+console.log('Aggiunto documento a bia_history');
+} catch (error) {
+console.error('Errore migrazione BIA:', error);
 }
 }
 
@@ -144,14 +184,28 @@ const data = this.getFormData();
 const bmi = calculateBMI(data.weight, this.userProfile.height);
 const needs = calculateNeeds(data.weight);
 
+const biaData = {
+...data,
+bmi: bmi,
+bmr: needs.bmr,
+waterNeeds: needs.water,
+proteinNeeds: needs.protein,
+data: serverTimestamp()
+};
+
 const userRef = doc(db, "users", this.targetUid);
 await updateDoc(userRef, {
 ...data,
 bmi: bmi,
 waterNeeds: needs.water,
 proteinNeeds: needs.protein,
+latest_bia: biaData,
 biaLastUpdate: serverTimestamp()
 });
+
+const historyRef = doc(collection(db, "users", this.targetUid, "bia_history"));
+await setDoc(historyRef, biaData);
+
 showServiceMessage("Dati BIA salvati e sincronizzati con il profilo!", "success", btn);
 } catch (error) {
 console.error(error);
@@ -171,11 +225,3 @@ data[f] = el ? parseFloat(el.value) : null;
 return data;
 }
 }
-
-
-// --- INIZIALIZZAZIONE AUTOMATICA ---
-document.addEventListener('DOMContentLoaded', () => {
-window.biaController = new BIAInputController();
-});
-
-export default BIAInputController;

@@ -33,6 +33,7 @@
 <link rel="stylesheet" href="components/profile/profile-manager.css?v=1.0">
 <link rel="stylesheet" href="css/profile.css?v=7.0">
 <link rel="stylesheet" href="css/identity-system.css?v=5.0">
+<link rel="stylesheet" href="components/tanita/tanita.css?v=1.0">
 </head>
 
 
@@ -55,6 +56,7 @@
 <div class="profile-header-card card">
 <div class="profile-header-main">
 <div id="profileImg" class="user-avatar"><i class="fas fa-user"></i></div>
+<div id="badgeStatus" class="badge-status">?</div>
 <h2 id="userNameDisplay">Caricamento...</h2>
 <p id="userRoleDisplay"><i class="fas fa-user"></i> Challenger</p>
 <div class="ranking-bar-container">
@@ -69,15 +71,27 @@
 </div>
 </div>
 
-<!-- SEZIONE COACH -->
+<!-- SEZIONE COACH & ASSISTENTI -->
 <div class="profile-section">
-<h3><i class="fas fa-user-tie"></i> Il Tuo Coach</h3>
+<h3><i class="fas fa-user-tie"></i> Coach & Assistenti di Riferimento</h3>
 <div class="card coach-info-card">
-<div class="form-grid">
-<div class="form-group"><label>Nome Coach</label><input type="text" id="coachFirstName" readonly value="..."></div>
-<div class="form-group"><label>Cognome Coach</label><input type="text" id="coachLastName" readonly value="..."></div>
-<div class="form-group"><label>Email Coach</label><input type="email" id="coachEmail" readonly value="..."></div>
-<div class="form-group"><label>Telefono Coach</label><input type="tel" id="coachPhone" readonly value="..."></div>
+<!-- Sezione Coach -->
+<div style="margin-bottom: 20px;">
+<h4 style="margin: 0 0 15px 0; font-size: 1.1rem; font-weight: 700; color: #b1933a; display: flex; align-items: center; gap: 8px;">
+<i class="fas fa-crown"></i> Coach
+</h4>
+<div id="coachesListProfile" style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px; justify-content: flex-start; align-items: flex-start; text-align: left; width: 100%;"></div>
+</div>
+
+<!-- Separatore -->
+<hr style="border: none; border-top: 2px dashed #b1933a; margin: 20px 0;">
+
+<!-- Sezione Assistenti -->
+<div>
+<h4 style="margin: 0 0 15px 0; font-size: 1.1rem; font-weight: 700; color: #6B3E26; display: flex; align-items: center; gap: 8px;">
+<i class="fas fa-user-shield"></i> Assistenti
+</h4>
+<div id="assistantsListProfile" style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px; justify-content: flex-start; align-items: flex-start; text-align: left; width: 100%;"></div>
 </div>
 </div>
 </div>
@@ -105,67 +119,140 @@
 
 
 
-<!-- SEZIONE OBIETTIVI -->
+<!-- SEZIONE RISULTATO VALUTAZIONE BENESSERE -->
 <div class="profile-section">
-<h3><i class="fas fa-bullseye"></i> I Tuoi Obiettivi</h3>
-<div class="profile-group card">
-<div class="form-grid">
-<div class="form-group">
-<label>Obiettivo Principale</label>
-<select id="mainGoal">
-<option value="fat_loss">Diminuzione della massa grassa</option>
-<option value="muscle_gain">Aumento della massa magra</option>
-<option value="toning">Tonificazione</option>
-<option value="maintenance">Mantenimento</option>
-</select>
+<h3><i class="fas fa-heart"></i> Risultato Valutazione Benessere</h3>
+<div class="card coach-info-card">
+<div id="wellnessResultDisplay">
+<p style="text-align: center; color: #666;">Nessun test benessere completato.</p>
 </div>
-<div class="form-group"><label>Peso Target (kg)</label><input type="number" id="target_weight" step="0.1"></div>
-</div>
-<button id="saveObiettiviBtn" class="btn-discord btn-discord--info btn-mt">Salva Obiettivi</button>
 </div>
 </div>
 
 
 
-<!-- SEZIONE RIEPILOGO BENESSERE -->
+<!-- SEZIONE DATI BIA -->
 <div class="profile-section">
-<h3><i class="fas fa-heartbeat"></i> Riepilogo Benessere</h3>
-<div class="profile-group card">
-<div id="wellnessSummary" class="card wellness-status-card"><p style="text-align: center; color: #666;">Caricamento dati benessere...</p></div>
-<p class="wellness-info">Puoi aggiornare la valutazione nella sezione <a href="bia-input.html" style="color: var(--primary-color); font-weight: bold;">BIA</a>.</p>
+<h3><i class="fas fa-heartbeat"></i> Dati Analisi Composizione Corporea (BIA)</h3>
+<div class="card coach-info-card">
+<div id="biaDataDisplay">
+<p style="text-align: center; color: #666;">Nessun dato BIA disponibile. Inserisci i dati nella sezione BIA.</p>
+</div>
+<div id="biaResultsContainer" style="display: none;">
+<div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;">
+<div class="tanita-result-item">
+<label>BMI</label>
+<div id="bmiResult" class="result-value">--</div>
+<div id="bmiDot" class="tanita-dot"></div>
+</div>
+<div class="tanita-result-item">
+<label>Massa Grassa</label>
+<div id="bodyFatResult" class="result-value">-- %</div>
+<div id="bodyFatDot" class="tanita-dot"></div>
+</div>
+<div class="tanita-result-item">
+<label>Idratazione</label>
+<div id="hydrationResult" class="result-value">-- %</div>
+<div id="hydrationDot" class="tanita-dot"></div>
+</div>
+</div>
+<div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;">
+<div class="tanita-result-item">
+<label>Grasso Viscerale</label>
+<div id="visceralFatResult" class="result-value">--</div>
+<div id="visceralFatDot" class="tanita-dot"></div>
+</div>
+<div class="tanita-result-item">
+<label>Massa Magra</label>
+<div id="leanMassResult" class="result-value">-- kg</div>
+<div id="leanMassDot" class="tanita-dot"></div>
+</div>
+<div class="tanita-result-item">
+<label>Massa Ossea</label>
+<div id="boneMassResult" class="result-value">-- kg</div>
+<div id="boneMassDot" class="tanita-dot"></div>
+</div>
+</div>
+<div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;">
+<div class="tanita-result-item">
+<label>Età Metabolica</label>
+<div id="metabolicAgeResult" class="result-value">--</div>
+<div id="metabolicAgeDot" class="tanita-dot"></div>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+<label style="font-weight: bold; display: block; margin-bottom: 10px;">Classificazione Fisica Tanita (Physique Rating)</label>
+<div id="physiqueRating" style="font-size: 1.2rem; font-weight: bold; color: #266431;">--</div>
+</div>
+<h3 style="margin-top: 30px;"><i class="fas fa-chart-bar"></i> Ricomposizione Corporea</h3>
+<div class="ranking-bar-container">
+<div class="ranking-labels-row">
+<div class="ranking-label ranking-label-scarso">Scarso</div>
+<div class="ranking-label ranking-label-sufficiente">Sufficiente</div>
+<div class="ranking-label ranking-label-buono">Buono</div>
+<div class="ranking-label ranking-label-eccellente">Eccellente</div>
+</div>
+<div class="ranking-bar">
+<div id="rankingIndicator" class="ranking-indicator"></div>
+</div>
+<div id="rankingText" style="text-align: center; margin-top: 10px; font-weight: bold;">--</div>
+</div>
+</div>
 </div>
 </div>
 
 
 
-<!-- SEZIONE METRICHE BIA -->
+<!-- SEZIONE FABBISOGNI CALCOLATI -->
 <div class="profile-section">
-<h3><i class="fas fa-scale-balanced"></i> Metriche BIA</h3>
-<div class="profile-group card">
-<div class="form-grid">
-<div class="form-group"><label>Peso (kg)</label><input type="number" id="weight" step="0.1"></div>
-<div class="form-group"><label>Massa Grassa (%)</label><input type="number" id="bodyFat" step="0.1"></div>
-<div class="form-group"><label>Idratazione (%)</label><input type="number" id="hydration" step="0.1"></div>
-<div class="form-group"><label>Grasso Viscerale</label><input type="number" id="visceralFat"></div>
-<div class="form-group"><label>Massa Magra (kg)</label><input type="number" id="leanMass" step="0.1"></div>
-<div class="form-group"><label>Massa Ossea (kg)</label><input type="number" id="boneMass" step="0.1"></div>
-<div class="form-group"><label>Età Metabolica</label><input type="number" id="metabolicAge"></div>
-<div class="form-group"><label>BMI (Calcolato)</label><input type="number" id="bmi" readonly></div>
+<h3><i class="fas fa-chart-line"></i> Fabbisogni Calcolati</h3>
+<div class="card coach-info-card">
+<div id="needsDataDisplay">
+<p style="text-align: center; color: #666;">Nessun dato BIA disponibile per calcolare i fabbisogni.</p>
 </div>
-<button id="saveBiaBtn" class="btn-discord btn-discord--success" style="margin-top: 1.5rem;">Salva Dati BIA</button>
+<div id="needsResultsContainer" style="display: none;">
+<div id="biaParamsContainer" style="display: flex; justify-content: center; gap: 30px; margin-top: 0.5rem;">
+<div style="text-align: center;">
+<label>Fabbisogno Acqua</label>
+<div id="waterNeedsDisplay" class="param-value">-- L/giorno</div>
+</div>
+<div style="text-align: center;">
+<label>Fabbisogno Proteico</label>
+<div id="proteinNeedsDisplay" class="param-value">-- g/giorno</div>
+</div>
+<div style="text-align: center;">
+<label>Metabolismo Basale</label>
+<div id="bmrDisplay" class="param-value">-- kcal</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 
 
 
-<!-- SEZIONE PARAMETRI FABBISOGNI -->
+<!-- SEZIONE PIANI AUTOMATICI -->
 <div class="profile-section">
-<h3><i class="fas fa-calculator"></i> Parametri e Fabbisogni</h3>
-<div class="profile-group card">
-<div id="biaParamsContainer" class="form-grid">
-<div class="bia-param-card card"><label>Fabbisogno Acqua</label><div id="waterNeedsDisplay" class="param-value" style="font-size: 1.5rem; font-weight: 800; color: var(--primary-color);">-- L/giorno</div></div>
-<div class="bia-param-card card"><label>Fabbisogno Proteico</label><div id="proteinNeedsDisplay" class="param-value" style="font-size: 1.5rem; font-weight: 800; color: var(--primary-color);">-- g/giorno</div></div>
-<div class="bia-param-card card"><label>Metabolismo Basale</label><div id="bmrDisplay" class="param-value" style="font-size: 1.5rem; font-weight: 800; color: var(--primary-color);">-- kcal</div></div>
+<h3><i class="fas fa-clipboard-list"></i> Il tuo programma personalizzato</h3>
+<div class="card coach-info-card">
+<div id="planDataDisplay">
+<p style="text-align: center; color: #666;">Nessun piano automatico disponibile. Completa i dati BIA per generare il piano.</p>
+</div>
+<div id="planResultsContainer" style="display: none;">
+<div style="text-align: center; margin-bottom: 20px;">
+<h4 style="color: var(--primary-color);">Modulo Base</h4>
+<div style="background: rgba(255,255,255,0.5); padding: 15px; border-radius: 8px; margin-top: 10px;">
+<p style="margin: 0; font-weight: 600;">Aloe + Infuso + Shake</p>
+<p style="margin: 5px 0 0 0; font-size: 0.9rem; color: #666;">2 F1 + 2 PDM al giorno</p>
+</div>
+</div>
+<div id="phytoSection" style="display: none; text-align: center; margin-top: 20px;">
+<h4 style="color: var(--primary-color);">Integrazione Consigliata</h4>
+<div style="background: rgba(255,255,255,0.5); padding: 15px; border-radius: 8px; margin-top: 10px;">
+<p style="margin: 0; font-weight: 600;">Phyto Complete</p>
+<p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #666;">Benefici: Vit. B3, C e Cromo per controllo grasso viscerale</p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -233,12 +320,315 @@ import { initHeader } from "./components/header/header.js?v=6.0";
 import { initFooter } from "./components/footer/footer-brand.js?v=4.0";
 import { setupProfiloActions } from "./components/profile/profile-manager.js?v=14.0";
 import { initGlobalEyes } from "./js/ui-helper.js?v=4.0";
+import { auth, db } from "./js/firebase.js";
+import { doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import { calculateBMI, calculateAge } from "./components/profile/profile-manager.js";
+
 document.addEventListener('DOMContentLoaded', () => {
 initHeader();
 initFooter();
 setupProfiloActions();
 initGlobalEyes();
+onAuthStateChanged(auth, (user) => {
+if (user) {
+loadBIADisplay();
+}
 });
+});
+
+async function loadBIADisplay() {
+const user = auth.currentUser;
+if (!user) return;
+try {
+const userDoc = await getDoc(doc(db, "users", user.uid));
+if (userDoc.exists()) {
+const userData = userDoc.data();
+const latestBia = userData.latest_bia;
+if (latestBia) {
+document.getElementById('biaDataDisplay').style.display = 'none';
+document.getElementById('biaResultsContainer').style.display = 'block';
+displayBIADResults(latestBia, userData);
+}
+loadWellnessResult(userData);
+loadFabbisogni(latestBia, userData);
+loadPianiAutomatici(latestBia, userData);
+updateBadgeStatus(userData);
+}
+} catch (error) {
+console.error('Errore caricamento dati BIA:', error);
+}
+}
+
+function updateBadgeStatus(userData) {
+const badgeEl = document.getElementById('badgeStatus');
+if (!badgeEl) return;
+if (!userData || !userData.targetWeight || !userData.latest_bia) {
+badgeEl.textContent = '?';
+badgeEl.className = 'badge-status level-0';
+return;
+}
+const target = parseFloat(userData.targetWeight);
+const current = parseFloat(userData.latest_bia.weight);
+const initial = userData.initial_bia?.weight ? parseFloat(userData.initial_bia.weight) : current;
+const latest = userData.latest_bia;
+let level = 0;
+let symbol = '?';
+const progress = (initial - current) / (initial - target);
+if (progress >= 1) {
+level = 3;
+symbol = '★';
+} else if (progress >= 0.75) {
+level = 2;
+symbol = '----';
+} else if (progress >= 0.25) {
+level = 1;
+symbol = '---';
+}
+badgeEl.textContent = symbol;
+badgeEl.className = 'badge-status level-' + level;
+const avgStars = userData.averageRating || 0;
+if (avgStars > 4.5) {
+badgeEl.classList.add('gold');
+}
+}
+
+function loadWellnessResult(userData) {
+const wellnessScore = userData.wellnessScore;
+const wellnessDisplay = document.getElementById('wellnessResultDisplay');
+if (!wellnessDisplay) return;
+if (wellnessScore !== undefined && wellnessScore !== null) {
+const scaledScore = Math.min(wellnessScore * 1.5, 15);
+let color = '#42a046';
+let level = 'Basso';
+if (scaledScore >= 6 && scaledScore <= 10) { color = '#ff9800'; level = 'Medio'; }
+if (scaledScore >= 11 && scaledScore <= 15) { color = '#f44336'; level = 'Alto'; }
+wellnessDisplay.innerHTML = `
+<div style="text-align: center;">
+<h4 style="margin: 0 0 10px 0; color: #666;">Punteggio Benessere</h4>
+<div class="wellness-scale-container">
+<div class="wellness-scale-numbers">
+<span>0</span>
+<span>15</span>
+</div>
+<div class="wellness-scale-bar">
+<div class="wellness-segment wellness-segment-low"></div>
+<div class="wellness-segment wellness-segment-medium"></div>
+<div class="wellness-segment wellness-segment-high"></div>
+<div class="wellness-fill" style="width: ${(scaledScore / 15) * 100}%"></div>
+<div class="wellness-score-line" style="left: ${(scaledScore / 15) * 100}%"></div>
+</div>
+<div class="wellness-scale-labels">
+<span class="wellness-label-low">Basso</span>
+<span class="wellness-label-medium">Medio</span>
+<span class="wellness-label-high">Alto</span>
+</div>
+</div>
+<p class="wellness-score-text" style="margin-top: 15px;">Punteggio: ${scaledScore}/15 - Livello: <span style="color: ${color};">${level}</span></p>
+</div>
+`;
+}
+}
+
+function loadFabbisogni(latestBia, userData) {
+if (!latestBia) return;
+const needsDisplay = document.getElementById('needsDataDisplay');
+const needsContainer = document.getElementById('needsResultsContainer');
+if (!needsDisplay || !needsContainer) return;
+const water = latestBia.waterNeeds || userData.waterNeeds;
+const protein = latestBia.proteinNeeds || userData.proteinNeeds;
+let bmr = latestBia.bmr || userData.bmr;
+if (!bmr && latestBia.weight && userData.height && userData.age) {
+bmr = calculateBMR(latestBia.weight, userData.height, userData.age, userData.gender);
+}
+if (water || protein || bmr) {
+needsDisplay.style.display = 'none';
+needsContainer.style.display = 'block';
+const waterEl = document.getElementById('waterNeedsDisplay');
+const proteinEl = document.getElementById('proteinNeedsDisplay');
+const bmrEl = document.getElementById('bmrDisplay');
+if (waterEl && water) waterEl.textContent = `${water} L/giorno`;
+if (proteinEl && protein) proteinEl.textContent = `${protein} g/giorno`;
+if (bmrEl && bmr) bmrEl.textContent = `${Math.round(bmr)} kcal`;
+}
+}
+
+function calculateBMR(weight, height, age, gender) {
+if (gender === 'male') {
+return 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+} else {
+return 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+}
+}
+
+function loadPianiAutomatici(latestBia, userData) {
+if (!latestBia) return;
+const planDisplay = document.getElementById('planDataDisplay');
+const planContainer = document.getElementById('planResultsContainer');
+const phytoSection = document.getElementById('phytoSection');
+if (!planDisplay || !planContainer) return;
+planDisplay.style.display = 'none';
+planContainer.style.display = 'block';
+if (latestBia.visceralFat >= 10 && phytoSection) {
+phytoSection.style.display = 'block';
+}
+}
+
+function displayBIADResults(biaData, userData) {
+const bmi = calculateBMI(biaData.weight, userData.height);
+const bmiEl = document.getElementById('bmiResult');
+if (bmiEl && bmi && typeof bmi === 'number' && !isNaN(bmi)) bmiEl.textContent = bmi.toFixed(1);
+
+const fields = [
+{ field: 'bodyFat', result: 'bodyFatResult', unit: ' %' },
+{ field: 'hydration', result: 'hydrationResult', unit: ' %' },
+{ field: 'visceralFat', result: 'visceralFatResult', unit: '' },
+{ field: 'leanMass', result: 'leanMassResult', unit: ' kg' },
+{ field: 'boneMass', result: 'boneMassResult', unit: ' kg' },
+{ field: 'metabolicAge', result: 'metabolicAgeResult', unit: '' }
+];
+
+fields.forEach(f => {
+const el = document.getElementById(f.result);
+if (el && biaData[f.field]) el.textContent = biaData[f.field] + f.unit;
+});
+
+const physiqueRating = calculatePhysiqueRating(biaData.bodyFat, biaData.leanMass, userData.gender);
+const physiqueEl = document.getElementById('physiqueRating');
+if (physiqueEl) physiqueEl.textContent = `${physiqueRating.id} - ${physiqueRating.name}`;
+
+updateDots(biaData, userData.gender, userData);
+updateRankingBar(userData);
+}
+
+function calculatePhysiqueRating(bodyFat, leanMass, gender) {
+if (!bodyFat || !leanMass) return { id: 0, name: 'N/A' };
+const bf = parseFloat(bodyFat);
+const lm = parseFloat(leanMass);
+let rating = { id: 1, name: 'Peso Normale' };
+if (gender === 'male') {
+if (bf < 8 && lm < 50) rating = { id: 2, name: 'Sottopeso' };
+else if (bf >= 8 && bf <= 19 && lm >= 50) rating = { id: 5, name: 'Muscolare' };
+else if (bf < 10 && lm >= 60) rating = { id: 6, name: 'Elite' };
+else if (bf >= 10 && bf <= 18 && lm >= 55 && lm <= 75) rating = { id: 8, name: 'Atletico' };
+else if (bf >= 5 && bf <= 12 && lm >= 65) rating = { id: 9, name: 'Bodybuilder' };
+else if (bf >= 15 && bf <= 25 && lm >= 40 && lm <= 60) rating = { id: 7, name: 'Misto' };
+else if (bf >= 20 && bf <= 24 && lm < 50) rating = { id: 3, name: 'Sovrappeso' };
+else if (bf >= 25 && lm < 50) rating = { id: 4, name: 'Obesità' };
+} else {
+if (bf < 21 && lm < 40) rating = { id: 2, name: 'Sottopeso' };
+else if (bf >= 21 && bf <= 32 && lm >= 40) rating = { id: 5, name: 'Muscolare' };
+else if (bf < 15 && lm >= 50) rating = { id: 6, name: 'Elite' };
+else if (bf >= 15 && bf <= 23 && lm >= 45 && lm <= 65) rating = { id: 8, name: 'Atletico' };
+else if (bf >= 10 && bf <= 17 && lm >= 55) rating = { id: 9, name: 'Bodybuilder' };
+else if (bf >= 24 && bf <= 34 && lm >= 35 && lm <= 55) rating = { id: 7, name: 'Misto' };
+else if (bf >= 33 && bf <= 38 && lm < 40) rating = { id: 3, name: 'Sovrappeso' };
+else if (bf >= 39 && lm < 40) rating = { id: 4, name: 'Obesità' };
+}
+return rating;
+}
+
+function updateDots(data, gender, userData) {
+const fields = ['weight', 'bodyFat', 'hydration', 'visceralFat', 'leanMass', 'boneMass', 'metabolicAge', 'bmi'];
+fields.forEach(field => {
+const dot = document.getElementById(`${field}Dot`);
+if (dot && data[field]) {
+const status = getTanitaStatus(field, data[field], gender, userData);
+dot.style.backgroundColor = status.color;
+dot.title = status.tip;
+}
+});
+}
+
+function getTanitaStatus(field, value, gender, userData) {
+const rules = {
+weight: { min: 30, max: 200, unit: 'kg', tips: { low: 'Aumenta introito calorico', normal: 'Peso ottimale', high: 'Riduci calorie' } },
+bodyFat: {
+male: { low: { min: 8, max: 19, color: '#42a046', tip: 'Composizione ottimale' }, medium: { min: 20, max: 24, color: '#ffc107', tip: 'Monitorare' }, high: { min: 25, max: 29, color: '#ff9800', tip: 'Aumenta attività cardio' }, critical: { min: 30, max: 100, color: '#f44336', tip: 'Rischio cardiometabolico' } },
+female: { low: { min: 21, max: 32, color: '#42a046', tip: 'Composizione ottimale' }, medium: { min: 33, max: 38, color: '#ffc107', tip: 'Monitorare' }, high: { min: 39, max: 44, color: '#ff9800', tip: 'Aumenta attività cardio' }, critical: { min: 45, max: 100, color: '#f44336', tip: 'Rischio cardiometabolico' } }
+},
+hydration: { male: { min: 50, max: 65, color: '#42a046', tip: 'Idratazione ottimale' }, female: { min: 45, max: 60, color: '#42a046', tip: 'Idratazione ottimale' } },
+visceralFat: { low: { min: 1, max: 9, color: '#42a046', tip: 'Ottimale' }, medium: { min: 10, max: 12, color: '#ff9800', tip: 'Eccessivo - Consiglia Phyto Complete' }, high: { min: 13, max: 59, color: '#f44336', tip: 'Alto rischio' } },
+leanMass: { min: 20, max: 100, unit: 'kg', tips: { low: 'Aumenta allenamento forza', normal: 'Massa magra ottimale', high: 'Eccellente' } },
+boneMass: { min: 1, max: 5, unit: 'kg', tips: { low: 'Integra calcio', normal: 'Salute ossea buona', high: 'Ottimale' } },
+metabolicAge: { min: 18, max: 100, unit: '', tips: { low: 'Metabolismo efficiente', normal: 'Metabolismo nella norma', high: 'Aumenta attività fisica' } }
+};
+const rule = rules[field];
+if (!rule) return { color: '#ccc', tip: 'N/A' };
+if (field === 'bodyFat') {
+const genderRule = rule[gender] || rule.female;
+const val = parseFloat(value);
+if (val >= genderRule.low.min && val <= genderRule.low.max) return { color: genderRule.low.color, tip: genderRule.low.tip };
+if (val >= genderRule.medium.min && val <= genderRule.medium.max) return { color: genderRule.medium.color, tip: genderRule.medium.tip };
+if (val >= genderRule.high.min && val <= genderRule.high.max) return { color: genderRule.high.color, tip: genderRule.high.tip };
+return { color: genderRule.critical.color, tip: genderRule.critical.tip };
+}
+if (field === 'hydration') {
+const genderRule = rule[gender] || rule.female;
+const val = parseFloat(value);
+if (val >= genderRule.min && val <= genderRule.max) return { color: genderRule.color, tip: genderRule.tip };
+return { color: '#ff9800', tip: 'Sotto target - Aloe e Infuso' };
+}
+if (field === 'visceralFat') {
+const val = parseFloat(value);
+if (val >= rule.low.min && val <= rule.low.max) return { color: rule.low.color, tip: rule.low.tip };
+if (val >= rule.medium.min && val <= rule.medium.max) return { color: rule.medium.color, tip: rule.medium.tip };
+return { color: rule.high.color, tip: rule.high.tip };
+}
+if (field === 'metabolicAge') {
+const val = parseFloat(value);
+const chronologicalAge = userData?.age || calculateAge(userData?.birthDate);
+if (val > chronologicalAge) return { color: '#f44336', tip: 'Revisione piano Herbalife' };
+let status = 'normal';
+if (value < rule.min * 0.8) status = 'low';
+const colors = { low: '#42a046', normal: '#42a046', high: '#f44336' };
+return { color: colors[status], tip: rule.tips[status] };
+}
+if (field === 'bmi') {
+const val = parseFloat(value);
+if (val < 18.5) return { color: '#ffc107', tip: 'Sottopeso' };
+if (val >= 18.5 && val <= 24.9) return { color: '#42a046', tip: 'Normopeso' };
+if (val >= 25.0 && val <= 29.9) return { color: '#ffc107', tip: 'Sovrappeso' };
+return { color: '#f44336', tip: 'Obesità' };
+}
+let status = 'normal';
+if (value < rule.min * 0.8) status = 'low';
+else if (value > rule.max * 0.9) status = 'high';
+const colors = { low: '#f44336', normal: '#42a046', high: '#ff9800' };
+return { color: colors[status], tip: rule.tips[status] };
+}
+
+function updateRankingBar(userData) {
+console.log('updateRankingBar chiamata con userData:', userData);
+if (!userData || !userData.initial_bia || !userData.latest_bia) {
+console.log('updateRankingBar: dati mancanti - initial_bia:', userData?.initial_bia, 'latest_bia:', userData?.latest_bia);
+return;
+}
+const initial = userData.initial_bia;
+const latest = userData.latest_bia;
+const muscleDelta = latest.leanMass - initial.leanMass;
+const fatDelta = initial.bodyFat - latest.bodyFat;
+const visceralFatDelta = initial.visceralFat - latest.visceralFat;
+const score = (muscleDelta * 2) + (fatDelta * 2) + (visceralFatDelta * 4);
+console.log('Score calcolato:', score, 'muscleDelta:', muscleDelta, 'fatDelta:', fatDelta, 'visceralFatDelta:', visceralFatDelta);
+const rating = calculatePhysiqueRating(latest.bodyFat, latest.leanMass, userData.gender);
+const excellentProfiles = [5, 6, 8, 9];
+let level = 'Scarso';
+let position = 0;
+if (excellentProfiles.includes(rating.id)) {
+level = 'Eccellente';
+position = 100;
+} else {
+if (score > 2) { level = 'Sufficiente'; position = 33; }
+if (score > 5) { level = 'Buono'; position = 66; }
+if (score > 8) { level = 'Eccellente'; position = 100; }
+}
+console.log('Level:', level, 'Position:', position);
+const indicator = document.getElementById('rankingIndicator');
+const rankingText = document.getElementById('rankingText');
+if (indicator) indicator.style.left = position + '%';
+if (rankingText) rankingText.textContent = level;
+}
 </script>
 
 

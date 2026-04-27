@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema TANITA® - #21GIORNIFIT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="96x96" href="https://www.progettobenessere.info/ico/favicon-96x96.png">
+<link rel="icon" type="image/svg+xml" href="https://www.progettobenessere.info/ico/favicon.svg">
+<link rel="shortcut icon" href="https://www.progettobenessere.info/ico/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.progettobenessere.info/ico/favicon-180x180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.progettobenessere.info/ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.progettobenessere.info/ico/favicon-16x16.png">
+<link rel="apple-touch-icon" href="https://www.progettobenessere.info/ico/favicon-512x512.png">
+<link rel="stylesheet" href="css/style-variables.css?v=12.0">
+<link rel="stylesheet" href="css/base-layout.css?v=12.0">
+<link rel="stylesheet" href="css/style.css?v=12.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="components/header/header.css?v=15.0">
+<link rel="stylesheet" href="components/footer/footer.css?v=12.0">
+<link rel="stylesheet" href="components/tanita/tanita.css?v=5.0">
+</head>
+<body class="auth-page">
+<div id="unified-header"></div>
+
+
+<div class="page-wrapper">
+<main class="page-main">
+<div class="container">
+<div id="app">
+
+<!-- SEZIONE VALUTAZIONE BENESSERE -->
+<div class="profile-section">
+<h3><i class="fas fa-heartbeat"></i> Valutazione Benessere</h3>
+<div class="profile-group card">
+<div class="wellness-intro-text">
+Il benessere dell'apparato cardiocircolatorio dipende da una combinazione di fattori; su alcuni non possiamo intervenire (sesso, età, ereditarietà) mentre altri possono essere cambiati (peso, esercizio fisico, fumo) attraverso l'adozione di corrette abitudini alimentari ed uno stile di vita sano e attivo.
+</div>
+<div id="wellnessSummary" class="wellness-test-container">
+<h4 id="wellnessQuestionCounter">Valutazione Benessere - Domanda 1 di 14</h4>
+<p id="wellnessQuestionText" style="margin: 1.5rem 0; font-weight: bold; font-size: 1.1rem; color: #1a1a1a;">Consumi in prevalenza carni bianche, pollo, carni magre, pesce e proteine vegetali (fagioli, lenticchie, soia) invece che bistecche, arrosti e altre carni rosse?</p>
+<div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+<button id="wellnessYesBtn" class="wellness-opt-btn wellness-yes-btn">SÌ</button>
+<button id="wellnessNoBtn" class="wellness-opt-btn wellness-no-btn">NO</button>
+</div>
+</div>
+<div id="wellnessScoreDisplay" class="wellness-score-container" style="display: none;">
+<p class="wellness-message">Più elevato è il punteggio e più lo stile di vita è sano</p>
+<div class="wellness-scale-container">
+<div class="wellness-scale-numbers">
+<span>0</span><span>5</span><span>10</span><span>15</span>
+</div>
+<div class="wellness-scale-bar">
+<div class="wellness-segment wellness-segment-low"></div>
+<div class="wellness-segment wellness-segment-medium"></div>
+<div class="wellness-segment wellness-segment-high"></div>
+<div class="wellness-score-line" id="wellnessScoreLine"></div>
+</div>
+<div class="wellness-scale-labels">
+<span class="wellness-label-low">BASSO</span>
+<span class="wellness-label-medium">MEDIO</span>
+<span class="wellness-label-high">ALTO</span>
+</div>
+</div>
+<div id="wellnessScoreText" class="wellness-score-text">Punteggio: 0/15</div>
+<button id="retakeWellnessBtn" class="retake-wellness-btn">Rifai Valutazione</button>
+</div>
+<div id="wellnessSuggestions" class="wellness-suggestions"></div>
+</div>
+</div>
+
+<!-- SEZIONE OBIETTIVI -->
+<div class="profile-section">
+<h3><i class="fas fa-bullseye"></i> I Tuoi Obiettivi</h3>
+<div class="profile-group card">
+<div class="form-grid">
+<div class="form-group">
+<label>Obiettivo Principale</label>
+<select id="mainGoal">
+<option value="fat_loss">Diminuzione della massa grassa</option>
+<option value="muscle_gain">Aumento della massa magra</option>
+<option value="toning">Tonificazione</option>
+<option value="maintenance">Mantenimento</option>
+</select>
+</div>
+<div class="form-group"><label>Peso Target (kg)</label><input type="number" id="target_weight" step="0.1"></div>
+</div>
+<button id="saveObiettiviBtn" class="btn-discord btn-discord--info btn-mt">Salva Obiettivi</button>
+</div>
+</div>
+
+<!-- SEZIONE SELEZIONE UTENTE (SOLO COACH) -->
+<div id="userSelectionSection" class="profile-section" style="display: none;">
+<h3><i class="fas fa-users"></i> Seleziona Utente</h3>
+<div class="card">
+<div class="form-group">
+<label for="userDropdown">Utente</label>
+<select id="userDropdown">
+<option value="">Seleziona un utente...</option>
+</select>
+</div>
+</div>
+</div>
+
+
+<!-- SEZIONE INPUT DATI BIA -->
+<div class="profile-section">
+<h3><i class="fas fa-scale-balanced"></i> Inserimento Dati BIA</h3>
+<div class="profile-group card">
+<form id="biaForm">
+<div class="form-grid">
+<div class="form-group">
+<label for="height">Altezza (cm)</label>
+<input type="number" id="height" step="0.1" required placeholder="Es. 175">
+</div>
+<div class="form-group">
+<label for="age">Età</label>
+<input type="number" id="age" step="1" required placeholder="Es. 35">
+</div>
+<div class="form-group">
+<label for="gender">Sesso</label>
+<select id="gender" required>
+<option value="male">Maschio</option>
+<option value="female">Femmina</option>
+</select>
+</div>
+<div class="form-group">
+<label for="weight">Peso (kg)</label>
+<input type="number" id="weight" step="0.1" required placeholder="Es. 75.0">
+<div id="weightIndicator" class="tanita-indicator"></div>
+</div>
+<div class="form-group">
+<label for="bodyFat">Massa Grassa (%)</label>
+<input type="text" id="bodyFat" step="0.1" required placeholder="Es. 20.5">
+<div id="bodyFatIndicator" class="tanita-indicator"></div>
+</div>
+<div class="form-group">
+<label for="hydration">Idratazione (%)</label>
+<input type="text" id="hydration" step="0.1" required placeholder="Es. 55.0">
+<div id="hydrationIndicator" class="tanita-indicator"></div>
+</div>
+<div class="form-group">
+<label for="visceralFat">Grasso Viscerale</label>
+<input type="text" id="visceralFat" step="1" required placeholder="Es. 8">
+<div id="visceralFatIndicator" class="tanita-indicator"></div>
+</div>
+<div class="form-group">
+<label for="leanMass">Massa Magra (kg)</label>
+<input type="text" id="leanMass" step="0.1" required placeholder="Es. 55.0">
+<div id="leanMassIndicator" class="tanita-indicator"></div>
+</div>
+<div class="form-group">
+<label for="boneMass">Massa Ossea (kg)</label>
+<input type="text" id="boneMass" step="0.1" required placeholder="Es. 2.5">
+<div id="boneMassIndicator" class="tanita-indicator"></div>
+</div>
+<div class="form-group">
+<label for="metabolicAge">Età Metabolica</label>
+<input type="text" id="metabolicAge" step="1" required placeholder="Es. 30">
+<div id="metabolicAgeIndicator" class="tanita-indicator"></div>
+</div>
+</div>
+<div id="formMessage" class="form-message"></div>
+<button type="submit" id="submitBiaBtn" class="btn-discord btn-discord--success">Salva Dati BIA</button>
+</form>
+</div>
+
+<!-- PARAMETRI CALCOLATI SOTTO FORM -->
+<div class="profile-section">
+<h3><i class="fas fa-chart-line"></i> Fabbisogni Calcolati</h3>
+<div class="profile-group card">
+<div id="biaParamsContainer" style="display: flex; justify-content: center; gap: 30px; margin-top: 0.5rem;">
+<div style="text-align: center;">
+<label>Fabbisogno Acqua</label>
+<div id="waterNeedsDisplay" class="param-value">-- L/giorno</div>
+</div>
+<div style="text-align: center;">
+<label>Fabbisogno Proteico</label>
+<div id="proteinNeedsDisplay" class="param-value">-- g/giorno</div>
+</div>
+<div style="text-align: center;">
+<label>Metabolismo Basale</label>
+<div id="bmrDisplay" class="param-value">-- kcal</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- SEZIONE RISULTATI E PARAMETRI BIA CON PALLINI -->
+<div class="profile-section">
+<h3><i class="fas fa-calculator"></i> Risultati e Parametri BIA</h3>
+<div class="profile-group card">
+<div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;">
+<div class="tanita-result-item">
+<label>BMI</label>
+<div id="bmiResult" class="result-value">--</div>
+<div id="bmiDot" class="tanita-dot"></div>
+</div>
+<div class="tanita-result-item">
+<label>Massa Grassa</label>
+<div id="bodyFatResult" class="result-value">-- %</div>
+<div id="bodyFatDot" class="tanita-dot"></div>
+</div>
+<div class="tanita-result-item">
+<label>Idratazione</label>
+<div id="hydrationResult" class="result-value">-- %</div>
+<div id="hydrationDot" class="tanita-dot"></div>
+</div>
+<div class="tanita-result-item">
+<label>Grasso Viscerale</label>
+<div id="visceralFatResult" class="result-value">--</div>
+<div id="visceralFatDot" class="tanita-dot"></div>
+</div>
+</div>
+<div style="display: flex; justify-content: center; gap: 20px;">
+<div class="tanita-result-item">
+<label>Massa Magra</label>
+<div id="leanMassResult" class="result-value">-- kg</div>
+<div id="leanMassDot" class="tanita-dot"></div>
+</div>
+<div class="tanita-result-item">
+<label>Massa Ossea</label>
+<div id="boneMassResult" class="result-value">-- kg</div>
+<div id="boneMassDot" class="tanita-dot"></div>
+</div>
+<div class="tanita-result-item">
+<label>Età Metabolica</label>
+<div id="metabolicAgeResult" class="result-value">--</div>
+<div id="metabolicAgeDot" class="tanita-dot"></div>
+</div>
+<div class="tanita-result-item">
+<label>Composizione Corporea</label>
+<div id="compositionResult" class="result-value">--</div>
+<div id="compositionDot" class="tanita-dot"></div>
+</div>
+</div>
+<div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+<label style="font-weight: bold; display: block; margin-bottom: 10px;">Classificazione Fisica Tanita (Physique Rating)</label>
+<div id="physiqueRating" style="font-size: 1.2rem; font-weight: bold; color: #266431;">--</div>
+</div>
+</div>
+
+<!-- BARRA RANKING -->
+<h3><i class="fas fa-chart-bar"></i>Ricomposizione Corporea</h3>
+<div class="profile-group card" style="margin-top: 20px;">
+<div class="ranking-bar-container">
+<div class="ranking-labels-row">
+<div class="ranking-label ranking-label-scarso">Scarso</div>
+<div class="ranking-label ranking-label-sufficiente">Sufficiente</div>
+<div class="ranking-label ranking-label-buono">Buono</div>
+<div class="ranking-label ranking-label-eccellente">Eccellente</div>
+</div>
+<div class="ranking-bar">
+<div id="rankingIndicator" class="ranking-indicator"></div>
+</div>
+<div id="rankingText" style="text-align: center; margin-top: 10px; font-weight: bold;">--</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</main>
+</div>
+
+<div id="unified-footer"></div>
+
+<script type="module">
+import { initHeader } from "./components/header/header.js?v=6.0";
+import { initFooter } from "./components/footer/footer-brand.js?v=4.0";
+import { auth, db } from "./js/firebase.js";
+import { doc, getDoc, updateDoc, serverTimestamp, setDoc, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { showServiceMessage } from "./js/ui-helper.js";
+import { calculateBMI, calculateAge, calculateNeeds } from "./components/profile/profile-manager.js";
+import { validateTanitaValue } from "./components/tanita/tanita-form-validator.js";
+
+class BIAInputController {
+constructor() {
+this.currentUser = null;
+this.targetUid = null;
+this.userProfile = null;
+this.isCoach = false;
+this.wellnessQuestions = [
+{ id: 1, text: 'Consumi in prevalenza carni bianche, pollo, carni magre, pesce e proteine vegetali (fagioli, lenticchie, soia) invece che bistecche, arrosti e altre carni rosse?', tip: 'Aloe Vera per supporto digestivo' },
+{ id: 2, text: 'Mangi una buona varietà di frutta e verdura colorate e almeno cinque porzioni al giorno?', tip: 'Phyto Complete per integrazione nutrizionale' },
+{ id: 3, text: 'Mangi pesce grasso (come salmone, sgombro, sardine, trota) almeno 3 volte la settimana?', tip: 'Omega 3 per salute cardiovascolare' },
+{ id: 4, text: 'Pensi di consumare abbastanza fibre nella tua dieta quotidiana?', tip: 'Fibre per digestione e sazietà' },
+{ id: 5, text: 'Fai almeno 30 minuti di attività fisica per 3-5 giorni la settimana?', tip: 'Shake Herbalife per recupero post-allenamento' },
+{ id: 6, text: 'Riesci a mantenere il tuo peso equilibrato?', tip: 'Formula 1 Herbalife per controllo peso' },
+{ id: 7, text: 'Di solito hai tempo per prepararti pasti equilibrati?', tip: 'Piani nutrizionali Herbalife' },
+{ id: 8, text: 'Riesci ad evitare bibite gasate e spuntini poco sani (patatine, dolci) nel corso della giornata e dopo cena?', tip: 'Snack proteici Herbalife' },
+{ id: 9, text: 'Hai l\'energia e la concentrazione necessarie per svolgere le tue attività quotidiane senza avvertire stanchezza?', tip: 'LiftOff Herbalife per energia naturale' },
+{ id: 10, text: 'Bevi almeno 8 bicchieri d\'acqua al giorno?', tip: 'Infuso Herbalife per idratazione ottimale' },
+{ id: 11, text: 'Assumi la razione giornaliera raccomandata di calcio?', tip: 'Calcio per ossa forti' },
+{ id: 12, text: 'Ritieni che il tuo stile di vita e la tua alimentazione siano adeguati per il benessere dell\'apparato cardiocircolatorio?', tip: 'Programma cardio-salute Herbalife', infoText: 'Il benessere dell\'apparato cardiocircolatorio dipende da una combinazione di fattori; su alcuni non possiamo intervenire (sesso, età, ereditarietà) mentre altri possono essere cambiati (peso, esercizio fisico, fumo) attraverso l\'adozione di corrette abitudini alimentari ed uno stile di vita sano e attivo.' },
+{ id: 13, text: 'Fai spuntini nel corso della giornata?', tip: 'Snack salutari Herbalife', hasFollowUp: true }
+];
+this.wellnessAnswers = {};
+this.currentQuestionIndex = 0;
+this.init();
+}
+
+async init() {
+try {
+await this.loadUserData();
+await this.migrateBiaDataIfNecessary();
+this.setupEventListeners();
+this.loadReadOnlyData();
+this.updateBIAParamsUI();
+console.log('BIA Input Controller inizializzato');
+} catch (error) {
+console.error('Errore inizializzazione BIA:', error);
+}
+}
+
+async loadUserData() {
+if (!auth.currentUser) {
+await new Promise(resolve => {
+const unsubscribe = auth.onAuthStateChanged(user => {
+unsubscribe();
+resolve(user);
+});
+});
+}
+this.currentUser = auth.currentUser;
+if (!this.currentUser) return;
+const urlParams = new URLSearchParams(window.location.search);
+const role = localStorage.getItem('userRole') || '';
+this.isCoach = role.toLowerCase() === 'admin' || role.toLowerCase() === 'coach';
+const userDropdownContainer = document.querySelector('.coach-user-selection');
+const userDropdown = document.getElementById('userDropdown');
+if (this.isCoach) {
+if (userDropdownContainer) userDropdownContainer.style.display = 'block';
+await this.loadUserDropdown();
+} else {
+if (userDropdownContainer) userDropdownContainer.style.display = 'none';
+}
+this.targetUid = urlParams.get('uid') || this.currentUser.uid;
+const userDoc = await getDoc(doc(db, "users", this.targetUid));
+if (userDoc.exists()) {
+this.userProfile = userDoc.data();
+this.fillFormWithExistingData();
+}
+}
+
+async loadUserDropdown() {
+const userDropdown = document.getElementById('userDropdown');
+if (!userDropdown) return;
+try {
+const usersQuery = query(collection(db, "users"));
+const snapshot = await getDocs(usersQuery);
+userDropdown.innerHTML = '<option value="">Seleziona utente</option>';
+snapshot.forEach(doc => {
+const user = doc.data();
+const uid = doc.id;
+const displayName = user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email || uid;
+const option = document.createElement('option');
+option.value = uid;
+option.textContent = displayName;
+userDropdown.appendChild(option);
+});
+userDropdown.addEventListener('change', () => {
+this.targetUid = userDropdown.value || this.currentUser.uid;
+this.loadUserData();
+});
+} catch (error) {
+console.error('Errore caricamento utenti:', error);
+}
+}
+
+async migrateBiaDataIfNecessary() {
+if (!this.userProfile) return;
+const biaFields = ['weight', 'bodyFat', 'hydration', 'visceralFat', 'leanMass', 'boneMass', 'metabolicAge', 'bmi', 'bmr', 'waterNeeds', 'proteinNeeds'];
+const hasBiaData = biaFields.some(field => this.userProfile[field] !== undefined && this.userProfile[field] !== null);
+if (!hasBiaData) {
+console.log('Nessun dato BIA da migrare');
+return;
+}
+const userRef = doc(db, "users", this.targetUid);
+const biaData = {};
+biaFields.forEach(field => {
+if (this.userProfile[field] !== undefined && this.userProfile[field] !== null) {
+biaData[field] = this.userProfile[field];
+}
+});
+biaData.data = this.userProfile.biaLastUpdate || this.userProfile.lastBiaUpdate || serverTimestamp();
+try {
+if (!this.userProfile.initial_bia) {
+await updateDoc(userRef, { initial_bia: biaData });
+console.log('Creato initial_bia');
+}
+await updateDoc(userRef, { latest_bia: biaData });
+console.log('Aggiornato latest_bia');
+const historyRef = doc(collection(db, "users", this.targetUid, "bia_history"));
+await setDoc(historyRef, biaData);
+console.log('Aggiunto documento a bia_history');
+} catch (error) {
+console.error('Errore migrazione BIA:', error);
+}
+}
+
+fillFormWithExistingData() {
+const fields = ['weight', 'bodyFat', 'hydration', 'visceralFat', 'leanMass', 'boneMass', 'metabolicAge', 'height', 'age', 'gender'];
+fields.forEach(f => {
+const el = document.getElementById(f);
+if (el && this.userProfile[f]) el.value = this.userProfile[f];
+});
+const mainGoalEl = document.getElementById('mainGoal');
+if (mainGoalEl && this.userProfile.mainGoal) mainGoalEl.value = this.userProfile.mainGoal;
+const targetWeightEl = document.getElementById('target_weight');
+if (targetWeightEl && this.userProfile.target_weight) targetWeightEl.value = this.userProfile.target_weight;
+const biaData = this.userProfile.latest_bia || this.userProfile;
+if (biaData.weight && biaData.bodyFat) {
+this.updateDots(biaData);
+this.updateResults(biaData);
+this.updateRankingBar();
+}
+}
+
+async handleSaveObiettivi() {
+const btn = document.getElementById('saveObiettiviBtn');
+try {
+const mainGoal = document.getElementById('mainGoal').value;
+const targetWeight = document.getElementById('target_weight').value;
+const userRef = doc(db, "users", this.targetUid);
+await updateDoc(userRef, {
+mainGoal: mainGoal,
+target_weight: parseFloat(targetWeight)
+});
+showServiceMessage("Obiettivi salvati con successo!", "success", btn);
+} catch (error) {
+console.error(error);
+showServiceMessage("Errore durante il salvataggio: " + error.message, "error", btn);
+}
+}
+
+loadReadOnlyData() {
+if (!this.userProfile) return;
+const fields = {
+'firstName': this.userProfile.firstName || '',
+'lastName': this.userProfile.lastName || '',
+'userEmail': this.userProfile.userEmail || ''
+};
+Object.entries(fields).forEach(([id, val]) => {
+const el = document.getElementById(id);
+if (el) el.value = val;
+});
+}
+
+setupEventListeners() {
+const form = document.getElementById('biaForm');
+if (form) {
+form.addEventListener('submit', (e) => {
+e.preventDefault();
+this.handleFormSubmit();
+});
+}
+const obiettiviBtn = document.getElementById('saveObiettiviBtn');
+if (obiettiviBtn) {
+obiettiviBtn.addEventListener('click', () => this.handleSaveObiettivi());
+}
+const inputs = ['weight', 'height', 'age', 'gender', 'bodyFat', 'hydration', 'visceralFat', 'leanMass', 'boneMass', 'metabolicAge'];
+inputs.forEach(id => {
+const el = document.getElementById(id);
+if (el) {
+el.addEventListener('input', () => this.updateCalculations());
+}
+});
+const yesBtn = document.getElementById('wellnessYesBtn');
+const noBtn = document.getElementById('wellnessNoBtn');
+if (yesBtn) yesBtn.addEventListener('click', () => this.handleWellnessAnswer('yes'));
+if (noBtn) noBtn.addEventListener('click', () => this.handleWellnessAnswer('no'));
+const retakeBtn = document.getElementById('retakeWellnessBtn');
+if (retakeBtn) retakeBtn.addEventListener('click', () => this.resetWellnessTest());
+}
+
+updateCalculations() {
+try {
+const data = this.getFormData();
+const heightEl = document.getElementById('height');
+const ageEl = document.getElementById('age');
+const genderEl = document.getElementById('gender');
+
+const height = heightEl ? parseFloat(heightEl.value) : this.userProfile?.height;
+const age = ageEl ? parseInt(ageEl.value) : this.userProfile?.age || calculateAge(this.userProfile?.birthDate);
+const gender = genderEl ? genderEl.value : this.userProfile?.gender || 'female';
+
+if (data.weight && height) {
+this.updateBIAParamsUI(data.weight, height, age, gender);
+}
+} catch (e) { console.error(e); }
+}
+
+updateBIAParamsUI(weightOverride = null, heightOverride = null, ageOverride = null, genderOverride = null) {
+const weight = weightOverride || (this.userProfile ? parseFloat(this.userProfile.weight) : null);
+const height = heightOverride || this.userProfile?.height;
+const age = ageOverride || this.userProfile?.age || calculateAge(this.userProfile?.birthDate);
+const gender = genderOverride || this.userProfile?.gender || 'female';
+const goal = this.userProfile?.mainGoal || 'maintenance';
+const leanMassEl = document.getElementById('leanMass');
+const leanMass = leanMassEl ? parseFloat(leanMassEl.value) : null;
+const waterEl = document.getElementById('waterNeedsDisplay');
+const proteinEl = document.getElementById('proteinNeedsDisplay');
+const bmrEl = document.getElementById('bmrDisplay');
+
+if (weight) {
+const needs = calculateNeeds(weight, height, age, gender, leanMass, goal);
+if (waterEl) waterEl.textContent = `${needs.water} L/giorno`;
+if (proteinEl) proteinEl.textContent = `${needs.protein} g/giorno`;
+if (bmrEl) bmrEl.textContent = `${needs.bmr} kcal`;
+}
+}
+
+async handleFormSubmit() {
+const btn = document.querySelector('#biaForm button[type="submit"]');
+try {
+const data = this.getFormData();
+if (!data) {
+showServiceMessage("Validazione fallita. Controlla i valori inseriti.", "error", btn);
+return;
+}
+const heightEl = document.getElementById('height');
+const height = heightEl ? parseFloat(heightEl.value) : this.userProfile?.height;
+const ageEl = document.getElementById('age');
+const age = ageEl ? parseInt(ageEl.value) : this.userProfile?.age || calculateAge(this.userProfile?.birthDate);
+const genderEl = document.getElementById('gender');
+const gender = genderEl ? genderEl.value : this.userProfile?.gender || 'female';
+const bmi = calculateBMI(data.weight, height);
+const goal = this.userProfile.mainGoal || 'maintenance';
+const needs = calculateNeeds(data.weight, height, age, gender, data.leanMass, goal);
+const biaData = {
+...data,
+bmi: bmi,
+bmr: needs.bmr,
+waterNeeds: needs.water,
+proteinNeeds: needs.protein,
+date: serverTimestamp()
+};
+const userRef = doc(db, "users", this.targetUid);
+const userDoc = await getDoc(userRef);
+const userData = userDoc.data();
+const updateData = {
+...data,
+height: height,
+age: age,
+gender: gender,
+bmi: bmi,
+waterNeeds: needs.water,
+proteinNeeds: needs.protein,
+latest_bia: biaData,
+biaLastUpdate: serverTimestamp()
+};
+if (!userData.initial_bia) {
+updateData.initial_bia = biaData;
+}
+await updateDoc(userRef, updateData);
+const historyRef = doc(collection(db, "users", this.targetUid, "bia_history"));
+await setDoc(historyRef, biaData);
+this.updateDots(data);
+this.updateResults(data);
+this.updateRankingBar();
+showServiceMessage("Dati BIA salvati e sincronizzati con il profilo!", "success", btn);
+} catch (error) {
+console.error(error);
+showServiceMessage("Errore durante il salvataggio: " + error.message, "error", btn);
+}
+}
+
+getFormData() {
+const fields = ['weight', 'bodyFat', 'hydration', 'visceralFat', 'leanMass', 'boneMass', 'metabolicAge'];
+const data = {};
+const context = {};
+let hasError = false;
+fields.forEach(f => {
+const el = document.getElementById(f);
+if (el && el.value && el.value.trim() !== '') {
+let normalizedValue = el.value.replace(',', '.');
+const validation = validateTanitaValue(f, normalizedValue, context);
+if (!validation.isValid) {
+console.error(`Error: ${validation.message}`);
+showServiceMessage(validation.message, "error", document.getElementById('submitBiaBtn'));
+hasError = true;
+}
+data[f] = parseFloat(normalizedValue);
+}
+if (f === 'weight' && data.weight) {
+context.weight = data.weight;
+}
+});
+if (hasError) return null;
+return data;
+}
+
+getTanitaStatus(field, value, gender) {
+const rules = {
+weight: { min: 30, max: 200, unit: 'kg', tips: { low: 'Aumenta introito calorico', normal: 'Peso ottimale', high: 'Riduci calorie' } },
+bodyFat: { 
+male: { 
+low: { min: 8, max: 19, color: '#42a046', tip: 'Composizione ottimale' },
+medium: { min: 20, max: 24, color: '#ffc107', tip: 'Monitorare' },
+high: { min: 25, max: 29, color: '#ff9800', tip: 'Aumenta attività cardio' },
+critical: { min: 30, max: 100, color: '#f44336', tip: 'Rischio cardiometabolico' }
+},
+female: {
+low: { min: 21, max: 32, color: '#42a046', tip: 'Composizione ottimale' },
+medium: { min: 33, max: 38, color: '#ffc107', tip: 'Monitorare' },
+high: { min: 39, max: 44, color: '#ff9800', tip: 'Aumenta attività cardio' },
+critical: { min: 45, max: 100, color: '#f44336', tip: 'Rischio cardiometabolico' }
+}
+},
+hydration: {
+male: { min: 50, max: 65, color: '#42a046', tip: 'Idratazione ottimale' },
+female: { min: 45, max: 60, color: '#42a046', tip: 'Idratazione ottimale' }
+},
+visceralFat: {
+low: { min: 1, max: 9, color: '#42a046', tip: 'Ottimale' },
+medium: { min: 10, max: 12, color: '#ff9800', tip: 'Eccessivo - Consiglia Phyto Complete' },
+high: { min: 13, max: 59, color: '#f44336', tip: 'Alto rischio' }
+},
+leanMass: { min: 20, max: 100, unit: 'kg', tips: { low: 'Aumenta allenamento forza', normal: 'Massa magra ottimale', high: 'Eccellente' } },
+boneMass: { min: 1, max: 5, unit: 'kg', tips: { low: 'Integra calcio', normal: 'Salute ossea buona', high: 'Ottimale' } },
+metabolicAge: { min: 18, max: 100, unit: '', tips: { low: 'Metabolismo efficiente', normal: 'Metabolismo nella norma', high: 'Aumenta attività fisica' } }
+};
+const rule = rules[field];
+if (!rule) return { color: '#ccc', tip: 'N/A' };
+if (field === 'bodyFat') {
+const genderRule = rule[gender] || rule.female;
+const val = parseFloat(value);
+if (val >= genderRule.low.min && val <= genderRule.low.max) return { color: genderRule.low.color, tip: genderRule.low.tip };
+if (val >= genderRule.medium.min && val <= genderRule.medium.max) return { color: genderRule.medium.color, tip: genderRule.medium.tip };
+if (val >= genderRule.high.min && val <= genderRule.high.max) return { color: genderRule.high.color, tip: genderRule.high.tip };
+return { color: genderRule.critical.color, tip: genderRule.critical.tip };
+}
+if (field === 'hydration') {
+const genderRule = rule[gender] || rule.female;
+const val = parseFloat(value);
+if (val >= genderRule.min && val <= genderRule.max) return { color: genderRule.color, tip: genderRule.tip };
+return { color: '#ff9800', tip: 'Sotto target - Aloe e Infuso' };
+}
+if (field === 'visceralFat') {
+const val = parseFloat(value);
+if (val >= rule.low.min && val <= rule.low.max) return { color: rule.low.color, tip: rule.low.tip };
+if (val >= rule.medium.min && val <= rule.medium.max) return { color: rule.medium.color, tip: rule.medium.tip };
+return { color: rule.high.color, tip: rule.high.tip };
+}
+if (field === 'metabolicAge') {
+const val = parseFloat(value);
+const chronologicalAge = this.userProfile?.age || calculateAge(this.userProfile?.birthDate);
+if (val > chronologicalAge) return { color: '#f44336', tip: 'Revisione piano Herbalife' };
+let status = 'normal';
+if (value < rule.min * 0.8) status = 'low';
+const colors = { low: '#42a046', normal: '#42a046', high: '#f44336' };
+return { color: colors[status], tip: rule.tips[status] };
+}
+if (field === 'bmi') {
+const val = parseFloat(value);
+if (val < 18.5) return { color: '#ffc107', tip: 'Sottopeso' };
+if (val >= 18.5 && val <= 24.9) return { color: '#42a046', tip: 'Normopeso' };
+if (val >= 25.0 && val <= 29.9) return { color: '#ffc107', tip: 'Sovrappeso' };
+return { color: '#f44336', tip: 'Obesità' };
+}
+let status = 'normal';
+if (value < rule.min * 0.8) status = 'low';
+else if (value > rule.max * 0.9) status = 'high';
+const colors = { low: '#f44336', normal: '#42a046', high: '#ff9800' };
+return { color: colors[status], tip: rule.tips[status] };
+}
+
+updateDots(data) {
+const fields = ['weight', 'bodyFat', 'hydration', 'visceralFat', 'leanMass', 'boneMass', 'metabolicAge', 'bmi'];
+fields.forEach(field => {
+const dot = document.getElementById(`${field}Dot`);
+if (dot && data[field]) {
+const status = this.getTanitaStatus(field, data[field], this.userProfile?.gender);
+dot.style.backgroundColor = status.color;
+dot.title = status.tip;
+}
+});
+}
+
+updateResults(data) {
+const bmi = calculateBMI(data.weight, this.userProfile?.height);
+const bmiEl = document.getElementById('bmiResult');
+if (bmiEl && bmi && typeof bmi === 'number' && !isNaN(bmi)) bmiEl.textContent = bmi.toFixed(1);
+const fields = [
+{ field: 'bodyFat', result: 'bodyFatResult', unit: ' %' },
+{ field: 'hydration', result: 'hydrationResult', unit: ' %' },
+{ field: 'visceralFat', result: 'visceralFatResult', unit: '' },
+{ field: 'leanMass', result: 'leanMassResult', unit: ' kg' },
+{ field: 'boneMass', result: 'boneMassResult', unit: ' kg' },
+{ field: 'metabolicAge', result: 'metabolicAgeResult', unit: '' }
+];
+fields.forEach(item => {
+const resultEl = document.getElementById(item.result);
+if (resultEl && data[item.field]) {
+resultEl.textContent = `${data[item.field]}${item.unit}`;
+}
+});
+const compositionEl = document.getElementById('compositionResult');
+if (compositionEl && data.bodyFat) {
+const bf = parseFloat(data.bodyFat);
+let composition = 'N/A';
+if (bf < 15) composition = 'Ottima';
+else if (bf < 20) composition = 'Buona';
+else if (bf < 25) composition = 'Media';
+else composition = 'Da migliorare';
+compositionEl.textContent = composition;
+}
+const physiqueEl = document.getElementById('physiqueRating');
+if (physiqueEl && data.bodyFat && data.leanMass) {
+const rating = this.calculatePhysiqueRating(data.bodyFat, data.leanMass, this.userProfile?.gender);
+physiqueEl.textContent = `${rating.id}. ${rating.name} ${rating.emoji}`;
+}
+}
+
+calculatePhysiqueRating(bodyFat, leanMass, gender) {
+const bf = parseFloat(bodyFat);
+const lm = parseFloat(leanMass);
+let fatLevel = 'medium';
+let muscleLevel = 'medium';
+if (bf < 15) fatLevel = 'low';
+else if (bf > 25) fatLevel = 'high';
+const muscleThresholds = gender === 'male' ? { low: 40, high: 60 } : { low: 30, high: 50 };
+if (lm < muscleThresholds.low) muscleLevel = 'low';
+else if (lm > muscleThresholds.high) muscleLevel = 'high';
+const profiles = {
+'high-low': { id: 1, name: 'Obeso Nascosto', emoji: '🟠' },
+'high-medium': { id: 2, name: 'Obeso', emoji: '🔴' },
+'high-high': { id: 3, name: 'Robusto', emoji: '🔵' },
+'medium-low': { id: 4, name: 'Sottoutilizzato', emoji: '🟡' },
+'medium-medium': { id: 5, name: 'Standard', emoji: '🟢' },
+'medium-high': { id: 6, name: 'Standard Muscoloso', emoji: '🟢' },
+'low-low': { id: 7, name: 'Sottile', emoji: '🟣' },
+'low-medium': { id: 8, name: 'Sottile e Muscoloso', emoji: '🟢' },
+'low-high': { id: 9, name: 'Molto Muscoloso', emoji: '🚀' }
+};
+const key = `${fatLevel}-${muscleLevel}`;
+return profiles[key] || { id: 5, name: 'Standard', emoji: '🟢' };
+}
+
+updateRankingBar() {
+if (!this.userProfile || !this.userProfile.initial_bia || !this.userProfile.latest_bia) return;
+const initial = this.userProfile.initial_bia;
+const latest = this.userProfile.latest_bia;
+const muscleDelta = latest.leanMass - initial.leanMass;
+const fatDelta = initial.bodyFat - latest.bodyFat;
+const visceralFatDelta = initial.visceralFat - latest.visceralFat;
+const score = (muscleDelta * 2) + (fatDelta * 2) + (visceralFatDelta * 4);
+const rating = this.calculatePhysiqueRating(latest.bodyFat, latest.leanMass, this.userProfile?.gender);
+const excellentProfiles = [5, 6, 8, 9];
+let level = 'Scarso';
+let position = 0;
+if (excellentProfiles.includes(rating.id)) {
+level = 'Eccellente';
+position = 100;
+} else {
+if (score > 2) { level = 'Sufficiente'; position = 33; }
+if (score > 5) { level = 'Buono'; position = 66; }
+if (score > 8) { level = 'Eccellente'; position = 100; }
+}
+const indicator = document.getElementById('rankingIndicator');
+const rankingText = document.getElementById('rankingText');
+if (indicator) indicator.style.left = `${position}%`;
+if (rankingText) rankingText.textContent = level;
+}
+
+showWellnessQuestion() {
+const counter = document.getElementById('wellnessQuestionCounter');
+const questionText = document.getElementById('wellnessQuestionText');
+const testContainer = document.querySelector('.wellness-test-container');
+const scoreDisplay = document.getElementById('wellnessScoreDisplay');
+const suggestions = document.getElementById('wellnessSuggestions');
+
+if (this.currentQuestionIndex < this.wellnessQuestions.length) {
+const q = this.wellnessQuestions[this.currentQuestionIndex];
+counter.textContent = `Valutazione Benessere - Domanda ${this.currentQuestionIndex + 1} di ${this.wellnessQuestions.length}`;
+questionText.textContent = q.text;
+
+// Mostra infoText se presente
+const existingInfo = testContainer.querySelector('.question-info-text');
+if (existingInfo) existingInfo.remove();
+
+if (q.infoText) {
+const infoEl = document.createElement('p');
+infoEl.className = 'question-info-text';
+infoEl.style.margin = '0.5rem 0 1rem 0';
+infoEl.style.fontStyle = 'italic';
+infoEl.style.fontSize = '0.9rem';
+infoEl.style.color = '#666';
+infoEl.textContent = q.infoText;
+questionText.parentNode.insertBefore(infoEl, questionText.nextSibling);
+}
+
+testContainer.style.display = 'block';
+scoreDisplay.style.display = 'none';
+suggestions.style.display = 'none';
+} else {
+this.showWellnessResults();
+}
+}
+
+handleWellnessAnswer(answer) {
+const currentQ = this.wellnessQuestions[this.currentQuestionIndex];
+this.wellnessAnswers[currentQ.id] = { val: answer, question: currentQ };
+this.currentQuestionIndex++;
+this.showWellnessQuestion();
+}
+
+showWellnessResults() {
+const testContainer = document.querySelector('.wellness-test-container');
+const scoreDisplay = document.getElementById('wellnessScoreDisplay');
+const suggestions = document.getElementById('wellnessSuggestions');
+
+testContainer.style.display = 'none';
+scoreDisplay.style.display = 'block';
+suggestions.style.display = 'none';
+
+this.calculateWellnessScore();
+}
+
+resetWellnessTest() {
+this.wellnessAnswers = {};
+this.currentQuestionIndex = 0;
+const testContainer = document.querySelector('.wellness-test-container');
+const scoreDisplay = document.getElementById('wellnessScoreDisplay');
+const suggestions = document.getElementById('wellnessSuggestions');
+
+testContainer.style.display = 'block';
+scoreDisplay.style.display = 'none';
+suggestions.style.display = 'none';
+
+// Reset linea punteggio
+const scoreLine = document.getElementById('wellnessScoreLine');
+if (scoreLine) scoreLine.style.left = '0%';
+
+this.showWellnessQuestion();
+}
+
+calculateWellnessScore() {
+let score = 0;
+const noAnswers = [];
+Object.values(this.wellnessAnswers).forEach(answer => {
+if (answer.val === 'yes') {
+score++;
+} else {
+noAnswers.push(answer.question);
+}
+});
+
+const scoreLine = document.getElementById('wellnessScoreLine');
+const scoreText = document.getElementById('wellnessScoreText');
+const suggestions = document.getElementById('wellnessSuggestions');
+
+// Calcola percentuale (scala 0-15)
+const percentage = (score / 15) * 100;
+if (scoreLine) scoreLine.style.left = `${percentage}%`;
+
+scoreText.textContent = `Punteggio: ${score}/15`;
+
+// Suggerimenti basati su risposte No
+if (noAnswers.length > 0) {
+suggestions.style.display = 'block';
+const suggestionsList = document.createElement('ul');
+noAnswers.forEach(q => {
+const li = document.createElement('li');
+li.textContent = q.tip;
+suggestionsList.appendChild(li);
+});
+suggestions.innerHTML = '<h4>Suggerimenti Personalizzati:</h4>';
+suggestions.appendChild(suggestionsList);
+} else {
+suggestions.style.display = 'none';
+}
+}
+}
+
+window.biaController = new BIAInputController();
+console.log('BiaInputController istanziato');
+
+document.addEventListener('DOMContentLoaded', () => {
+console.log('DOMContentLoaded - tanita.html');
+console.log('initHeader chiamato');
+initHeader();
+console.log('initFooter chiamato');
+initFooter();
+console.log('Header e footer inizializzati');
+});
+</script>
+
+</body>
+</html>

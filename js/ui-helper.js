@@ -109,7 +109,7 @@ export function initUnifiedHeader() {
                 <div class="${mClass}">
                     <div class="nav-links-container">
                         <a href="posts.html" class="nav-link ${currentPage === 'posts.html' ? 'active' : ''}" data-page="posts"><i class="fas fa-comments"></i><span>Bacheca</span></a>
-                        <a href="bia-input.html" class="nav-link ${currentPage === 'bia-input.html' ? 'active' : ''}" data-page="bia"><i class="fa-solid fa-weight-scale"></i><span>Tanita</span></a>
+                        <a href="tanita.html" class="nav-link ${currentPage === 'tanita.html' ? 'active' : ''}" data-page="bia"><i class="fa-solid fa-weight-scale"></i><span>Tanita</span></a>
                         <a href="challengers.html" class="nav-link ${currentPage === 'challengers.html' ? 'active' : ''}" data-page="challengers"><i class="fas fa-users"></i><span>Challengers</span></a>
                         <a href="profile.html" class="nav-link ${currentPage === 'profile.html' ? 'active' : ''}" data-page="profile"><i class="fas fa-user"></i><span>Profilo</span></a>
                     </div>

@@ -17,12 +17,15 @@ headerContainer.innerHTML = `
 <div id="challenge-banner-container"></div>
 <header class="page-header">
 <nav class="page-menu">
+<div class="nav-link posts-wrapper">
 <a href="posts.html" class="nav-link" data-page="posts"><i class="fas fa-comments"></i><span>Bacheca</span></a>
+<span id="posts-counter" class="posts-counter">0</span>
+</div>
 <div class="nav-link challengers-wrapper">
 <a href="challengers.html" class="nav-link" data-page="challengers"><i class="fas fa-users"></i><span>Challengers</span></a>
 <span id="challengers-counter" class="challengers-counter">0</span>
 </div>
-<a href="bia-input.html" class="nav-link" data-page="wellness"><i class="fas fa-weight-scale"></i><span>Tanita®</span></a>
+<a href="tanita.html" class="nav-link" data-page="wellness"><i class="fas fa-weight-scale"></i><span>Tanita®</span></a>
 <a href="profile.html" class="nav-link" data-page="profile"><i class="fas fa-user-circle"></i><span>Profilo</span></a>
 <a href="dashboard.html" class="nav-link admin-only hidden" data-page="admin"><i class="fas fa-user-shield"></i><span>Coach</span></a>
 <button id="logoutBtn" class="nav-link"><i class="fas fa-sign-out-alt"></i><span>Esci</span></button>
@@ -35,6 +38,7 @@ headerContainer.innerHTML = `
     highlightCurrentPage(headerContainer, currentPage);
     adjustWrapperPadding(headerContainer);
     loadChallengersCount(headerContainer);
+    loadUnreadPostsCount(headerContainer);
 }
 
 function initBannerLogic(container) {
@@ -162,5 +166,35 @@ counter.textContent = count;
 } catch (error) {
 console.error("Errore caricamento contatore challengers:", error);
 counter.textContent = "0";
+}
+}
+
+async function loadUnreadPostsCount(container) {
+const counter = container.querySelector('#posts-counter');
+if (!counter) return;
+
+try {
+// Ottieni l'ultimo timestamp di lettura da localStorage
+const lastReadTimestamp = localStorage.getItem('lastPostReadTimestamp');
+const lastRead = lastReadTimestamp ? parseInt(lastReadTimestamp) : 0;
+
+// Conta post più recenti dell'ultima lettura
+const postsSnapshot = await getDocs(collection(db, "posts"));
+let unreadCount = 0;
+postsSnapshot.forEach(doc => {
+const postData = doc.data();
+const postTimestamp = postData.timestamp || postData.createdAt;
+if (postTimestamp && postTimestamp > lastRead) {
+unreadCount++;
+}
+});
+
+counter.textContent = unreadCount;
+// Nascondi counter se 0
+counter.style.display = unreadCount > 0 ? 'block' : 'none';
+} catch (error) {
+console.error("Errore caricamento contatore post non letti:", error);
+counter.textContent = "0";
+counter.style.display = 'none';
 }
 }

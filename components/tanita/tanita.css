@@ -1,0 +1,329 @@
+/* ############################################################ */
+/* #                                                          # */
+/* #           STILI PAGINA TANITA BIA                        # */
+/* ############################################################ */
+
+.tanita-indicator {
+height: 8px;
+border-radius: 4px;
+margin-top: 0.5rem;
+background: #e0e0e0;
+}
+
+.bia-param-card {
+text-align: center;
+padding: 1.5rem;
+}
+
+.bia-param-card label {
+font-size: 0.875rem;
+color: #666;
+display: block;
+margin-bottom: 0.5rem;
+}
+
+.bia-param-card .param-value {
+font-size: 1.5rem;
+font-weight: 800;
+color: var(--primary-color);
+}
+
+.form-message {
+margin-top: 1rem;
+padding: 0.75rem;
+border-radius: 8px;
+display: none;
+}
+
+.form-message.success {
+background: #d4edda;
+color: #155724;
+display: block;
+}
+
+.form-message.error {
+background: #f8d7da;
+color: #721c24;
+display: block;
+}
+
+/* SISTEMA PALLINI TANITA */
+.tanita-result-item {
+text-align: center;
+padding: 1rem;
+}
+
+.tanita-result-item label {
+font-size: 0.875rem;
+color: #666;
+display: block;
+margin-bottom: 0.5rem;
+}
+
+.tanita-result-item .result-value {
+font-size: 1.25rem;
+font-weight: 700;
+color: var(--primary-color);
+margin-bottom: 0.5rem;
+}
+
+.tanita-dot {
+width: 16px;
+height: 16px;
+border-radius: 50%;
+margin: 0.5rem auto;
+background: #e0e0e0;
+transition: background 0.3s ease;
+}
+
+.tanita-dot.green {
+background: #42a046;
+}
+
+.tanita-dot.yellow {
+background: #fbc02d;
+}
+
+.tanita-dot.orange {
+background: #ff9800;
+}
+
+.tanita-dot.red {
+background: #f44336;
+}
+
+/* FORM BENESSERE */
+.wellness-intro-text {
+text-align: left;
+padding: 0.5rem;
+margin-bottom: 0.5rem;
+font-style: italic;
+color: #666;
+font-size: 0.9rem;
+}
+
+.wellness-test-container {
+text-align: center;
+padding: 2rem;
+}
+
+.wellness-opt-btn {
+flex: 1;
+padding: 1rem 2rem;
+border: none;
+border-radius: 8px;
+color: #ffffff;
+font-size: 1rem;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s ease;
+}
+
+.wellness-yes-btn {
+background: #42a046;
+}
+
+.wellness-no-btn {
+background: #f44336 !important;
+}
+
+.retake-wellness-btn {
+margin-top: 1rem;
+padding: 0.75rem 1.5rem;
+background: #266431;
+color: white;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+font-weight: 600;
+}
+
+.wellness-opt-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.wellness-score-container {
+margin-top: 1.5rem;
+padding: 1rem;
+background: rgba(255,255,255,0.5);
+border-radius: 8px;
+text-align: center;
+}
+
+.wellness-message {
+text-align: center;
+margin-bottom: 1rem;
+font-weight: 500;
+color: #333;
+}
+
+.wellness-scale-container {
+border: 2px solid #e0e0e0;
+border-radius: 8px;
+padding: 1rem;
+background: #ffffff;
+}
+
+.wellness-scale-numbers {
+display: flex;
+justify-content: space-between;
+margin-bottom: 0.5rem;
+font-weight: 700;
+font-size: 0.875rem;
+color: #333;
+}
+
+.wellness-scale-bar {
+position: relative;
+height: 24px;
+border-radius: 4px;
+overflow: hidden;
+display: flex;
+margin-bottom: 0.5rem;
+border: 1px solid #ccc;
+}
+
+.wellness-segment {
+flex: 1;
+height: 100%;
+}
+
+.wellness-segment-low {
+background: #1b5e20;
+}
+
+.wellness-segment-medium {
+background: #e65100;
+}
+
+.wellness-segment-high {
+background: #c62828;
+}
+
+.wellness-fill {
+position: absolute;
+top: 0;
+left: 0;
+height: 100%;
+background: rgba(0,0,0,0.3);
+width: 0%;
+transition: width 0.3s ease;
+pointer-events: none;
+}
+
+.wellness-score-line {
+position: absolute;
+top: 0;
+bottom: 0;
+width: 4px;
+background: #000000;
+transition: left 0.3s ease;
+pointer-events: none;
+z-index: 10;
+}
+
+.wellness-scale-labels {
+display: flex;
+justify-content: space-between;
+font-size: 0.75rem;
+font-weight: 700;
+text-transform: uppercase;
+}
+
+.wellness-label-low {
+color: #42a046;
+}
+
+.wellness-label-medium {
+color: #ff9800;
+}
+
+.wellness-label-high {
+color: #f44336;
+}
+
+.wellness-score-text {
+text-align: center;
+font-weight: 700;
+color: var(--primary-color);
+}
+
+.wellness-suggestions {
+margin-top: 1rem;
+padding: 1rem;
+background: rgba(255,255,255,0.5);
+border-radius: 8px;
+display: none;
+}
+
+.wellness-suggestions h4 {
+color: var(--primary-color);
+margin-bottom: 0.5rem;
+}
+
+.wellness-suggestions ul {
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+.wellness-suggestions li {
+padding: 0.25rem 0;
+color: #666;
+font-size: 0.875rem;
+}
+
+/* BARRA RANKING */
+.ranking-bar-container {
+padding: 0.75rem 1rem;
+}
+
+.ranking-labels-row {
+display: flex;
+justify-content: space-between;
+margin-bottom: 0.25rem;
+}
+
+.ranking-label {
+font-size: 0.65rem;
+font-weight: 600;
+text-transform: uppercase;
+flex: 1;
+text-align: center;
+}
+
+.ranking-label-scarso {
+color: #f44336;
+}
+
+.ranking-label-sufficiente {
+color: #ff9800;
+}
+
+.ranking-label-buono {
+color: #42a046;
+}
+
+.ranking-label-eccellente {
+color: #266431;
+}
+
+.ranking-bar {
+position: relative;
+height: 20px;
+background: linear-gradient(to right, #f44336 0%, #ff9800 33%, #42a046 66%, #266431 100%);
+border-radius: 4px;
+margin: 0.5rem 0;
+}
+
+.ranking-indicator {
+position: absolute;
+top: -3px;
+width: 6px;
+height: 26px;
+background: #000;
+border-radius: 2px;
+transition: left 0.3s ease;
+z-index: 10;
+}

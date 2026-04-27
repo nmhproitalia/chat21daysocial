@@ -6,7 +6,7 @@
  * @version 1.0
  */
 
-import { auth } from "../firebase.js";
+import { auth } from "../../js/firebase.js";
 
 /**
  * Controllo Accessi BIA
@@ -128,8 +128,8 @@ export class BIAAccessControl {
     generateBIAUrl(targetUid = null) {
         const uid = targetUid || this.currentUser.uid;
         return this.isCoach() && uid !== this.currentUser.uid 
-            ? `bia-input.html?uid=${uid}`
-            : 'bia-input.html';
+            ? `tanita.html?uid=${uid}`
+            : 'tanita.html';
     }
 
     /**

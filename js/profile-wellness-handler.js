@@ -34,7 +34,7 @@ this.init();
 // --- INIZIALIZZAZIONE ---
 async init() {
 const startBtn = document.getElementById('startWellnessTestBtn');
-const isBiaPage = window.location.pathname.includes('bia-input.html');
+const isBiaPage = window.location.pathname.includes('tanita.html');
 
 if (startBtn) {
 if (isBiaPage) {
@@ -154,7 +154,7 @@ if (!container) return;
 
 const formattedDate = date instanceof Date ? date.toLocaleDateString() : (date?.toDate ? date.toDate().toLocaleDateString() : "Data non disponibile");
 const status = this.getScoreStatus(score);
-const isBiaPage = window.location.pathname.includes('bia-input.html');
+const isBiaPage = window.location.pathname.includes('tanita.html');
 
 // Genera suggerimenti basati sui NO
 const tips = this.questions
