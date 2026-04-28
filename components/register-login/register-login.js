@@ -158,6 +158,7 @@ function setupSubmitHandlers() {
                 btn.disabled = false;
                 btn.innerHTML = originalText;
             } catch (err) {
+                console.error("Errore reset password dettagliato:", err);
                 btn.disabled = false;
                 btn.innerHTML = originalText;
                 let errorMsg = "Errore durante l'invio dell'email. Riprova.";

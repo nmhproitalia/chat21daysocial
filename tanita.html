@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Sistema TANITA® - #21GIORNIFIT</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,12 +15,17 @@
 <link rel="icon" type="image/png" sizes="16x16" href="https://www.progettobenessere.info/ico/favicon-16x16.png">
 <link rel="apple-touch-icon" href="https://www.progettobenessere.info/ico/favicon-512x512.png">
 <link rel="stylesheet" href="css/style-variables.css?v=12.0">
+<link rel="stylesheet" href="css/forms.css?v=1.0">
+<link rel="stylesheet" href="css/cards.css?v=1.0">
 <link rel="stylesheet" href="css/base-layout.css?v=12.0">
 <link rel="stylesheet" href="css/style.css?v=12.0">
+<link rel="stylesheet" href="css/utilities.css?v=1.0">
+<link rel="stylesheet" href="css/pwa/pwa.css?v=1.0">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="components/header/header.css?v=15.0">
 <link rel="stylesheet" href="components/footer/footer.css?v=12.0">
-<link rel="stylesheet" href="components/tanita/tanita.css?v=5.0">
+<link rel="stylesheet" href="components/tanita/tanita.css?v=1.0">
+<link rel="stylesheet" href="css/utilities.css?v=1.0">
 </head>
 <body class="auth-page">
 <div id="unified-header"></div>
@@ -32,21 +37,21 @@
 <div id="app">
 
 <!-- SEZIONE VALUTAZIONE BENESSERE -->
-<div class="profile-section">
-<h3><i class="fas fa-heartbeat"></i> Valutazione Benessere</h3>
-<div class="profile-group card">
+<h3 class="card-section-title"><i class="fas fa-heartbeat"></i> Valutazione Benessere</h3>
+<section class="card">
+<div class="card-body">
 <div class="wellness-intro-text">
 Il benessere dell'apparato cardiocircolatorio dipende da una combinazione di fattori; su alcuni non possiamo intervenire (sesso, età, ereditarietà) mentre altri possono essere cambiati (peso, esercizio fisico, fumo) attraverso l'adozione di corrette abitudini alimentari ed uno stile di vita sano e attivo.
 </div>
 <div id="wellnessSummary" class="wellness-test-container">
 <h4 id="wellnessQuestionCounter">Valutazione Benessere - Domanda 1 di 14</h4>
-<p id="wellnessQuestionText" style="margin: 1.5rem 0; font-weight: bold; font-size: 1.1rem; color: #1a1a1a;">Consumi in prevalenza carni bianche, pollo, carni magre, pesce e proteine vegetali (fagioli, lenticchie, soia) invece che bistecche, arrosti e altre carni rosse?</p>
-<div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+<p id="wellnessQuestionText" class="wellness-question-text">Consumi in prevalenza carni bianche, pollo, carni magre, pesce e proteine vegetali (fagioli, lenticchie, soia) invece che bistecche, arrosti e altre carni rosse?</p>
+<div class="wellness-buttons-container">
 <button id="wellnessYesBtn" class="wellness-opt-btn wellness-yes-btn">SÌ</button>
 <button id="wellnessNoBtn" class="wellness-opt-btn wellness-no-btn">NO</button>
 </div>
 </div>
-<div id="wellnessScoreDisplay" class="wellness-score-container" style="display: none;">
+<div id="wellnessScoreDisplay" class="wellness-score-container wellness-score-container-hidden">
 <p class="wellness-message">Più elevato è il punteggio e più lo stile di vita è sano</p>
 <div class="wellness-scale-container">
 <div class="wellness-scale-numbers">
@@ -69,132 +74,151 @@ Il benessere dell'apparato cardiocircolatorio dipende da una combinazione di fat
 </div>
 <div id="wellnessSuggestions" class="wellness-suggestions"></div>
 </div>
-</div>
+</section>
 
 <!-- SEZIONE OBIETTIVI -->
-<div class="profile-section">
-<h3><i class="fas fa-bullseye"></i> I Tuoi Obiettivi</h3>
-<div class="profile-group card">
+<h3 class="card-section-title"><i class="fas fa-bullseye"></i> I Tuoi Obiettivi</h3>
+<section id="obiettiviCard" class="card">
+<div class="card-body">
 <div class="form-grid">
-<div class="form-group">
-<label>Obiettivo Principale</label>
-<select id="mainGoal">
+<div class="input_container">
+<label class="input_label">Obiettivo Principale</label>
+<div class="icon_container">
+<i class="fas fa-bullseye icon"></i>
+<select id="mainGoal" class="input_field">
 <option value="fat_loss">Diminuzione della massa grassa</option>
 <option value="muscle_gain">Aumento della massa magra</option>
 <option value="toning">Tonificazione</option>
 <option value="maintenance">Mantenimento</option>
 </select>
 </div>
-<div class="form-group"><label>Peso Target (kg)</label><input type="number" id="target_weight" step="0.1"></div>
 </div>
-<button id="saveObiettiviBtn" class="btn-discord btn-discord--info btn-mt">Salva Obiettivi</button>
-</div>
-</div>
-
-<!-- SEZIONE SELEZIONE UTENTE (SOLO COACH) -->
-<div id="userSelectionSection" class="profile-section" style="display: none;">
-<h3><i class="fas fa-users"></i> Seleziona Utente</h3>
-<div class="card">
-<div class="form-group">
-<label for="userDropdown">Utente</label>
-<select id="userDropdown">
-<option value="">Seleziona un utente...</option>
-</select>
+<div class="input_container">
+<label class="input_label">Peso Target (kg)</label>
+<div class="icon_container">
+<i class="fas fa-weight icon"></i>
+<input type="number" id="target_weight" step="0.1" class="input_field">
 </div>
 </div>
 </div>
+<button type="submit" class="sign-in_btn">Salva Obiettivi</button>
+</div>
+</section>
 
 
 <!-- SEZIONE INPUT DATI BIA -->
-<div class="profile-section">
-<h3><i class="fas fa-scale-balanced"></i> Inserimento Dati BIA</h3>
-<div class="profile-group card">
-<form id="biaForm">
+<h3 class="card-section-title"><i class="fas fa-scale-balanced"></i> Inserimento Dati BIA</h3>
+<section id="biaDataCard" class="card">
+<div class="card-body">
+<form id="biaForm" class="form_container">
 <div class="form-grid">
-<div class="form-group">
-<label for="height">Altezza (cm)</label>
-<input type="number" id="height" step="0.1" required placeholder="Es. 175">
+<div class="input_container">
+<label class="input_label" for="height">Altezza (cm)</label>
+<div class="icon_container">
+<i class="fas fa-ruler-vertical icon"></i>
+<input type="number" id="height" step="0.1" required placeholder="Es. 175" class="input_field">
 </div>
-<div class="form-group">
-<label for="age">Età</label>
-<input type="number" id="age" step="1" required placeholder="Es. 35">
 </div>
-<div class="form-group">
-<label for="gender">Sesso</label>
-<select id="gender" required>
+<div class="input_container">
+<label class="input_label" for="age">Età</label>
+<div class="icon_container">
+<i class="fas fa-calendar-alt icon"></i>
+<input type="number" id="age" step="1" required placeholder="Es. 35" class="input_field">
+</div>
+</div>
+<div class="input_container">
+<label class="input_label" for="gender">Sesso</label>
+<div class="icon_container">
+<i class="fas fa-user icon"></i>
+<select id="gender" required class="input_field">
 <option value="male">Maschio</option>
 <option value="female">Femmina</option>
 </select>
 </div>
-<div class="form-group">
-<label for="weight">Peso (kg)</label>
-<input type="number" id="weight" step="0.1" required placeholder="Es. 75.0">
-<div id="weightIndicator" class="tanita-indicator"></div>
 </div>
-<div class="form-group">
-<label for="bodyFat">Massa Grassa (%)</label>
-<input type="text" id="bodyFat" step="0.1" required placeholder="Es. 20.5">
-<div id="bodyFatIndicator" class="tanita-indicator"></div>
+<div class="input_container">
+<label class="input_label" for="weight">Peso (kg)</label>
+<div class="icon_container">
+<i class="fas fa-weight icon"></i>
+<input type="number" id="weight" step="0.1" required placeholder="Es. 75.0" class="input_field">
 </div>
-<div class="form-group">
-<label for="hydration">Idratazione (%)</label>
-<input type="text" id="hydration" step="0.1" required placeholder="Es. 55.0">
-<div id="hydrationIndicator" class="tanita-indicator"></div>
 </div>
-<div class="form-group">
-<label for="visceralFat">Grasso Viscerale</label>
-<input type="text" id="visceralFat" step="1" required placeholder="Es. 8">
-<div id="visceralFatIndicator" class="tanita-indicator"></div>
+<div class="input_container">
+<label class="input_label" for="bodyFat">Massa Grassa (%)</label>
+<div class="icon_container">
+<i class="fas fa-percentage icon"></i>
+<input type="text" id="bodyFat" step="0.1" required placeholder="Es. 20.5" class="input_field">
 </div>
-<div class="form-group">
-<label for="leanMass">Massa Magra (kg)</label>
-<input type="text" id="leanMass" step="0.1" required placeholder="Es. 55.0">
-<div id="leanMassIndicator" class="tanita-indicator"></div>
 </div>
-<div class="form-group">
-<label for="boneMass">Massa Ossea (kg)</label>
-<input type="text" id="boneMass" step="0.1" required placeholder="Es. 2.5">
-<div id="boneMassIndicator" class="tanita-indicator"></div>
+<div class="input_container">
+<label class="input_label" for="hydration">Idratazione (%)</label>
+<div class="icon_container">
+<i class="fas fa-tint icon"></i>
+<input type="text" id="hydration" step="0.1" required placeholder="Es. 55.0" class="input_field">
 </div>
-<div class="form-group">
-<label for="metabolicAge">Età Metabolica</label>
-<input type="text" id="metabolicAge" step="1" required placeholder="Es. 30">
-<div id="metabolicAgeIndicator" class="tanita-indicator"></div>
+</div>
+<div class="input_container">
+<label class="input_label" for="visceralFat">Grasso Viscerale</label>
+<div class="icon_container">
+<i class="fas fa-heart icon"></i>
+<input type="text" id="visceralFat" step="1" required placeholder="Es. 8" class="input_field">
+</div>
+</div>
+<div class="input_container">
+<label class="input_label" for="leanMass">Massa Magra (kg)</label>
+<div class="icon_container">
+<i class="fas fa-dumbbell icon"></i>
+<input type="text" id="leanMass" step="0.1" required placeholder="Es. 55.0" class="input_field">
+</div>
+</div>
+<div class="input_container">
+<label class="input_label" for="boneMass">Massa Ossea (kg)</label>
+<div class="icon_container">
+<i class="fas fa-bone icon"></i>
+<input type="text" id="boneMass" step="0.1" required placeholder="Es. 2.5" class="input_field">
+</div>
+</div>
+<div class="input_container">
+<label class="input_label" for="metabolicAge">Età Metabolica</label>
+<div class="icon_container">
+<i class="fas fa-clock icon"></i>
+<input type="text" id="metabolicAge" step="1" required placeholder="Es. 30" class="input_field">
+</div>
 </div>
 </div>
 <div id="formMessage" class="form-message"></div>
-<button type="submit" id="submitBiaBtn" class="btn-discord btn-discord--success">Salva Dati BIA</button>
+<button type="submit" class="sign-in_btn">Salva Dati BIA</button>
 </form>
 </div>
+</section>
 
 <!-- PARAMETRI CALCOLATI SOTTO FORM -->
-<div class="profile-section">
-<h3><i class="fas fa-chart-line"></i> Fabbisogni Calcolati</h3>
-<div class="profile-group card">
-<div id="biaParamsContainer" style="display: flex; justify-content: center; gap: 30px; margin-top: 0.5rem;">
-<div style="text-align: center;">
+<h3 class="card-section-title"><i class="fas fa-chart-line"></i> Fabbisogni Calcolati</h3>
+<section class="card">
+<div class="card-body">
+<div id="biaParamsContainer" class="bia-params-container">
+<div class="text-center">
 <label>Fabbisogno Acqua</label>
 <div id="waterNeedsDisplay" class="param-value">-- L/giorno</div>
 </div>
-<div style="text-align: center;">
+<div class="text-center">
 <label>Fabbisogno Proteico</label>
 <div id="proteinNeedsDisplay" class="param-value">-- g/giorno</div>
 </div>
-<div style="text-align: center;">
+<div class="text-center">
 <label>Metabolismo Basale</label>
 <div id="bmrDisplay" class="param-value">-- kcal</div>
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
 
 
 <!-- SEZIONE RISULTATI E PARAMETRI BIA CON PALLINI -->
-<div class="profile-section">
-<h3><i class="fas fa-calculator"></i> Risultati e Parametri BIA</h3>
-<div class="profile-group card">
-<div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;">
+<h3 class="card-section-title"><i class="fas fa-calculator"></i> Risultati e Parametri BIA</h3>
+<section class="card">
+<div class="card-body">
+<div class="bia-results-row">
 <div class="tanita-result-item">
 <label>BMI</label>
 <div id="bmiResult" class="result-value">--</div>
@@ -216,7 +240,7 @@ Il benessere dell'apparato cardiocircolatorio dipende da una combinazione di fat
 <div id="visceralFatDot" class="tanita-dot"></div>
 </div>
 </div>
-<div style="display: flex; justify-content: center; gap: 20px;">
+<div class="bia-results-row-simple">
 <div class="tanita-result-item">
 <label>Massa Magra</label>
 <div id="leanMassResult" class="result-value">-- kg</div>
@@ -238,15 +262,17 @@ Il benessere dell'apparato cardiocircolatorio dipende da una combinazione di fat
 <div id="compositionDot" class="tanita-dot"></div>
 </div>
 </div>
-<div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
-<label style="font-weight: bold; display: block; margin-bottom: 10px;">Classificazione Fisica Tanita (Physique Rating)</label>
-<div id="physiqueRating" style="font-size: 1.2rem; font-weight: bold; color: #266431;">--</div>
+<div class="physique-rating-container">
+<label class="physique-rating-label">Classificazione Fisica Tanita (Physique Rating)</label>
+<div id="physiqueRating" class="physique-rating-value">--</div>
 </div>
 </div>
+</section>
 
 <!-- BARRA RANKING -->
-<h3><i class="fas fa-chart-bar"></i>Ricomposizione Corporea</h3>
-<div class="profile-group card" style="margin-top: 20px;">
+<h3 class="card-section-title"><i class="fas fa-chart-bar"></i>Ricomposizione Corporea</h3>
+<section class="card">
+<div class="card-body">
 <div class="ranking-bar-container">
 <div class="ranking-labels-row">
 <div class="ranking-label ranking-label-scarso">Scarso</div>
@@ -257,10 +283,10 @@ Il benessere dell'apparato cardiocircolatorio dipende da una combinazione di fat
 <div class="ranking-bar">
 <div id="rankingIndicator" class="ranking-indicator"></div>
 </div>
-<div id="rankingText" style="text-align: center; margin-top: 10px; font-weight: bold;">--</div>
+<div id="rankingText" class="ranking-text-value">--</div>
 </div>
 </div>
-</div>
+</section>
 
 </div>
 </div>
@@ -330,45 +356,11 @@ this.currentUser = auth.currentUser;
 if (!this.currentUser) return;
 const urlParams = new URLSearchParams(window.location.search);
 const role = localStorage.getItem('userRole') || '';
-this.isCoach = role.toLowerCase() === 'admin' || role.toLowerCase() === 'coach';
-const userDropdownContainer = document.querySelector('.coach-user-selection');
-const userDropdown = document.getElementById('userDropdown');
-if (this.isCoach) {
-if (userDropdownContainer) userDropdownContainer.style.display = 'block';
-await this.loadUserDropdown();
-} else {
-if (userDropdownContainer) userDropdownContainer.style.display = 'none';
-}
 this.targetUid = urlParams.get('uid') || this.currentUser.uid;
 const userDoc = await getDoc(doc(db, "users", this.targetUid));
 if (userDoc.exists()) {
 this.userProfile = userDoc.data();
 this.fillFormWithExistingData();
-}
-}
-
-async loadUserDropdown() {
-const userDropdown = document.getElementById('userDropdown');
-if (!userDropdown) return;
-try {
-const usersQuery = query(collection(db, "users"));
-const snapshot = await getDocs(usersQuery);
-userDropdown.innerHTML = '<option value="">Seleziona utente</option>';
-snapshot.forEach(doc => {
-const user = doc.data();
-const uid = doc.id;
-const displayName = user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email || uid;
-const option = document.createElement('option');
-option.value = uid;
-option.textContent = displayName;
-userDropdown.appendChild(option);
-});
-userDropdown.addEventListener('change', () => {
-this.targetUid = userDropdown.value || this.currentUser.uid;
-this.loadUserData();
-});
-} catch (error) {
-console.error('Errore caricamento utenti:', error);
 }
 }
 

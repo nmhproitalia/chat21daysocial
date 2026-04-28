@@ -217,15 +217,25 @@ const rankClass = getRankClass(userData?.role);
 
 let photoURL = uiData.photoURL;
 
+// Usa placeholder se photoURL è null o vuoto
+if (!photoURL) {
+return `<div class="user-avatar placeholder ${rankClass}"><i class="fas fa-user"></i></div>
+<div class="modal-user-info">
+<span>${uiData.displayName}</span>
+<span class="modal-user-role ${rankClass}"><i class="fas ${uiData.roleIcon}"></i> ${uiData.role}</span>
+</div>`;
+} else if (!photoURL.startsWith('https://') && window.storage) {
 // Converti percorso Firebase Storage in URL pubblico
-if (photoURL && !photoURL.startsWith('https://') && window.storage) {
 try {
 photoURL = await getDownloadURL(ref(window.storage, photoURL));
 } catch (error) {
 console.error('Errore conversione photoURL:', error);
-// Usa fallback UI Avatars
-const initials = (uiData.displayName || uiData.email || 'U').charAt(0).toUpperCase();
-photoURL = `https://ui-avatars.com/api/?name=${initials}&background=266431&color=fff`;
+// Usa fallback placeholder CSS
+return `<div class="user-avatar placeholder ${rankClass}"><i class="fas fa-user"></i></div>
+<div class="modal-user-info">
+<span>${uiData.displayName}</span>
+<span class="modal-user-role ${rankClass}"><i class="fas ${uiData.roleIcon}"></i> ${uiData.role}</span>
+</div>`;
 }
 }
 
@@ -243,15 +253,17 @@ const rankClass = getRankClass(userData?.role);
 
 let photoURL = uiData.photoURL;
 
+// Usa placeholder se photoURL è null o vuoto
+if (!photoURL) {
+return `<div class="user-avatar placeholder ${rankClass}"><i class="fas fa-user"></i></div>`;
+} else if (!photoURL.startsWith('https://') && window.storage) {
 // Converti percorso Firebase Storage in URL pubblico
-if (photoURL && !photoURL.startsWith('https://') && window.storage) {
 try {
 photoURL = await getDownloadURL(ref(window.storage, photoURL));
 } catch (error) {
 console.error('Errore conversione photoURL:', error);
-// Usa fallback UI Avatars
-const initials = (uiData.displayName || uiData.email || 'U').charAt(0).toUpperCase();
-photoURL = `https://ui-avatars.com/api/?name=${initials}&background=266431&color=fff`;
+// Usa fallback placeholder CSS
+return `<div class="user-avatar placeholder ${rankClass}"><i class="fas fa-user"></i></div>`;
 }
 }
 

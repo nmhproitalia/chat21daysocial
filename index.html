@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Accesso - #21GIORNIFIT</title>
 <link rel="icon" type="image/png" sizes="96x96" href="https://www.progettobenessere.info/ico/favicon-96x96.png">
 <link rel="apple-touch-icon" sizes="180x180" href="https://www.progettobenessere.info/ico/favicon-180x180.png">
@@ -12,8 +12,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="css/style-variables.css?v=12.0">
+<link rel="stylesheet" href="css/forms.css?v=1.0">
+<link rel="stylesheet" href="css/cards.css?v=1.0">
 <link rel="stylesheet" href="css/base-layout.css?v=12.0">
 <link rel="stylesheet" href="css/style.css?v=12.0">
+<link rel="stylesheet" href="css/utilities.css?v=1.0">
+<link rel="stylesheet" href="css/pwa/pwa.css?v=1.0">
 <link rel="stylesheet" href="components/register-login/register-login.css?v=12.0">
 <link rel="stylesheet" href="components/header/header.css?v=15.0">
 <link rel="stylesheet" href="components/footer/footer.css?v=10.5">
@@ -36,29 +40,46 @@
 
 <!-- SEZIONE REGISTER CARD -->
 <section id="registerCard" class="card">
-<div class="auth-header">
+<div class="card-body">
 <h2>Registrati alla Challenger "21GIORNIFIT"</h2>
 <p>Inizia oggi la tua trasformazione fisica</p>
 </div>
 <form id="registerForm">
 <div class="form-grid">
-<div class="form-group">
-<label for="regFirstName">Nome</label>
-<input type="text" id="regFirstName" required placeholder="Inserisci nome">
+<div class="input_container">
+<label class="input_label" for="regFirstName">Nome</label>
+<div class="icon_container">
+<i class="fas fa-user icon"></i>
+<input type="text" id="regFirstName" required placeholder="Inserisci nome" class="input_field">
 </div>
-<div class="form-group">
-<label for="regLastName">Cognome</label>
-<input type="text" id="regLastName" required placeholder="Inserisci cognome">
 </div>
-<div class="form-group">
-<label for="regEmail">Email</label>
-<input type="email" id="regEmail" required placeholder="nome@email.com">
+<div class="input_container">
+<label class="input_label" for="regLastName">Cognome</label>
+<div class="icon_container">
+<i class="fas fa-user icon"></i>
+<input type="text" id="regLastName" required placeholder="Inserisci cognome" class="input_field">
 </div>
-<div class="form-group">
-<label for="regPassword">Password</label>
+</div>
+<div class="input_container">
+<label class="input_label" for="regEmail">Email</label>
+<div class="icon_container">
+<i class="fas fa-envelope icon"></i>
+<input type="email" id="regEmail" required placeholder="nome@email.com" class="input_field">
+</div>
+</div>
+<div class="input_container">
+<label class="input_label" for="regPhone">Telefono</label>
+<div class="icon_container">
+<i class="fas fa-phone icon"></i>
+<input type="tel" id="regPhone" required placeholder="Numero di telefono" class="input_field">
+</div>
+</div>
+<div class="input_container full-width">
+<label class="input_label" for="regPassword">Password</label>
 <div class="password-field-wrapper">
-<input type="password" id="regPassword" required placeholder="Password sicura">
-<i class="fas fa-eye eye-toggle" data-target="regPassword"></i>
+<i class="fas fa-lock icon"></i>
+<input type="password" id="regPassword" required placeholder="Password sicura" class="input_field">
+<i class="fas fa-eye-slash eye-toggle" data-target="regPassword"></i>
 </div>
 </div>
 </div>
@@ -72,56 +93,60 @@
 <li id="rule-special"><i class="fas fa-circle"></i> Un carattere speciale</li>
 </ul>
 </div>
-<button type="submit" id="regSubmitBtn" class="btn-discord">Completa Registrazione</button>
+<button type="submit" id="regSubmitBtn" class="sign-in_btn">Completa Registrazione</button>
 </form>
 <div class="auth-footer">
 <p>Hai già un account? <a href="#" id="showLogin">Accedi qui</a></p>
+<div>
 </div>
 </section>
 
 
 
 <!-- SEZIONE LOGIN CARD -->
-<section id="loginCard" class="card hidden" style="display: none;">
-<div class="auth-header">
-<h2>Bentornato!</h2>
-<p>Accedi per vedere i tuoi progressi</p>
-</div>
+<section id="loginCard" class="card hidden">
+<div class="card-body">
+<h2>Accedi alla Challenger "21GIORNIFIT"</h2>
+<p>Aggiorna la tua Trasformazione</p>
 <form id="loginForm">
-<div class="form-grid">
-<div class="form-group">
-<label for="loginEmail">Email</label>
-<input type="email" id="loginEmail" required placeholder="La tua email">
+<div class="input_container">
+<label class="input_label" for="loginEmail">Email</label>
+<div class="icon_container">
+<i class="fas fa-envelope icon"></i>
+<input type="email" id="loginEmail" required placeholder="La tua email" class="input_field">
 </div>
-<div class="form-group">
-<label for="loginPassword">Password</label>
+</div>
+<div class="input_container">
+<label class="input_label" for="loginPassword">Password</label>
 <div class="password-field-wrapper">
-<input type="password" id="loginPassword" required placeholder="La tua password">
-<i class="fas fa-eye eye-toggle" data-target="loginPassword"></i>
-</div>
+<i class="fas fa-lock icon"></i>
+<input type="password" id="loginPassword" required placeholder="La tua password" class="input_field">
+<i class="fas fa-eye-slash eye-toggle" data-target="loginPassword"></i>
 </div>
 </div>
 <div id="loginStatus" class="system-message hidden"></div>
-<button type="submit" id="loginSubmitBtn" class="btn-discord">Accedi ora</button>
+<button type="submit" id="loginSubmitBtn" class="sign-in_btn">Accedi ora</button>
 </form>
 <div class="auth-footer">
 <p>Non hai un account? <a href="#" id="showRegister">Registrati qui</a></p>
 <a href="#" id="forgotPass" class="forgot-link">Hai dimenticato la password?</a>
 </div>
+</div>
 </section>
 
-<section id="resetPasswordCard" class="card hidden" style="display: none;">
-<div class="auth-header">
+<section id="resetPasswordCard" class="card hidden">
+<div class="card-body">
 <h2>Reset Password</h2>
 <p>Inserisci la tua email per ricevere il link di reset</p>
 </div>
 <form id="resetPasswordForm">
-<div class="form-group">
-<label for="resetEmail">Email</label>
-<input type="email" id="resetEmail" required placeholder="La tua email">
+<div class="input_container">
+<label class="input_label" for="resetEmail">Email</label>
+<i class="fas fa-envelope icon"></i>
+<input type="email" id="resetEmail" class="input_field" required placeholder="La tua email">
 </div>
 <div id="resetPasswordStatus" class="system-message hidden"></div>
-<button type="submit" id="resetPasswordSubmitBtn" class="btn-discord">Invia link reset</button>
+<button type="submit" id="resetPasswordSubmitBtn" class="sign-in_btn">Invia link reset</button>
 </form>
 <div class="auth-footer">
 <p>Torna al <a href="#" id="backToLogin">login</a></p>

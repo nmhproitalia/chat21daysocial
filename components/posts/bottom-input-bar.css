@@ -227,7 +227,7 @@ width: 100% !important;
 }
 
 .post-modal-content-wrapper {
-max-height: 400px !important;
+max-height: 300px !important;
 overflow-y: auto !important;
 overflow-x: hidden !important;
 scrollbar-width: thin !important;
@@ -311,6 +311,55 @@ display: grid !important;
 gap: 2px !important;
 margin-top: 5px !important;
 padding-bottom: 5px !important;
+border-radius: 12px !important;
+overflow: hidden !important;
+max-height: 400px !important;
+}
+
+/* Immagini a destra - quadrate */
+.media-preview-wrapper {
+width: 100% !important;
+height: 100% !important;
+overflow: hidden !important;
+}
+
+.post-modal-media-preview[data-count="2"] .media-preview-wrapper,
+.post-modal-media-preview[data-count="3"] .media-preview-wrapper:not(:nth-child(1)),
+.post-modal-media-preview[data-count="4"] .media-preview-wrapper:not(:nth-child(1)) {
+aspect-ratio: 1/1 !important;
+}
+
+/* Immagine grande a sinistra - rettangolare */
+.post-modal-media-preview[data-count="3"] .media-preview-wrapper:nth-child(1),
+.post-modal-media-preview[data-count="4"] .media-preview-wrapper:nth-child(1) {
+aspect-ratio: 4/3 !important;
+}
+
+/* Griglia dinamica per preview media nel modal */
+.post-modal-media-preview[data-count="1"] {
+grid-template-columns: 1fr !important;
+}
+
+.post-modal-media-preview[data-count="2"] {
+grid-template-columns: 1fr 1fr !important;
+}
+
+.post-modal-media-preview[data-count="3"] {
+grid-template-columns: 1fr 1fr !important;
+grid-template-rows: 1fr 1fr !important;
+}
+
+.post-modal-media-preview[data-count="3"] .media-preview-wrapper:nth-child(1) {
+grid-row: span 2 !important;
+}
+
+.post-modal-media-preview[data-count="4"] {
+grid-template-columns: 1fr 1fr !important;
+grid-template-rows: 1fr 1fr 1fr !important;
+}
+
+.post-modal-media-preview[data-count="4"] .media-preview-wrapper:nth-child(1) {
+grid-row: span 3 !important;
 }
 
 .post-modal-error-message {
@@ -497,7 +546,7 @@ justify-content: space-between !important;
 gap: 10px !important;
 }
 
-.post-modal-submit-btn {
+.post-modal-submit-btn-bck {
 width: auto !important;
 padding: 10px 20px !important;
 background: #266431 !important;
@@ -510,8 +559,19 @@ cursor: pointer !important;
 transition: background 0.2s !important;
 }
 
+.post-modal-submit-btn {   
+width: auto !important;
+height: 40px;
+border: 0;
+background: #266431;
+border-radius: 7px;
+outline: none;
+color: #ffffff;
+cursor: pointer;
+}
+
 .post-modal-submit-btn:hover {
-background: #1a4a25 !important;
+background: #266431 !important;
 }
 
 .post-modal-media-btn {

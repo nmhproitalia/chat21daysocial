@@ -166,11 +166,13 @@ const email = document.getElementById('regEmail').value;
 const pass = document.getElementById('regPassword').value;
 const firstName = document.getElementById('regFirstName').value;
 const lastName = document.getElementById('regLastName').value;
+const phoneInput = document.getElementById('regPhone');
+const phone = phoneInput ? phoneInput.value : '';
 
 try {
 submitBtn.disabled = true;
 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registrazione...';
-await handleRegister(email, pass, { firstName, lastName });
+await handleRegister(email, pass, { firstName, lastName, phone });
 window.location.href = 'welcome.html';
 } catch (err) {
 submitBtn.disabled = false;

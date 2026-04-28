@@ -144,33 +144,14 @@ const avatarHTML = photoURL
 ? `<img src="${photoURL}" class="user-avatar ${roleMeta.className}" style="width: 80px; height: 80px;">` 
 : `<div class="user-avatar placeholder ${roleMeta.className}" style="width: 80px; height: 80px;"><i class="fas fa-user"></i></div>`;
 
-// Icona ingranaggio (sempre visibile, permessi controllati in funzione)
-const gearIcon = `<a href="javascript:toggleRolePanel('${uid}')" style="position:absolute; top:10px; right:10px; text-decoration:none; cursor:pointer; color:#666; font-size:1.2rem; z-index:1000; padding:5px; display:inline-block;"><i class="fas fa-cog"></i></a>`;
-
-// Pannello gestione ruolo (sempre disponibile, permessi controllati in funzione)
-const rolePanel = `
-<div id="role-panel-${uid}" style="display:none; width:100%; margin-top:15px; padding:15px; background:#f8f9fa; border-radius:8px; border:1px solid #e0e0e0; position:relative; z-index:1000;">
-<div style="display:flex; flex-direction:column; gap:10px;">
-<label style="font-size:0.85rem; font-weight:600; color:#666;">Cambia Ruolo:</label>
-<div style="display:flex; gap:8px; flex-wrap:wrap;">
-<a href="javascript:void(0)" onclick="window.updateUserRole('${uid}', 'Coach')" style="flex:1; padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:0.85rem; cursor:pointer; background:${originalRole.toLowerCase() === 'coach' || originalRole.toLowerCase() === 'admin' ? '#266431' : '#fff'}; color:${originalRole.toLowerCase() === 'coach' || originalRole.toLowerCase() === 'admin' ? '#fff' : '#333'}; font-weight:600; position:relative; z-index:2000; pointer-events:auto; text-decoration:none; display:block; text-align:center;">Coach</a>
-<a href="javascript:void(0)" onclick="window.updateUserRole('${uid}', 'Assistente')" style="flex:1; padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:0.85rem; cursor:pointer; background:${originalRole.toLowerCase() === 'assistant' || originalRole.toLowerCase() === 'assistente' ? '#266431' : '#fff'}; color:${originalRole.toLowerCase() === 'assistant' || originalRole.toLowerCase() === 'assistente' ? '#fff' : '#333'}; font-weight:600; position:relative; z-index:2000; pointer-events:auto; text-decoration:none; display:block; text-align:center;">Assistente</a>
-<a href="javascript:void(0)" onclick="window.updateUserRole('${uid}', 'Challenger')" style="flex:1; padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:0.85rem; cursor:pointer; background:${originalRole.toLowerCase() === 'challenger' || originalRole.toLowerCase() === 'challenge' || originalRole.toLowerCase() === 'user' ? '#266431' : '#fff'}; color:${originalRole.toLowerCase() === 'challenger' || originalRole.toLowerCase() === 'challenge' || originalRole.toLowerCase() === 'user' ? '#fff' : '#333'}; font-weight:600; position:relative; z-index:2000; pointer-events:auto; text-decoration:none; display:block; text-align:center;">Challenger</a>
-</div>
-</div>
-</div>
-`;
-
 // Iniezione pulita (Facebook-style compatto)
 return `
-<div id="card-${uid}" class="card challenger-card" style="position:relative; display:flex; flex-direction:column; align-items:center; text-align:center;">
-${gearIcon}
+<div id="card-${uid}" class="card challenger-card" style="position:relative; display:flex; flex-direction:column; align-items:center; text-align:center; padding: 20px;">
 ${avatarHTML}
-<h3 style="margin: 10px 0 2px 0; font-size: 1.1rem; font-weight: 700; text-transform: none !important;">${formattedName}</h3>
-<div class="${roleMeta.className}" style="font-size: 0.85rem; font-weight: 600; text-transform: none !important;">
+<h3 class="challenger-name" style="margin: 10px 0 2px 0; font-size: 1.1rem; font-weight: 700; text-transform: none !important;">${formattedName}</h3>
+<div class="${roleMeta.className} challenger-role" style="font-size: 0.85rem; font-weight: 600; text-transform: none !important;">
 <i class="fas ${roleMeta.icon}"></i> ${roleMeta.label}
 </div>
-${rolePanel}
 </div>
 `;
 }
@@ -178,7 +159,7 @@ ${rolePanel}
 // --- FUNZIONE FORMATTAZIONE OBIETTIVO ---
 function formatGoal(goalKey) {
 const goals = {
-'fat_loss': 'Diminuzione massa grassa',
+'fat_loss': 'Riduzione massa grassa',
 'muscle_gain': 'Aumento massa magra',
 'toning': 'Tonificazione',
 'maintenance': 'Mantenimento'

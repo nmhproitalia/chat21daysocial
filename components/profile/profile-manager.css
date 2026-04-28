@@ -21,9 +21,10 @@ gap: 5px;
 width: 100%;
 max-width: 500px;
 margin-top: 1.5rem;
+position: relative;
 }
 
-/* RANKING BAR */
+/* RANKING BAR - Solo per Profilo Utente (non Ricomposizione Corporea) */
 .ranking-bar-container {
 width: 100%;
 height: 8px;

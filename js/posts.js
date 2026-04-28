@@ -241,7 +241,7 @@ if (postsUnsub) postsUnsub();
 postsUnsub = onSnapshot(query(collection(db, "posts"), orderBy("createdAt", "asc")), async (snap) => {
 box.innerHTML = "";
 if (snap.empty) {
-box.innerHTML = '<div style="text-align:center; padding:2rem; color:#8e8e93;">Nessun post.</div>';
+box.innerHTML = '<div class="posts-empty-state">Nessun post.</div>';
 if (loader) loader.style.display = 'none';
 return;
 }
@@ -291,23 +291,14 @@ window.scrollTo(0, document.body.scrollHeight);
 function renderMediaGrid(mediaUrls) {
 if (!mediaUrls || mediaUrls.length === 0) return '';
 
-const gridStyle = mediaUrls.length === 1 
-? 'grid-template-columns: 1fr;' 
-: mediaUrls.length === 2 
-? 'grid-template-columns: repeat(2, 1fr);' 
-: 'grid-template-columns: 1fr 1fr;';
-
 const mediaItems = mediaUrls.map((url, index) => {
 const isVideo = url.includes('.mp4') || url.includes('.mov');
-const itemStyle = mediaUrls.length === 1 
-? 'aspect-ratio: 16/9;' 
-: 'aspect-ratio: 1/1;';
 return isVideo 
-? `<video src="${url}" controls style="width:100%; height:100%; object-fit:cover; ${itemStyle}"></video>`
-: `<img src="${url}" style="width:100%; height:100%; object-fit:cover; ${itemStyle}">`;
+? `<div class="media-item"><video src="${url}" controls></video></div>`
+: `<div class="media-item"><img src="${url}"></div>`;
 }).join('');
 
-return `<div class="post-media-grid" style="margin:0 -15px 15px -15px; max-height:500px; overflow:hidden; display:grid; gap:2px; ${gridStyle}">${mediaItems}</div>`;
+return `<div class="post-media-grid-inner" data-count="${mediaUrls.length}">${mediaItems}</div>`;
 }
 
 
@@ -316,13 +307,11 @@ try {
 const urlObj = new URL(url);
 const domain = urlObj.hostname.toUpperCase();
 return `
-<a href="${url}" target="_blank" style="display:block; text-decoration:none; margin:0 -15px 15px -15px; background:#f0f2f5; border-radius:8px; overflow:hidden;">
-<div style="background:#e4e6eb; height:120px; display:flex; align-items:center; justify-content:center; color:#65676b; font-size:2rem;">
-<i class="fas fa-link"></i>
-</div>
-<div style="padding:12px;">
-<div style="font-weight:bold; color:#1a1a1a; font-size:0.95rem; margin-bottom:4px;">${domain}</div>
-<div style="color:#65676b; font-size:0.85rem;">${url}</div>
+<a href="${url}" target="_blank" class="post-link-preview">
+<img src="https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=64" class="post-link-preview-image" alt="Preview">
+<div class="post-link-preview-info">
+<div class="post-link-preview-domain">${domain}</div>
+<div class="post-link-preview-title">${url}</div>
 </div>
 </a>
 `;
@@ -360,19 +349,19 @@ const mediaUrls = p.media && Array.isArray(p.media) ? p.media : [];
 
 // Smart Text: font-size 24px per testi brevi senza media
 const isShortText = textClean.length < 80 && mediaUrls.length === 0;
-const textStyle = isShortText ? 'font-size: 24px;' : 'font-size: 1rem;';
+const textClass = isShortText ? 'short-post' : '';
 
 // Line-clamp per testi lunghi (>5 righe)
 const lines = textClean.split('\n').length;
 const isLongText = lines > 5;
-const textClampStyle = isLongText ? 'display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden;' : 'white-space: pre-wrap;';
+const textClassFull = textClass + (isLongText ? ' long-post' : '');
 
 // Link Preview: estrai URL dal testo
 const urlMatch = textClean.match(/(https?:\/\/[^\s]+)/g);
 const linkPreview = urlMatch && urlMatch[0] ? renderLinkPreview(urlMatch[0]) : '';
 
 // Tasto "Altro..." per testi lunghi
-const moreButton = isLongText ? `<button onclick="this.previousElementSibling.style.display='block'; this.style.display='none';" style="background:none; border:none; color:#007aff; font-weight:600; cursor:pointer; padding:0; margin-bottom:15px;">Altro...</button>` : '';
+const moreButton = isLongText ? `<button onclick="togglePostText(this)" class="show-more-btn">Altro...</button>` : '';
 
 const card = document.createElement("div");
 card.className = "card post";
@@ -384,12 +373,12 @@ const avatarHtml = publicPhotoURL
 : `<div class="user-avatar placeholder ${roleMetadata.className}"><i class="fas fa-user"></i></div>`;
 
 card.innerHTML = `
-<div class="post-header" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-<div class="post-modal-user" style="display:flex; gap:12px; align-items:center;">
+<div class="post-header post-header-card">
+<div class="post-modal-user post-modal-user-card">
 ${avatarHtml}
-<div style="display:flex; flex-direction:column;">
-<span style="font-size:1.1rem; font-weight:600; color:#1a1a1a;">${authorName}</span>
-<span style="font-size:0.75rem; font-weight:600; padding:0; border:none; background:none; color:${roleMetadata.className === 'rank-coach' ? '#b1933a' : roleMetadata.className === 'rank-assistant' ? '#6B3E26' : '#7a7a7a'};"><i class="fas ${roleMetadata.icon}"></i> ${roleMetadata.label}</span>
+<div class="post-user-info-col">
+<span class="post-user-name">${authorName}</span>
+<span class="post-user-role" style="color:${roleMetadata.className === 'rank-coach' ? '#b1933a' : roleMetadata.className === 'rank-assistant' ? '#6B3E26' : '#7a7a7a'};"><i class="fas ${roleMetadata.icon}"></i> ${roleMetadata.label}</span>
 </div>
 </div>
 ${canDelete ? `
@@ -398,37 +387,36 @@ ${canDelete ? `
 <button class="del-btn" onclick="window.deleteNode('posts/${id}')"><i class="fas fa-trash-can"></i></button>
 </div>` : ''}
 </div>
-<div class="text-content" style="line-height: 1.4; color: #1a1a1a; margin-bottom:15px; ${textStyle} ${textClampStyle}">${textClean.trim()}</div>
+<div class="text-content post-text-content ${textClassFull}">${textClean.trim()}</div>
 ${moreButton}
 ${renderMediaGrid(mediaUrls)}
 ${linkPreview}
-${mediaMatches.length > 0 ? `<div class="post-media-grid" style="margin-bottom:15px; display:grid; gap:4px; border-radius:12px; overflow:hidden;">${mediaMatches.map(m => renderMedia(m)).join('')}</div>` : ''}
-<div class="post-actions" style="padding-top:12px; border-top:1px solid rgba(0,0,0,0.06);">
-<div class="interaction-group" style="display:flex; align-items:center; justify-content:space-between; width:100%;">
-<div style="display:flex; align-items:center; gap:18px;">
-<div class="interaction-btn" id="l-p-btn-${id}" onclick="window.toggleLike('posts/${id}', '${id}')" style="cursor:pointer; display:flex; align-items:center; gap:5px; font-size:0.9rem; font-weight:700;">
+${mediaMatches.length > 0 ? `<div class="post-media-grid post-media-grid-inner">${mediaMatches.map(m => renderMedia(m)).join('')}</div>` : ''}
+<div class="post-actions post-actions-section">
+<div class="interaction-group interaction-group-main">
+<div class="interaction-buttons-row">
+<div class="interaction-btn interaction-btn-custom" id="l-p-btn-${id}" onclick="window.toggleLike('posts/${id}', '${id}')">
 <i class="fas fa-heart"></i> <span id="l-p-count-${id}">0</span>
 </div>
-<div class="star-rating-icons star-rating-icons-${id}" style="display:flex; align-items:center; gap:2px;">
-${[1,2,3,4,5].map(v => `<i class="fas fa-star star-${id}" data-v="${v}" onclick="window.setRating('posts/${id}', ${v})" style="cursor:pointer; font-size:1rem;"></i>`).join('')}
-<span id="r-t-${id}" style="font-size: 0.8rem; margin-left: 5px; font-weight:700; color:#333;">(0)</span>
+<div class="star-rating-icons star-rating-icons-${id} star-rating-icons-row">${[1,2,3,4,5].map(v => `<i class="fas fa-star star-${id} star-icon-custom" data-v="${v}" onclick="window.setRating('posts/${id}', ${v})"></i>`).join('')}
+<span id="r-t-${id}" class="rating-counter">(0)</span>
 </div>
-<div class="comment-counter-badge" style="display:flex; align-items:center; gap:6px; font-size:0.9rem; color:#007aff; font-weight:700;">
+<div class="comment-counter-badge comment-badge">
 <i class="fas fa-comment"></i> <span id="c-count-${id}">0</span>
 </div>
 </div>
-<div class="comments-toggle" onclick="window.toggleComments('${id}')" style="cursor:pointer; color:#28a745; font-weight:800; font-size: 0.9rem; margin-left:auto;">Commenta</div>
+<div class="comments-toggle comments-toggle-btn" onclick="window.toggleComments('${id}')">Commenta</div>
 </div>
 </div>
-        <div id="comments-section-${id}" class="comments-section" style="display:none;">
+        <div id="comments-section-${id}" class="comments-section comment-section-hidden">
         <div id="comments-container-${id}" class="comments-container"></div>
         <div class="comment-input-bar">
-            <button class="btn-icon" style="color:#8e8e93; font-size:1.3rem; background:none; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; height:100%;"><i class="fas fa-paperclip"></i></button>
-            <textarea id="main-comment-input-${id}" class="comment-textarea" placeholder="Scrivi un commento..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.sendMainComment('${id}');}" style="background:transparent; border:none; color:white; resize:none; outline:none; font-size:1rem; padding:18px 0; flex:1;"></textarea>
-            <button class="emoji-btn" onclick="window.toggleContextEmojiPicker('${id}', 'main-comment-input-${id}')" style="color:#8e8e93; background:none; border:none; cursor:pointer; font-size:1.3rem; display:flex; align-items:center; justify-content:center; height:100%;"><i class="far fa-smile"></i></button>
-            <button onclick="window.sendMainComment('${id}')" class="btn-icon-send" style="background:none; border:none; color:#dcc48e; font-size:1.4rem; cursor:pointer; display:flex; align-items:center; justify-content:center; height:100%;"><i class="fas fa-paper-plane"></i></button>
+            <button class="btn-icon btn-icon-custom"><i class="fas fa-paperclip"></i></button>
+            <textarea id="main-comment-input-${id}" class="comment-textarea comment-textarea-custom" placeholder="Scrivi un commento..." rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.sendMainComment('${id}');}"></textarea>
+            <button class="emoji-btn emoji-btn-custom" onclick="window.toggleContextEmojiPicker('${id}', 'main-comment-input-${id}')"><i class="far fa-smile"></i></button>
+            <button onclick="window.sendMainComment('${id}')" class="btn-icon-send btn-icon-send-custom"><i class="fas fa-paper-plane"></i></button>
         </div>
-        <div class="emoji-picker-context" id="emoji-picker-${id}" style="display:none;"></div>
+        <div class="emoji-picker-context emoji-picker-context-hidden" id="emoji-picker-${id}"></div>
     </div>
 `;
 return card;
@@ -524,7 +512,7 @@ window.toggleContextEmojiPicker = (id, targetId) => {
     
     if (isHidden) {
         picker.style.setProperty('display', 'grid', 'important');
-        picker.innerHTML = EMOJIS.map(e => `<span style="cursor:pointer;font-size:1.5rem;" onclick="window.insertContextEmoji('${e}', '${targetId}', '${id}')">${e}</span>`).join('');
+        picker.innerHTML = EMOJIS.map(e => `<span class="emoji-item-custom" onclick="window.insertContextEmoji('${e}', '${targetId}', '${id}')">${e}</span>`).join('');
     } else {
         picker.style.setProperty('display', 'none', 'important');
     }
@@ -547,12 +535,20 @@ window.toggleEmojiPicker = () => {
     if (!p) return;
     if (p.style.display === 'none') {
         p.style.display = 'grid';
-        p.innerHTML = EMOJIS.map(e => `<span style="cursor:pointer;font-size:1.5rem;" onclick="window.insertEmoji('${e}')">${e}</span>`).join('');
+        p.innerHTML = EMOJIS.map(e => `<span class="emoji-item-custom" onclick="window.insertEmoji('${e}')">${e}</span>`).join('');
     } else {
         p.style.display = 'none';
     }
 };
 
+
+window.togglePostText = (btn) => {
+const textElement = btn.previousElementSibling;
+if (textElement && textElement.classList.contains('long-post')) {
+textElement.classList.remove('long-post');
+btn.style.display = 'none';
+}
+};
 
 window.insertEmoji = (emoji) => {
 const input = document.getElementById('postContent');
@@ -646,12 +642,12 @@ const commentAvatarHtml = publicCommentPhotoURL
 : `<div class="user-avatar placeholder ${roleMetadata.className}"><i class="fas fa-user"></i></div>`;
 
 div.innerHTML = `
-<div class="comment-header" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div class="comment-header comment-header-card">
 <div class="post-modal-user" style="display:flex; gap:12px; align-items:center;">
 ${commentAvatarHtml}
-<div style="display:flex; flex-direction:column;">
-<span style="font-size:1.1rem; font-weight:600; color:#1a1a1a;">${authorName}</span>
-<span style="font-size:0.75rem; font-weight:600; padding:0; border:none; background:none; color:${roleMetadata.className === 'rank-coach' ? '#b1933a' : roleMetadata.className === 'rank-assistant' ? '#6B3E26' : '#7a7a7a'};"><i class="fas ${roleMetadata.icon}"></i> ${roleMetadata.label}</span>
+<div class="post-user-info-col">
+<span class="post-user-name">${authorName}</span>
+<span class="post-user-role" style="color:${roleMetadata.className === 'rank-coach' ? '#b1933a' : roleMetadata.className === 'rank-assistant' ? '#6B3E26' : '#7a7a7a'};"><i class="fas ${roleMetadata.icon}"></i> ${roleMetadata.label}</span>
 </div>
 </div>
 ${canDelete ? `
@@ -660,9 +656,9 @@ ${canDelete ? `
 <button class="del-btn" onclick="window.deleteNode('${path}')"><i class="fas fa-trash-can"></i></button>
 </div>` : ''}
 </div>
-<div class="comment-text" style="color:#333; margin: 8px 0 8px 42px; font-size:0.95rem; line-height:1.4;">${textClean.trim()}</div>
-${mediaMatches.length > 0 ? `<div class="comment-media-grid" style="margin: 10px 0 10px 42px; display:grid; gap:4px; border-radius:8px; overflow:hidden;">${mediaMatches.map(m => renderMedia(m)).join('')}</div>` : ''}
-<div class="node-social-actions" style="display:flex; align-items:center; gap:15px; margin-left:42px; margin-top:8px; padding-top:8px; border-top:1px solid #f5f5f5;">
+<div class="comment-text comment-text-custom">${textClean.trim()}</div>
+${mediaMatches.length > 0 ? `<div class="comment-media-grid comment-media-grid-custom">${mediaMatches.map(m => renderMedia(m)).join('')}</div>` : ''}
+<div class="node-social-actions comment-social-actions">
 <div class="interaction-btn" id="l-n-btn-${id}" onclick="window.toggleLike('${path}', '${id}')" style="cursor:pointer; display:flex; align-items:center; gap:4px; font-size:0.8rem; color:#666; font-weight:600;">
 <i class="fas fa-heart"></i> <span id="l-n-count-${id}">0</span>
 </div>

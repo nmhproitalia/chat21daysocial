@@ -77,37 +77,23 @@ if (useFallback) {
 profileImg.innerHTML = '<i class="fas fa-user"></i>';
 profileImg.className = `user-avatar placeholder profile-avatar-big ${roleData.className}`;
 } else {
-profileImg.innerHTML = `<img src="${photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+profileImg.innerHTML = `<img src="${photoURL}" class="profile-img-full">`;
 profileImg.className = `user-avatar profile-avatar-big ${roleData.className}`;
 }
 }
 
 if (userNameDisplay) {
 userNameDisplay.textContent = fullName;
-userNameDisplay.style.fontSize = '2rem';
-userNameDisplay.style.fontWeight = '700';
-userNameDisplay.style.margin = '0 !important';
-userNameDisplay.style.color = '#1a1a1a';
-userNameDisplay.style.textTransform = 'none';
+userNameDisplay.className = 'user-name-display';
 }
 
 if (userRoleDisplay) {
-userRoleDisplay.className = roleData.className;
-userRoleDisplay.style.fontSize = '1.1rem';
-userRoleDisplay.style.fontWeight = '600';
-userRoleDisplay.style.color = roleData.color;
-userRoleDisplay.style.margin = '0';
-userRoleDisplay.style.marginTop = '4px !important';
-userRoleDisplay.innerHTML = `<i class="fas ${roleData.icon}" style="color: ${roleData.color};"></i> ${roleData.label}`;
+userRoleDisplay.className = 'user-role-display';
+userRoleDisplay.innerHTML = `<i class="fas ${roleData.icon} role-display-icon" style="color: ${roleData.color};"></i> ${roleData.label}`;
 }
 
 if (profileHeaderMain) {
-profileHeaderMain.style.display = 'flex';
-profileHeaderMain.style.flexDirection = 'column';
-profileHeaderMain.style.alignItems = 'center';
-profileHeaderMain.style.padding = '10px ! important';
-profileHeaderMain.style.gap = '0 !important';
-profileHeaderMain.style.textAlign = 'center';
+profileHeaderMain.className = 'profile-header-main';
 }
 } catch (error) {
 console.error('Errore caricamento foto profilo:', error);
@@ -128,21 +114,12 @@ profileImg.className = `user-avatar profile-avatar-big ${roleData.className}`;
 
 if (userNameDisplay) {
 userNameDisplay.textContent = fullName;
-userNameDisplay.style.fontSize = '2rem';
-userNameDisplay.style.fontWeight = '700';
-userNameDisplay.style.margin = '0 !important';
-userNameDisplay.style.color = '#1a1a1a';
-userNameDisplay.style.textTransform = 'none';
+userNameDisplay.className = 'user-name-display';
 }
 
 if (userRoleDisplay) {
-userRoleDisplay.className = roleData.className;
-userRoleDisplay.style.fontSize = '1.1rem';
-userRoleDisplay.style.fontWeight = '600';
-userRoleDisplay.style.color = roleData.color;
-userRoleDisplay.style.margin = '0';
-userRoleDisplay.style.marginTop = '4px !important';
-userRoleDisplay.innerHTML = `<i class="fas ${roleData.icon}" style="color: ${roleData.color};"></i> ${roleData.label}`;
+userRoleDisplay.className = 'user-role-display';
+userRoleDisplay.innerHTML = `<i class="fas ${roleData.icon} role-display-icon" style="color: ${roleData.color};"></i> ${roleData.label}`;
 }
 }
 };
@@ -279,13 +256,14 @@ if (!v.isValid) { showServiceMessage(v.message, "error", btn); return; }
 
 const phoneEl = document.getElementById('userPhone');
 if (phoneEl && phoneEl.value) {
-if (!validatePhoneNumber(phoneEl.value)) {
+const phoneValue = phoneEl.value.trim();
+if (phoneValue && !validatePhoneNumber(phoneValue)) {
 showServiceMessage("Formato telefono non valido.", "error", btn);
 return;
 }
 }
 
-['firstName', 'lastName', 'userPhone', 'birthDate', 'height', 'gender', 'bio', 'userEmail'].forEach(f => {
+['firstName', 'lastName', 'userPhone', 'birthDate', 'height', 'gender', 'userEmail'].forEach(f => {
 const el = document.getElementById(f);
 if (el) data[f] = el.value;
 });
@@ -348,17 +326,23 @@ const urlParams = new URLSearchParams(window.location.search);
 const targetUid = urlParams.get('uid');
 const isCoachView = targetUid && auth.currentUser && targetUid !== auth.currentUser.uid;
 
-const actions = {
-'saveAnagraficiBtn': () => saveAnagrafici(uid),
-'changePasswordBtn': () => handleChangePassword()
-};
-
-Object.keys(actions).forEach(id => {
-const el = document.getElementById(id);
-if (el) {
-el.onclick = actions[id];
-}
+// Gestione submit form anagrafici
+const anagraficiForm = document.getElementById('anagraficiForm');
+if (anagraficiForm) {
+anagraficiForm.addEventListener('submit', (e) => {
+e.preventDefault();
+saveAnagrafici(uid);
 });
+}
+
+// Gestione submit form password
+const passwordForm = document.getElementById('passwordForm');
+if (passwordForm) {
+passwordForm.addEventListener('submit', (e) => {
+e.preventDefault();
+handleChangePassword();
+});
+}
 
 // Nascondi sezione sicurezza se è vista dal coach
 if (isCoachView) {
@@ -475,15 +459,15 @@ const coachesListProfile = document.getElementById('coachesListProfile');
 if (coachesListProfile) {
 coachesListProfile.innerHTML = '';
 if (coaches.length === 0) {
-coachesListProfile.innerHTML = '<p style="color: #999; font-style: italic; font-size: 0.9rem;">Nessun coach attivo</p>';
+coachesListProfile.innerHTML = '<p class="empty-state-message">Nessun coach attivo</p>';
 } else {
 coaches.forEach(coach => {
 const coachCard = document.createElement('div');
 coachCard.className = 'coach-card';
 coachCard.innerHTML = `
-<div style="font-weight: 700; color: var(--text-dark); margin-bottom: 4px;">${coach.firstName} ${coach.lastName}</div>
-<div style="font-size: 0.85rem; color: #666;">📧 ${coach.email}</div>
-<div style="font-size: 0.85rem; color: #666;">📱 ${coach.phone || 'N/D'}</div>
+<div class="card-info-name">${coach.firstName} ${coach.lastName}</div>
+<div class="card-info-email">📧 ${coach.email}</div>
+<div class="card-info-phone">📱 ${coach.phone || 'N/D'}</div>
 `;
 coachesListProfile.appendChild(coachCard);
 });
@@ -495,15 +479,15 @@ const assistantsListProfile = document.getElementById('assistantsListProfile');
 if (assistantsListProfile) {
 assistantsListProfile.innerHTML = '';
 if (assistants.length === 0) {
-assistantsListProfile.innerHTML = '<p style="color: #999; font-style: italic; font-size: 0.9rem;">Nessun assistente attivo</p>';
+assistantsListProfile.innerHTML = '<p class="empty-state-message">Nessun assistente attivo</p>';
 } else {
 assistants.forEach(assistant => {
 const assistantCard = document.createElement('div');
 assistantCard.className = 'assistant-card';
 assistantCard.innerHTML = `
-<div style="font-weight: 700; color: var(--text-dark); margin-bottom: 4px;">${assistant.firstName} ${assistant.lastName}</div>
-<div style="font-size: 0.85rem; color: #666;">📧 ${assistant.email}</div>
-<div style="font-size: 0.85rem; color: #666;">📱 ${assistant.phone || 'N/D'}</div>
+<div class="card-info-name">${assistant.firstName} ${assistant.lastName}</div>
+<div class="card-info-email">📧 ${assistant.email}</div>
+<div class="card-info-phone">📱 ${assistant.phone || 'N/D'}</div>
 `;
 assistantsListProfile.appendChild(assistantCard);
 });

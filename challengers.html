@@ -5,7 +5,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Challengers - #21GIORNIFIT</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,13 +23,17 @@
 <link rel="apple-touch-startup-image" href="https://www.progettobenessere.info/ico/favicon-512x512.png" media="(device-width: 375px) and (device-height: 812px)">
 <link rel="apple-touch-startup-image" href="https://www.progettobenessere.info/ico/favicon-512x512.png" media="(device-width: 768px) and (device-height: 1024px)">
 <link rel="stylesheet" href="css/style-variables.css?v=12.0">
+<link rel="stylesheet" href="css/forms.css?v=1.0">
 <link rel="stylesheet" href="css/base-layout.css?v=12.0">
 <link rel="stylesheet" href="css/style.css?v=21.0">
+<link rel="stylesheet" href="css/utilities.css?v=1.0">
+<link rel="stylesheet" href="css/pwa/pwa.css?v=1.0">
 <link rel="stylesheet" href="css/identity-system.css?v=1.0">
 <link rel="stylesheet" href="css/user-roles.css?v=4.0">
+<link rel="stylesheet" href="css/cards.css?v=1.0">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="components/header/header.css?v=15.0">
-<link rel="stylesheet" href="components/general/user-manager.css?v=6.0">
+<link rel="stylesheet" href="components/general/user-manager.css?v=7.0">
 <link rel="stylesheet" href="components/footer/footer.css?v=12.0">
 </head>
 
@@ -51,11 +55,11 @@
 
 <!-- SEZIONE CHALLENGERS -->
 <div class="challengers-section">
-<h3><i class="fas fa-users"></i> I Nostri Challengers</h3>
+<h3 class="card-section-title"><i class="fas fa-users"></i> I Nostri Challengers</h3>
 <div id="coachCount" class="user-counter">Totale Coach: 0</div>
 <div id="assistantCount" class="user-counter">Totale Assistente: 0</div>
 <div id="userCount" class="user-counter">Totale Challengers: 0</div>
-<div style="margin-top: 30px;"></div>
+<div class="margin-top-30"></div>
 <div id="loading" class="loading-indicator"><i class="fas fa-spinner fa-spin"></i><span>Caricamento...</span></div>
 <div id="userGrid" class="users-grid"></div>
 </div>

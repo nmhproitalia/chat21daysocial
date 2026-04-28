@@ -4,6 +4,43 @@
 /* #                                                          # */
 /* ############################################################ */
 
+.hero-content {
+text-align: center !important;
+padding: 3rem 1rem !important;
+display: flex !important;
+flex-direction: column !important;
+justify-content: space-between !important;
+min-height: 200px !important;
+}
+
+.hero-top {
+margin-bottom: 2rem !important;
+}
+
+.hero-bottom {
+margin-top: auto !important;
+}
+
+.hero-content h1 {
+font-size: 2.5rem !important;
+font-weight: 700 !important;
+margin-bottom: 1rem !important;
+word-wrap: break-word !important;
+overflow-wrap: break-word !important;
+hyphens: auto !important;
+}
+
+@media (max-width: 768px) {
+.hero-content h1 {
+font-size: 1.5rem !important;
+line-height: 1.3 !important;
+}
+
+.hero-content {
+padding: 2rem 1rem !important;
+}
+}
+
 .welcome-hero {
 text-align: center !important;
 padding: 4rem 1rem !important;
@@ -57,8 +94,8 @@ padding: 3rem !important;
 .challenge-details {
 display: grid !important;
 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
-gap: 1.5rem !important;
-margin-bottom: 2rem !important;
+row-gap: 0px !important;
+column-gap: 30px !important;
 }
 
 .challenge-description {
@@ -82,7 +119,6 @@ font-size: 1.1rem !important;
 }
 
 .cta-buttons-container {
-margin-top: 2rem !important;
 display: flex !important;
 gap: 1rem !important;
 justify-content: center !important;
@@ -104,19 +140,39 @@ transform: translateY(-5px) !important;
 
 .detail-card i {
 font-size: 2.5rem !important;
-color: var(--primary-color) !important;
+color: var(--warning-color) !important;
 margin-bottom: 1rem !important;
 }
 
 .detail-card h3 {
-color: var(--primary-color) !important;
+color: var(--deep-grey) !important;
 margin-bottom: 0.5rem !important;
 }
 
-.btn-discord--info {
+.detail-card p {
+color: #666666 !important;
+margin: 0 !important;
+}
+
+/* STILI BOTTONI */
+.btn-discord {
+display: inline-block !important;
+padding: 12px 30px !important;
 background: #3498db !important;
+color: white !important;
+text-decoration: none !important;
+border-radius: 7px !important;
+font-weight: 600 !important;
+transition: none !important;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+border: none !important;
+cursor: pointer !important;
+}
+
+.btn-discord--info {
+background: var(--warning-color) !important;
 }
 
 .btn-discord--success {
-background: #27ae60 !important;
+background: var(--grass) !important;
 }

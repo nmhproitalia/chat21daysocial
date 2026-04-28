@@ -1,0 +1,24 @@
+
+📘 PARAMETRI TECNICI UFFICIALI TANITA
+"Cascade, ecco i riferimenti scientifici per il motore di calcolo. Usa questi dati per le funzioni di validazione e per il sistema a colori:
+1. GRASSO VISCERALE (Livelli)
+🟢 Verde (Sano): 1 - 9
+🟠 Arancio (Eccessivo): 10 - 12 (Trigger: Consiglia Phyto Complete)
+🔴 Rosso (Alto Rischio): 13 - 59
+2. PERCENTUALE GRASSO CORPOREO (% FAT)
+(Variano per età, qui i range medi 18-39 anni):
+UOMO: 🟢 8-19% | 🟡 20-24% | 🟠 25-29% | 🔴 >30%
+DONNA: 🟢 21-32% | 🟡 33-38% | 🟠 39-44% | 🔴 >45%
+3. ETÀ METABOLICA
+Logica: Se Età Metabolica > Età Cronografica -> 🔴 Rosso (Trigger: Revisione piano Herbalife).
+4. ACQUA CORPOREA (% TBW)
+UOMO: Target ideale 50% - 65%
+DONNA: Target ideale 45% - 60%
+(Sotto questi range -> 🟠 Arancio. Trigger: Aloe e Infuso).
+5. MASSA MUSCOLARE
+Logica: Deve essere valutata in rapporto all'altezza e al peso. Un aumento della massa muscolare deve sempre far salire la Barra Ranking verso 'Eccellente', anche se il peso totale non scende.
+6. INDICE DI MASSA CORPOREA (BMI)
+< 18.5: Sottopeso
+18.5 - 24.9: Normopeso 🟢
+25.0 - 29.9: Sovrappeso 🟡
+30.0: Obesità 🔴

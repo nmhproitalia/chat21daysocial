@@ -15,8 +15,10 @@ import { doc, setDoc, serverTimestamp, collection, getDocs, query, where } from 
 // --- FUNZIONE REGISTRAZIONE ---
 export async function handleRegister(email, pass, extraData) {
 try {
+console.log("handleRegister chiamato con:", { email, extraData });
 const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
 const user = userCredential.user;
+console.log("Utente creato:", user.uid);
 
 // --- RECUPERO DATI COACH ATTUALI ---
 let coachData = {
@@ -52,18 +54,21 @@ uid: user.uid,
 email: email,
 firstName: extraData.firstName,
 lastName: extraData.lastName,
+phone: extraData.phone || '',
 role: 'user',
 createdAt: serverTimestamp(),
 updatedAt: serverTimestamp(),
 rankingPoints: 0,
 mainGoal: 'fat_loss',
 bio: '',
-...coachData // Inserimento dati coach nel profilo atleta
+...coachData
 });
 
 return user;
 } catch (error) {
 console.error("Errore registrazione:", error);
+console.error("Codice errore:", error.code);
+console.error("Messaggio errore:", error.message);
 throw error;
 }
 }

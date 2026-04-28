@@ -12,23 +12,6 @@
 cursor: pointer !important;
 }
 
-/* CHALLENGERS GRID */
-.users-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  column-gap: 30px;
-  row-gap: 0;
-  margin-top: 20px;
-  justify-content: flex-start;
-  padding-left: env(safe-area-inset-left, 20px);
-  padding-right: env(safe-area-inset-right, 20px);
-}
-
-.challenger-card {
-  align-self: start;
-  margin-bottom: 30px;
-}
-
 .challenger-top-section {
   display: flex;
   align-items: flex-start;
@@ -85,26 +68,6 @@ cursor: pointer !important;
 }
 
 /* 2. SOCIAL COMPONENT STYLES (MODULARI) */
-.posts-feed .post-textarea {
-  border: none !important;
-  background: transparent !important;
-  color: white !important;
-  resize: none;
-  padding: 10px 0 !important;
-  font-size: 1rem;
-  flex: 1;
-}
-
-.comment-textarea {
-  background: transparent !important;
-  border: none !important;
-  color: white !important;
-  resize: none !important;
-  outline: none !important;
-  padding: 18px 0 !important;
-  font-size: 1rem !important;
-}
-
 .author-info {
   display: flex;
   align-items: center;

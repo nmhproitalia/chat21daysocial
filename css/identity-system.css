@@ -22,9 +22,9 @@ box-shadow: none !important;
 /* Placeholder grigio */
 .user-avatar.placeholder {
 background-color: #e1e1e1 !important;
-display: flex;
-align-items: center;
-justify-content: center;
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
 }
 
 .user-avatar.placeholder i {
@@ -43,13 +43,6 @@ font-size: 60px;
 }
 
 /* Schede Challenger - Schema Atomico Globale */
-.challenger-card {
-display: flex;
-flex-direction: column;
-align-items: center;
-padding: 20px;
-}
-
 .avatar-container {
 margin-bottom: 12px;
 }

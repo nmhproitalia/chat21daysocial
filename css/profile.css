@@ -12,10 +12,14 @@ position: absolute !important;
 left: -9999px !important;
 }
 
+.profile-header-main {
+position: relative !important;
+}
+
 .badge-status {
 position: absolute;
-top: -8px;
-right: -8px;
+top: 0;
+right: calc(50% - 60px);
 width: 32px;
 height: 32px;
 border-radius: 50%;
@@ -37,9 +41,10 @@ box-shadow: 0 0 10px #ffd700, 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .badge-status.level-0 { background: #666; }
-.badge-status.level-1 { background: #42a046; }
+.badge-status.level-1 { background: #3498db; }
 .badge-status.level-2 { background: #ff9800; }
 .badge-status.level-3 { background: #266431; }
+.badge-status.level-3 i { color: #ffd700; }
 
 .profile-info-basic {
 display: flex;
@@ -68,4 +73,199 @@ border-left: 3px solid #6B3E26;
 min-width: 180px;
 flex: 0 0 auto;
 text-align: left;
+}
+
+
+/* ############################################################ */
+/* #                                                          # */
+/* #           STILI INLINE PROFILE - ESTERNALIZZATI          # */
+/* #                                                          # */
+/* ############################################################ */
+
+.photo-input-hidden {
+display: none;
+}
+
+.legenda-card {
+margin-top: 20px;
+padding: 15px;
+}
+
+.legenda-container {
+display: flex;
+flex-wrap: wrap;
+gap: 15px;
+justify-content: center;
+align-items: center;
+}
+
+.legenda-item {
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.legenda-badge {
+position: relative;
+top: 0;
+right: 0;
+width: 24px;
+height: 24px;
+font-size: 12px;
+}
+
+.legenda-label {
+font-size: 0.9rem;
+color: #666;
+}
+
+.legenda-note {
+text-align: center;
+margin-top: 10px;
+font-size: 0.8rem;
+color: #999;
+}
+
+.legenda-gold-star {
+color: #ffd700;
+}
+
+.coach-section {
+margin-bottom: 20px;
+}
+
+.section-title {
+margin: 0 0 15px 0;
+font-size: 1.1rem;
+font-weight: 700;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.section-title-coach {
+color: #b1933a;
+}
+
+.section-title-assistant {
+color: #6B3E26;
+}
+
+.profile-list {
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+gap: 10px;
+justify-content: flex-start;
+align-items: flex-start;
+text-align: left;
+width: 100%;
+}
+
+.separator-dashed {
+border: none;
+border-top: 2px dashed #b1933a;
+margin: 20px 0;
+}
+
+.text-center-gray {
+text-align: center;
+color: #666;
+}
+
+.results-container-hidden {
+display: none;
+}
+
+.phyto-section-hidden {
+display: none;
+}
+
+.plan-module {
+text-align: center;
+margin-bottom: 20px;
+}
+
+.plan-module-title {
+color: var(--primary-color);
+}
+
+.plan-module-card {
+background: rgba(255,255,255,0.5);
+padding: 15px;
+border-radius: 8px;
+margin-top: 10px;
+}
+
+.plan-module-title-bold {
+margin: 0;
+font-weight: 600;
+}
+
+.plan-module-desc {
+margin: 5px 0 0 0;
+font-size: 0.9rem;
+color: #666;
+}
+
+.plan-module-desc-small {
+margin: 5px 0 0 0;
+font-size: 0.85rem;
+color: #666;
+}
+
+.security-card-bg {
+background: rgba(255,255,255,0.5);
+}
+
+.security-info {
+font-size: 0.85rem;
+margin-bottom: 1.5rem;
+color: #333;
+font-weight: 600;
+}
+
+.password-rules-box {
+margin-top: 10px;
+padding: 12px;
+background: rgba(255,255,255,0.8);
+border-radius: 8px;
+border-left: 4px solid var(--primary-color);
+}
+
+.password-rules-title {
+font-size: 0.75rem;
+font-weight: 800;
+margin-bottom: 5px;
+color: var(--primary-color);
+}
+
+.password-status-msg {
+margin-top: 10px;
+font-size: 0.8rem;
+text-align: center;
+}
+
+
+/* ############################################################ */
+/* #                                                          # */
+/* #           STILI INLINE JAVASCRIPT - ESTERNALIZZATI     # */
+/* #                                                          # */
+/* ############################################################ */
+
+.wellness-title {
+margin: 0 0 10px 0;
+color: #666;
+}
+
+.wellness-fill {
+width: 0%;
+}
+
+.wellness-score-line {
+left: 0%;
+}
+
+.wellness-score-text {
+margin-top: 15px;
 }

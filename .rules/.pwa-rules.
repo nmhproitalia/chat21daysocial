@@ -34,5 +34,7 @@ Utilizza questo documento come riferimento tecnico per trasformare la struttura 
 
 ---
 
+Ottimizzazzione per tutti i device e gli schermi, Pc, Tablet, ecc...
+
 ### 💬 Comando per l'Esecuzione
 "Windsurf, leggi le specifiche nel file di ottimizzazione PWA e applica queste regole al CSS globale e ai componenti dell'interfaccia. Priorità assoluta alla gestione delle Safe Areas e alla prevenzione dello zoom sugli input."

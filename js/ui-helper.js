@@ -32,6 +32,7 @@ return rules;
 
 // --- VALIDAZIONE FORMATO TELEFONO ---
 export function validatePhoneNumber(phone) {
+    if (!phone || typeof phone !== 'string') return false;
     // Regex per formato internazionale o italiano: +39... o 3... (min 9 cifre)
     const phoneRegex = /^(\+39|0039)?\s?\d{9,11}$/;
     return phoneRegex.test(phone.replace(/\s/g, ''));
@@ -234,7 +235,6 @@ export function showServiceMessage(message, type = 'success', anchorElement = nu
     Object.assign(msgDiv.style, {
         padding: '10px 15px',
         borderRadius: '8px',
-        marginTop: '10px',
         marginBottom: '10px',
         fontSize: '0.9rem',
         fontWeight: '600',

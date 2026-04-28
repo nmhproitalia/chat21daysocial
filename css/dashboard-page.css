@@ -4,6 +4,157 @@
 /* #                                                          # */
 /* ############################################################ */
 
-.dashboard-submit-btn {
-margin-top: 1.5rem !important;
+/* ############################################################ */
+/* #                                                          # */
+/* #           LAYOUT CARD UTENTI - GRIGLIA 3 COLONNE        # */
+/* #                                                          # */
+/* ############################################################ */
+
+#userGrid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+row-gap: 0px;
+column-gap: 30px;
+}
+
+
+/* ############################################################ */
+/* #                                                          # */
+/* #           STATISTICHE CARD ALIGNMENT FIX                 # */
+/* #                                                          # */
+/* ############################################################ */
+
+.stats-card-container {
+width: 100%;
+margin-top: 20px;
+}
+
+/* SETTINGS CARD ALIGNMENT FIX */
+.settings-card-container {
+width: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+#userGrid {
+grid-template-columns: repeat(2, 1fr);
+}
+}
+
+@media screen and (max-width: 768px) {
+#userGrid {
+grid-template-columns: 1fr;
+}
+}
+
+
+/* ############################################################ */
+/* #                                                          # */
+/* #           STILI Z-INDEX E POINTER EVENTS                 # */
+/* #                                                          # */
+/* ############################################################ */
+
+.z-index-high {
+pointer-events: auto !important;
+position: relative;
+z-index: 1000 !important;
+}
+
+
+/* ############################################################ */
+/* #                                                          # */
+/* #           CARD E CONTENITORI                             # */
+/* #                                                          # */
+/* ############################################################ */
+
+.stats-title {
+margin: 0 0 15px 0;
+font-size: 1rem;
+font-weight: 700;
+color: var(--garden-green);
+}
+
+.stats-container {
+display: flex;
+gap: 20px;
+flex-wrap: wrap;
+}
+
+.stats-item {
+flex: 1;
+min-width: 150px;
+}
+
+.stats-label {
+margin: 0 0 5px 0;
+font-size: 0.85rem;
+color: #666;
+font-weight: 600;
+}
+
+.stats-value {
+margin: 0;
+font-size: 2rem;
+font-weight: 900;
+color: var(--garden-green);
+}
+
+.stats-value-grass {
+color: var(--grass);
+}
+
+
+/* ############################################################ */
+/* #                                                          # */
+/* #           ACCORDION                                        # */
+/* #                                                          # */
+/* ############################################################ */
+
+.accordion-item {
+margin-bottom: 10px;
+}
+
+.accordion-btn {
+width: 100%;
+padding: 12px;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+font-weight: 700;
+text-align: left;
+display: flex;
+justify-content: space-between;
+align-items: center;
+pointer-events: auto !important;
+z-index: 1000 !important;
+position: relative;
+}
+
+.accordion-btn-coach {
+background: #b1933a;
+color: white;
+}
+
+.accordion-btn-assistant {
+background: #6B3E26;
+color: white;
+}
+
+.accordion-btn-challenger {
+background: #7a7a7a;
+color: white;
+}
+
+.accordion-content {
+display: none;
+margin-top: 10px;
+}
+
+.accordion-list {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+.icon-margin-right {
+margin-right: 8px;
 }

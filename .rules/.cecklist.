@@ -1,0 +1,38 @@
+// CECKLIST DA COMPILARE A FINE DI OGNI SESSIONE DI LAVORO //
+Irina deve aggiornare la .rules/.cecklist.
+
+SESSIONE 28 APRILE 2026 - PUNTI FERMI BLINDATI:
+
+1. REGISTRAZIONE FUNZIONANTE
+   - Fix errore phone undefined con doppio controllo (app.js + auth.js)
+   - Campo phone ora gestito con fallback stringa vuota
+   - Registrazione salva correttamente tutti i campi su Firestore
+
+2. LAYOUT LOGIN OTTIMIZZATO
+   - Email e password verticali (rimosso form-grid)
+   - Occhietti password coerenti (fa-eye-slash)
+   - Centratura testi card-body
+
+3. AVATAR PLACEHOLDER UNIFICATO
+   - Sostituito UI Avatars verde con placeholder CSS grigio
+   - Icona omino centrata con !important flex properties
+   - Applicato a renderUserAvatarOnly e renderUserHTML
+
+4. POSTS CSS PULITO
+   - Rimossi sfondo e padding da comment-badge
+   - Stili post-modal-submit-btn ottimizzati dall'utente
+
+5. DEPLOY COMPLETATO
+   - Tutti i fix deployati su Firebase Hosting
+   - URL: https://giornifit-app.web.app
+Ad ogni fine sessione di lavoro: inserire note dei punti fermi e blindati del progetto
+
+
+
+
+
+
+PS: 
+- Ad ogni fine sessione di lavoro: Backup su GitHub del lavoro svolto
+- Ad ogni fine sessione di lavoro: Aggiornare la PWA
+- Ad ogni fine sessione di lavoro: Creare memoria delle soluzioni di successo

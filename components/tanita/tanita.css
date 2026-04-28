@@ -327,3 +327,31 @@ border-radius: 2px;
 transition: left 0.3s ease;
 z-index: 10;
 }
+
+
+/* ############################################################ */
+/* #                                                          # */
+/* #           STILI INLINE TANITA - ESTERNALIZZATI          # */
+/* #                                                          # */
+/* ############################################################ */
+
+.wellness-question-text {
+margin: 1.5rem 0;
+font-weight: bold;
+font-size: 1.1rem;
+color: #1a1a1a;
+}
+
+.wellness-buttons-container {
+display: flex;
+gap: 1rem;
+margin-bottom: 1rem;
+}
+
+.wellness-score-container-hidden {
+display: none;
+}
+
+.user-selection-section-hidden {
+display: none;
+}

@@ -74,15 +74,15 @@ const q = this.questions[this.currentQuestionIndex];
 container.innerHTML = `
 <div class="wellness-test-container">
 <h4>Valutazione Benessere - Domanda ${this.currentQuestionIndex + 1} di 11</h4>
-<p style="margin: 1.5rem 0; font-weight: bold; font-size: 1.1rem; color: #1a1a1a;">${q.text}</p>
-<div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+<p class="wellness-question-text">${q.text}</p>
+<div class="wellness-options-container">
 <button class="btn-discord wellness-opt-btn" data-value="yes" style="background: var(--success-color)">SÌ</button>
 <button class="btn-discord wellness-opt-btn" data-value="no" style="background: var(--danger-color)">NO</button>
 </div>
-<div id="textInputContainer" style="display: none; margin-top: 1rem;">
-<label style="margin-bottom: 0.5rem; display: block;">Specifica quali spuntini fai:</label>
-<textarea id="wellnessTextResponse" rows="2" style="width: 100%;" placeholder="Es: Mandorle, frutto, yogurt..."></textarea>
-<button id="nextWithText" class="btn-discord" style="margin-top: 1rem;">Continua</button>
+<div id="textInputContainer" class="wellness-text-input-container">
+<label class="wellness-text-label">Specifica quali spuntini fai:</label>
+<textarea id="wellnessTextResponse" rows="2" class="wellness-textarea" placeholder="Es: Mandorle, frutto, yogurt..."></textarea>
+<button id="nextWithText" class="btn-discord wellness-next-btn">Continua</button>
 </div>
 </div>
 `;
@@ -91,6 +91,7 @@ container.querySelectorAll('.wellness-opt-btn').forEach(btn => {
 btn.onclick = () => {
 const val = btn.dataset.value;
 if (q.hasText && val === 'yes') {
+document.getElementById('textInputContainer').classList.remove('wellness-text-input-container');
 document.getElementById('textInputContainer').style.display = 'block';
 container.querySelectorAll('.wellness-opt-btn').forEach(b => b.style.opacity = '0.5');
 btn.style.opacity = '1';
@@ -168,17 +169,17 @@ container.innerHTML = `
 <span>Ultima Valutazione: ${formattedDate}</span>
 </div>
 
-<div class="wellness-graphic" style="margin: 1.5rem 0;">
-<div style="display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem;">
+<div class="wellness-graphic">
+<div class="wellness-progress-header">
 <span>Punteggio: ${score}/15</span>
-<span style="color: ${status.color}">${status.text}</span>
+<span style="color: ${status.color};">${status.text}</span>
 </div>
-<div class="progress-bar-container" style="background: #e0e0e0; height: 20px; border-radius: 10px; overflow: hidden; border: 1px solid #ccc;">
-<div style="width: ${(score/15)*100}%; height: 100%; background: ${status.color}; transition: width 1s ease-in-out;"></div>
+<div class="wellness-progress-bar-container">
+<div class="wellness-progress-bar-fill" style="width: ${(score/15)*100}%; background: ${status.color};"></div>
 </div>
 </div>
 
-<div class="wellness-tips-section card" style="background: #fff; margin-top: 1rem;">
+<div class="wellness-tips-section card">
 <h4 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-magic"></i> Suggerimenti Personalizzati</h4>
 <div class="tips-grid">
 ${tips || '<p>Complimenti! Il tuo stile di vita è eccellente.</p>'}

@@ -89,14 +89,11 @@ console.log('User photo path:', photoURL);
 console.log('User data:', user);
 
 if (photoURL && photoURL !== '') {
-userAvatar.innerHTML = `<img src="${photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
-userAvatar.style.background = 'transparent';
+userAvatar.innerHTML = `<img src="${photoURL}" class="profile-img-full">`;
+userAvatar.classList.remove('avatar-placeholder');
 userAvatar.onerror = () => {
 userAvatar.innerHTML = '<i class="fas fa-user"></i>';
-userAvatar.style.background = '#e1e1e1';
-userAvatar.style.display = 'flex';
-userAvatar.style.alignItems = 'center';
-userAvatar.style.justifyContent = 'center';
+userAvatar.className = 'user-avatar avatar-placeholder';
 };
 } else {
 // Usa Firebase Auth se disponibile
@@ -105,29 +102,20 @@ const currentUser = window.auth.currentUser;
 const authPhotoURL = currentUser.photoURL || '';
 
 if (authPhotoURL && authPhotoURL !== '') {
-userAvatar.innerHTML = `<img src="${authPhotoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
-userAvatar.style.background = 'transparent';
+userAvatar.innerHTML = `<img src="${authPhotoURL}" class="profile-img-full">`;
+userAvatar.classList.remove('avatar-placeholder');
 userAvatar.onerror = () => {
 userAvatar.innerHTML = '<i class="fas fa-user"></i>';
-userAvatar.style.background = '#e1e1e1';
-userAvatar.style.display = 'flex';
-userAvatar.style.alignItems = 'center';
-userAvatar.style.justifyContent = 'center';
+userAvatar.className = 'user-avatar avatar-placeholder';
 };
 } else {
 userAvatar.innerHTML = '<i class="fas fa-user"></i>';
-userAvatar.style.background = '#e1e1e1';
-userAvatar.style.display = 'flex';
-userAvatar.style.alignItems = 'center';
-userAvatar.style.justifyContent = 'center';
+userAvatar.className = 'user-avatar avatar-placeholder';
 }
 } else {
 // Fallback icona FontAwesome
 userAvatar.innerHTML = '<i class="fas fa-user"></i>';
-userAvatar.style.background = '#e1e1e1';
-userAvatar.style.display = 'flex';
-userAvatar.style.alignItems = 'center';
-userAvatar.style.justifyContent = 'center';
+userAvatar.className = 'user-avatar avatar-placeholder';
 }
 }
 };
@@ -372,14 +360,9 @@ previewContainer.style.display = 'none';
 return;
 }
 
-// Layout dinamico in base al numero di file
-if (mediaFiles.length === 1) {
-previewContainer.style.gridTemplateColumns = '1fr';
-} else if (mediaFiles.length === 2) {
-previewContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
-} else {
-previewContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
-}
+// Aggiungi data-count per griglia dinamica
+previewContainer.setAttribute('data-count', mediaFiles.length);
+previewContainer.style.gridTemplateColumns = '';
 
 mediaFiles.forEach((mediaObj, index) => {
 const mediaItem = document.createElement('div');
@@ -388,12 +371,6 @@ mediaItem.className = 'media-preview-wrapper';
 const img = document.createElement(mediaObj.type.startsWith('image/') ? 'img' : 'video');
 img.src = mediaObj.url;
 img.className = 'media-preview-item';
-
-if (mediaFiles.length === 1) {
-img.classList.add('aspect-16-9');
-} else {
-img.classList.add('aspect-1-1');
-}
 
 if (mediaObj.type.startsWith('video/')) {
 img.controls = true;
