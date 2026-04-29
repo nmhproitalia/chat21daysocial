@@ -1222,7 +1222,19 @@ targetBodyFat = initialFat * 0.9;
 }
 progress = (initial.bodyFat - latest.bodyFat) / (initial.bodyFat - targetBodyFat);
 } else if (goal === 'muscle_gain') {
-const targetLeanMass = userData.targetLeanMass || (initial.leanMass * 1.1);
+let targetLeanMass;
+if (userData.targetLeanMass) {
+targetLeanMass = userData.targetLeanMass;
+} else {
+const initialLean = initial.leanMass;
+if (initialLean < 50) {
+targetLeanMass = initialLean * 1.15;
+} else if (initialLean < 65) {
+targetLeanMass = initialLean * 1.1;
+} else {
+targetLeanMass = initialLean * 1.05;
+}
+}
 progress = (latest.leanMass - initial.leanMass) / (targetLeanMass - initial.leanMass);
 } else if (goal === 'toning') {
 const fatProgress = (initial.bodyFat - latest.bodyFat) / (initial.bodyFat * 0.2);
