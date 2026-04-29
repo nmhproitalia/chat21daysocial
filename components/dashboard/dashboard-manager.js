@@ -380,8 +380,8 @@ const roleLabel = isCoach ? 'Coach' : 'Challenger';
 const roleClass = isCoach ? 'role-coach' : 'role-challenger';
 
 const goal = user.mainGoal ? formatGoal(user.mainGoal) : 'N/D';
-const water = user.waterNeeds ? user.waterNeeds + ' L' : 'N/D';
-const protein = user.proteinNeeds ? user.proteinNeeds + ' g' : 'N/D';
+const water = user.latest_bia?.waterNeeds ? user.latest_bia.waterNeeds + ' L' : 'N/D';
+const protein = user.latest_bia?.proteinNeeds ? user.latest_bia.proteinNeeds + ' g' : 'N/D';
 const bmr = user.latest_bia?.bmr ? user.latest_bia.bmr + ' kcal' : 'N/D';
 
 // Pattern identico a challengers-manager.js
