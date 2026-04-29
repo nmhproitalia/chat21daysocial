@@ -394,16 +394,18 @@ bmr = user.bmr + ' kcal';
 // Calcola scenario Progresso Ricomposizione Corporea
 let scenario = 'N/D';
 let scenarioColor = '#6c757d';
-if (user.initial_bia && user.latest_bia) {
-const initialBodyFat = parseFloat(user.initial_bia.bodyFat || 0);
-const latestBodyFat = parseFloat(user.latest_bia.bodyFat || 0);
-const initialLeanKg = parseFloat(user.initial_bia.leanMass || 0);
-const latestLeanKg = parseFloat(user.latest_bia.leanMass || 0);
+if (user.initial_bia && user.latest_bia && user.initial_bia.weight && user.latest_bia.weight) {
+const initialBodyFat = parseFloat(user.initial_bia.bodyFat || user.initial_bia.bodyfat || 0);
+const latestBodyFat = parseFloat(user.latest_bia.bodyFat || user.latest_bia.bodyfat || 0);
+const initialLeanKg = parseFloat(user.initial_bia.leanMass || user.initial_bia.leanmass || 0);
+const latestLeanKg = parseFloat(user.latest_bia.leanMass || user.latest_bia.leanmass || 0);
 const initialFatKg = (user.initial_bia.weight * initialBodyFat) / 100;
 const latestFatKg = (user.latest_bia.weight * latestBodyFat) / 100;
 const fatDeltaKg = latestFatKg - initialFatKg;
 const leanDeltaKg = latestLeanKg - initialLeanKg;
 const weightDelta = user.latest_bia.weight - user.initial_bia.weight;
+
+console.log(`[DEBUG] ${d.id} Scenario: fatDelta=${fatDeltaKg.toFixed(2)}, leanDelta=${leanDeltaKg.toFixed(2)}, weightDelta=${weightDelta.toFixed(2)}`);
 
 if (fatDeltaKg < 0 && leanDeltaKg > 0) {
 scenario = 'Ricomposizione Perfetta';
@@ -417,6 +419,8 @@ scenarioColor = '#ffc107';
 } else {
 scenario = 'Maintenance';
 }
+} else {
+console.log(`[DEBUG] ${d.id} Scenario: dati mancanti - initial_bia=${!!user.initial_bia}, latest_bia=${!!user.latest_bia}`);
 }
 
 // Pattern identico a challengers-manager.js
