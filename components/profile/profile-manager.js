@@ -1187,8 +1187,8 @@ console.error('Errore caricamento dati BIA:', error);
 }
 }
 
-export function updateBadgeStatus(userData) {
-const badgeEl = document.getElementById('badgeStatus');
+export function updateBadgeStatus(userData, userId = null) {
+const badgeEl = document.getElementById(userId ? `badgeStatus-${userId}` : 'badgeStatus');
 if (!badgeEl) return;
 
 if (!userData || !userData.latest_bia || !userData.initial_bia) {

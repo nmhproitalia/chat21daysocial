@@ -10,6 +10,7 @@ import { ref, deleteObject, getDownloadURL } from "https://www.gstatic.com/fireb
 import { showServiceMessage, validatePhoneNumber } from "../../components/general/ui-helper.js";
 import { getPhotoURL, getRoleStyles, renderUserHTML, getRankClass } from "../../components/general/user-manager.js";
 import { getRoleMetadata } from "../../components/general/auth-core.js";
+import { updateBadgeStatus } from "../../components/profile/profile-manager.js";
 
 const ADMIN_EMAIL = "cristian.mulino@gmail.com";
 let dashboardInitialized = false;
@@ -503,6 +504,16 @@ ${avatarHTML}
 <div id="delete-msg-${d.id}" class="delete-message-area"></div>
 </div>
 `;
+
+// Carica dati BIA e aggiorna badge
+getDoc(doc(db, "users", d.id)).then(userDoc => {
+if (userDoc.exists()) {
+const userData = userDoc.data();
+userData.id = d.id;
+updateBadgeStatus(userData, d.id);
+}
+}).catch(e => console.error('Errore caricamento dati BIA per badge:', e));
+
 return userCard;
 });
 }
