@@ -392,7 +392,7 @@ bmr = user.bmr + ' kcal';
 }
 
 // Calcola scenario Progresso Ricomposizione Corporea
-let scenario = 'N/D';
+let scenario = 'Dati insufficienti';
 let scenarioColor = '#6c757d';
 if (user.initial_bia && user.latest_bia && user.initial_bia.weight && user.latest_bia.weight) {
 const initialBodyFat = parseFloat(user.initial_bia.bodyFat || user.initial_bia.bodyfat || 0);
