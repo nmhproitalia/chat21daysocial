@@ -971,10 +971,19 @@ if (!rating) return;
 const indicator = document.getElementById('physiqueRatingIndicator');
 const textEl = document.getElementById('physiqueRatingText');
 
+console.log('[DEBUG] updatePhysiqueRatingBar called with rating:', rating);
+console.log('[DEBUG] indicator element:', indicator);
+console.log('[DEBUG] textEl element:', textEl);
+
 if (indicator && textEl) {
 const position = ((rating.id - 1) / 8) * 100;
 indicator.style.left = `${Math.min(100, Math.max(0, position))}%`;
+indicator.style.background = '#fff';
+indicator.style.border = '2px solid #000';
 textEl.textContent = rating.name;
+console.log('[DEBUG] indicator position set to:', position);
+} else {
+console.log('[DEBUG] indicator or textEl not found');
 }
 }
 
