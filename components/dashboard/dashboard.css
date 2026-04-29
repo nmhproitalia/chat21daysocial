@@ -232,31 +232,6 @@ color: #C0C0C0;
 margin-top: 0;
 }
 
-.profile-accordion-header {
-background: #266431;
-padding: 12px 16px;
-border-radius: 8px;
-cursor: pointer;
-display: flex;
-justify-content: space-between;
-align-items: center;
-transition: background 0.2s;
-margin-top: 15px !important;
-color: white;
-}
-
-.profile-accordion-header .profile-accordion-label {
-color: white;
-}
-
-.profile-accordion-header i {
-color: white;
-}
-
-.profile-accordion-header:hover {
-background: #1a4a22;
-}
-
 .profile-accordion-icon {
 transition: transform 0.3s;
 }
@@ -277,12 +252,6 @@ margin-bottom: 30px;
 max-height: 2000px;
 }
 
-.profile-accordion-icon {
-transition: transform 0.3s;
-}
-
-.profile-accordion-icon.rotated {
-transform: rotate(180deg);
 }
 
 

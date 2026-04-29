@@ -388,52 +388,6 @@ font-weight: 600;
 margin-top: 0;
 }
 
-.profile-accordion-header {
-background: #266431;
-padding: 12px 16px;
-border-radius: 8px;
-cursor: pointer;
-display: flex;
-justify-content: space-between;
-align-items: center;
-transition: background 0.2s;
-color: white;
-}
-
-.profile-accordion-header:hover {
-background: #1a4a22;
-}
-
-.profile-accordion-label {
-color: white;
-font-weight: 600;
-}
-
-.profile-accordion-header i {
-color: white;
-}
-
-.profile-accordion-icon {
-color: #666;
-font-size: 0.9rem;
-transition: transform 0.3s;
-}
-
-.profile-accordion-icon.rotated {
-transform: rotate(180deg);
-}
-
-.profile-accordion-content {
-max-height: 0;
-overflow: hidden;
-transition: max-height 0.3s ease-out;
-margin-bottom: 30px;
-}
-
-.profile-accordion-content.expanded {
-max-height: 2000px;
-}
-
 /* ############################################################ */
 /* #                                                          # */
 /* #           STILI INLINE TANITA - ESTERNALIZZATI          # */
