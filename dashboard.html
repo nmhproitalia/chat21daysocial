@@ -59,8 +59,13 @@
 
 
 
-<!-- SEZIONE IMPOSTAZIONI CHALLENGE -->
-<span><i class="fas fa-calendar-alt"></i> Impostazioni Challenge</span>
+<!-- Accordion Impostazioni Challenge -->
+<div class="profile-section-accordion">
+<div class="profile-accordion-header accordion-btn-challenge" onclick="toggleAccordion('challengeSettings')">
+<span class="profile-accordion-label"><i class="fas fa-calendar-alt"></i> Impostazioni Challenge</span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-challengeSettings"></i>
+</div>
+<div id="content-challengeSettings" class="profile-accordion-content">
 <section id="challengeSettingsCard" class="card">
 <div class="card-body">
 <form id="challengeSettingsForm">
@@ -80,12 +85,18 @@
 </form>
 </div>
 </section>
+</div>
+</div>
 
 
 
-
-<!-- SEZIONE STATISTICHE -->
-<span><i class="fas fa-chart-pie"></i> Statistiche Challengers Iscritti</span>
+<!-- Accordion Statistiche Challengers -->
+<div class="profile-section-accordion">
+<div class="profile-accordion-header accordion-btn-stats" onclick="toggleAccordion('stats')">
+<span class="profile-accordion-label"><i class="fas fa-chart-pie"></i> Statistiche Challengers Iscritti</span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-stats"></i>
+</div>
+<div id="content-stats" class="profile-accordion-content">
 <section id="statsCard" class="card">
 <div class="card-body">
 <h4 class="stats-title">Conteggio Iscritti Effettivi</h4>
@@ -101,6 +112,9 @@
 </div>
 </div>
 </section>
+</div>
+</div>
+</div>
 
 
 
