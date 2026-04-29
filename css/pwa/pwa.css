@@ -56,21 +56,21 @@ transition: transform 0.1s ease, opacity 0.1s ease !important;
 /* 3. CONTROLLO DELL'INTERFACCIA                             */
 /* ---------------------------------------------------------- */
 
-/* Scroll fluido - previeni pull-to-refresh */
+/* Scroll fluido - mantiene pull-to-refresh nativo */
 body {
-overscroll-behavior-y: contain !important;
+overscroll-behavior-y: auto !important;
 }
 
 /* Preveni scroll orizzontale su mobile */
-html, body {
+body {
 overflow-x: hidden !important;
 max-width: 100vw !important;
 position: relative !important;
 }
 
-/* Preveni zoom su touch */
+/* Consentito zoom nativo su touch */
 body {
-touch-action: pan-x pan-y !important;
+touch-action: auto !important;
 }
 
 /* Disabilita selezione testo su elementi interattivi */
