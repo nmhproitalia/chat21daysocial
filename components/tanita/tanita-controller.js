@@ -1,7 +1,7 @@
 import { auth, db } from "../../js/firebase.js";
 import { doc, getDoc, updateDoc, serverTimestamp, setDoc, collection } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import { showServiceMessage } from "../general/ui-helper.js";
-import { calculateBMI, calculateAge, calculateNeeds } from "../profile/profile-manager.js";
+import { calculateBMI, calculateAge, calculateNeeds, displayNeedsResults } from "../profile/profile-manager.js";
 
 export class BIAInputController {
 constructor() {
@@ -219,21 +219,9 @@ const age = ageInput ? parseFloat(ageInput.value) : (this.userProfile ? parseFlo
 const gender = genderInput ? genderInput.value : (this.userProfile ? this.userProfile.gender : null);
 const leanMass = leanMassInput ? parseFloat(leanMassInput.value) : (this.userProfile ? this.userProfile.leanMass : null);
 
-const waterEl = document.getElementById('waterNeedsDisplay');
-const proteinEl = document.getElementById('proteinNeedsDisplay');
-const bmrEl = document.getElementById('bmrDisplay');
-
 if (weight && height && age && gender) {
 const needs = calculateNeeds(weight, parseFloat(height), parseFloat(age), gender, leanMass);
-if (waterEl) {
-waterEl.textContent = `${needs.water} L/giorno`;
-}
-if (proteinEl) {
-proteinEl.textContent = `${needs.protein} g/giorno`;
-}
-if (bmrEl) {
-bmrEl.textContent = `${needs.bmr} kcal`;
-}
+displayNeedsResults(needs.water, needs.protein, needs.bmr);
 }
 }
 

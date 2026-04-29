@@ -786,6 +786,22 @@ console.error('Errore caricamento coach/assistenti nel profilo:', error);
 }
 }
 
+export function displayNeedsResults(water, protein, bmr) {
+const waterNeedsDisplay = document.getElementById('waterNeedsDisplay');
+const proteinNeedsDisplay = document.getElementById('proteinNeedsDisplay');
+const bmrDisplay = document.getElementById('bmrDisplay');
+
+if (waterNeedsDisplay && water) {
+waterNeedsDisplay.textContent = `${water} L/giorno`;
+}
+if (proteinNeedsDisplay && protein) {
+proteinNeedsDisplay.textContent = `${protein} g/giorno`;
+}
+if (bmrDisplay && bmr) {
+bmrDisplay.textContent = `${bmr} kcal`;
+}
+}
+
 
 /* ############################################################ */
 /* #                                                          # */

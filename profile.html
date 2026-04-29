@@ -713,7 +713,7 @@ import "./components/general/app.js?v=1.0";
 import { loadUserData as loadUserDataFromManager, formatDisplayName, getPhotoURL, getUserDataForUI, renderUserHTML, getRoleStyles, initUserListener, updateUI, getRankClass } from "./components/general/user-manager.js?v=10.0";
 import { initHeader } from "./components/general/header/header.js?v=6.0";
 import { initFooter } from "./components/general/footer/footer-brand.js?v=5.0";
-import { setupProfiloActions, loadPianiAutomatici } from "./components/profile/profile-manager.js?v=14.2";
+import { setupProfiloActions, loadPianiAutomatici, displayNeedsResults } from "./components/profile/profile-manager.js?v=14.2";
 import { initGlobalEyes } from "./components/general/ui-helper.js?v=4.0";
 import { auth, db } from "./js/firebase.js";
 import { doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
@@ -730,7 +730,7 @@ initGlobalEyes();
 onAuthStateChanged(auth, (user) => {
 if (user) {
 setupProfiloActions(user.uid);
-loadNeedsResults(user.uid);
+loadNeedsResultsUnified(user.uid);
 loadBIAResults(user.uid);
 initWellnessTest();
 }
@@ -749,8 +749,7 @@ birthDateInput.showPicker();
 }
 }); // Chiusura DOMContentLoaded
 
-// Funzione per caricare Fabbisogni Calcolati
-async function loadNeedsResults(userId) {
+async function loadNeedsResultsUnified(userId) {
 try {
 const userDoc = await getDoc(doc(db, "users", userId));
 if (userDoc.exists()) {
@@ -760,22 +759,11 @@ const latestBia = userData.latest_bia;
 if (latestBia) {
 const needsDataDisplay = document.getElementById('needsDataDisplay');
 const needsResultsContainer = document.getElementById('needsResultsContainer');
-const waterNeedsDisplay = document.getElementById('waterNeedsDisplay');
-const proteinNeedsDisplay = document.getElementById('proteinNeedsDisplay');
-const bmrDisplay = document.getElementById('bmrDisplay');
 
 if (needsDataDisplay) needsDataDisplay.style.display = 'none';
 if (needsResultsContainer) needsResultsContainer.classList.remove('results-container-hidden');
 
-if (waterNeedsDisplay && latestBia.waterNeeds) {
-waterNeedsDisplay.textContent = `${latestBia.waterNeeds} L/giorno`;
-}
-if (proteinNeedsDisplay && latestBia.proteinNeeds) {
-proteinNeedsDisplay.textContent = `${latestBia.proteinNeeds} g/giorno`;
-}
-if (bmrDisplay && latestBia.bmr) {
-bmrDisplay.textContent = `${latestBia.bmr} kcal`;
-}
+displayNeedsResults(latestBia.waterNeeds, latestBia.proteinNeeds, latestBia.bmr);
 }
 }
 } catch (error) {
