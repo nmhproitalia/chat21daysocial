@@ -440,19 +440,19 @@ ${avatarHTML}
 </div>
 <div class="user-info-grid user-info-grid-dashboard">
 <div class="user-info-item">
-<span class="user-info-icon"><i class="fas fa-bullseye"></i></span>
+<span class="user-info-icon goal-icon"><i class="fas fa-bullseye"></i></span>
 <span class="user-info-value">${goal}</span>
 </div>
 <div class="user-info-item">
-<span class="user-info-icon"><i class="fas fa-tint"></i></span>
+<span class="user-info-icon water-icon"><i class="fas fa-tint"></i></span>
 <span class="user-info-value">${water}</span>
 </div>
 <div class="user-info-item">
-<span class="user-info-icon"><i class="fas fa-drumstick-bite"></i></span>
+<span class="user-info-icon protein-icon"><i class="fas fa-drumstick-bite"></i></span>
 <span class="user-info-value">${protein}</span>
 </div>
 <div class="user-info-item">
-<span class="user-info-icon"><i class="fas fa-fire"></i></span>
+<span class="user-info-icon bmr-icon"><i class="fas fa-fire"></i></span>
 <span class="user-info-value">${bmr}</span>
 </div>
 </div>

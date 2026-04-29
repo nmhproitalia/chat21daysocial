@@ -547,7 +547,22 @@ gap: 10px;
 
 .user-info-icon {
 font-size: 1rem;
+}
+
+.user-info-icon.goal-icon {
 color: #266431;
+}
+
+.user-info-icon.water-icon {
+color: #3498db;
+}
+
+.user-info-icon.protein-icon {
+color: #e74c3c;
+}
+
+.user-info-icon.bmr-icon {
+color: #f39c12;
 }
 
 .user-info-label {
