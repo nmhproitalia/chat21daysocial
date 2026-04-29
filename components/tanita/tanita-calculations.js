@@ -74,6 +74,9 @@ physiqueRating: physiqueRating,
 timestamp: new Date().toISOString()
 };
 
+console.log('[DEBUG saveBIAData] Dati salvati:', fullBiaData);
+console.log('[DEBUG saveBIAData] UID:', uid);
+
 const userRef = doc(db, "users", uid);
 await updateDoc(userRef, {
 latest_bia: fullBiaData,

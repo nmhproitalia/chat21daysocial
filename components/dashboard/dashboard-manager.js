@@ -411,6 +411,9 @@ if (user.latest_bia?.physiqueRating) {
 physiqueRating = user.latest_bia.phiqueRating;
 }
 
+console.log(`[DEBUG Card ${d.id}] latest_bia:`, user.latest_bia);
+console.log(`[DEBUG Card ${d.id}] water:`, water, 'protein:', protein, 'bmr:', bmr, 'physiqueRating:', physiqueRating);
+
 // Calcola scenario Progresso Ricomposizione Corporea
 let scenario = 'Dati insufficienti';
 let scenarioColor = '#6c757d';
