@@ -683,6 +683,11 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Aggiunto chiamata updateBIAParamsUI dopo fillFormWithExistingData
    - Fabbisogni ora calcolati con dati caricati dal profilo
    - Deploy completato
+
+103. FIX TESTO INTRODUTTIVO VALUTAZIONE BENESSERE TANITA
+   - Cambiato testo introduttivo per essere generale invece di specifico domanda 12
+   - Descrizione domanda 12 ora appare solo quando necessario
+   - Deploy completato
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults
