@@ -706,6 +706,13 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Corretto event listener per gender (select, non radio button)
    - Fabbisogni calcolati ora si aggiornano in tempo reale
    - Deploy completato
+
+107. UNIFICATO FUNZIONI RISULTATI E PARAMETRI BIA PROFILO E TANITA
+   - Aggiunto calculatePhysiqueRating, updateDots, updateRecompositionProgress in profile-manager.js
+   - Aggiornato import in profile.html per includere le funzioni comuni
+   - Rimosse funzioni inline calculatePhysiqueRating, updateRecompositionProgress, updateDots da profile.html
+   - Entrambe ora usano le stesse funzioni per Physique Rating e Progresso Ricomposizione
+   - Deploy completato
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults

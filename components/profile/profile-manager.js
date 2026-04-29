@@ -848,10 +848,10 @@ const metrics = [
 ];
 
 metrics.forEach(metric => {
-const dot = document.getElementById(`dot-${metric.id}`);
+const dot = document.getElementById(`${metric.id}Dot`);
 if (dot && metric.value !== undefined) {
 const value = parseFloat(metric.value);
-dot.className = 'bia-result-dot';
+dot.className = 'tanita-dot';
 if (value !== null && !isNaN(value)) {
 if (metric.higherIsWorse) {
 if (value < metric.thresholds[0]) dot.classList.add('bia-dot-good');
@@ -887,19 +887,18 @@ const el = document.getElementById(id);
 if (el) el.textContent = `${value}${unit}`;
 };
 
-updateEl('initialWeight', initialBia.weight.toFixed(1), ' kg');
-updateEl('currentWeight', latestBia.weight.toFixed(1), ' kg');
-updateEl('initialLean', initialLeanKg.toFixed(1), ' kg');
-updateEl('currentLean', latestLeanKg.toFixed(1), ' kg');
-updateEl('initialFat', initialFatKg.toFixed(1), ' kg');
-updateEl('currentFat', latestFatKg.toFixed(1), ' kg');
-updateEl('deltaWeight', (deltaWeight >= 0 ? '+' : '') + deltaWeight.toFixed(1), ' kg');
-updateEl('deltaLean', (deltaLean >= 0 ? '+' : '') + deltaLean.toFixed(1), ' kg');
-updateEl('deltaFat', (deltaFat >= 0 ? '+' : '') + deltaFat.toFixed(1), ' kg');
+updateEl('weightInitial', initialBia.weight.toFixed(1), ' kg');
+updateEl('weightLatest', latestBia.weight.toFixed(1), ' kg');
+updateEl('leanInitial', initialLeanKg.toFixed(1), ' kg');
+updateEl('leanLatest', latestLeanKg.toFixed(1), ' kg');
+updateEl('fatInitial', initialFatKg.toFixed(1), ' kg');
+updateEl('fatLatest', latestFatKg.toFixed(1), ' kg');
+updateEl('weightDelta', (deltaWeight >= 0 ? '+' : '') + deltaWeight.toFixed(1), ' kg');
+updateEl('leanDelta', (deltaLean >= 0 ? '+' : '') + deltaLean.toFixed(1), ' kg');
+updateEl('fatDelta', (deltaFat >= 0 ? '+' : '') + deltaFat.toFixed(1), ' kg');
 
 const scenarioEl = document.getElementById('recompositionScenario');
-const scenarioValueEl = document.getElementById('recompositionScenarioValue');
-if (scenarioEl && scenarioValueEl) {
+if (scenarioEl) {
 let scenario = 'Maintenance';
 let color = '#6c757d';
 if (deltaLean > 0 && deltaFat < 0) {
@@ -914,8 +913,6 @@ color = '#ffc107';
 }
 scenarioEl.textContent = scenario;
 scenarioEl.style.color = color;
-scenarioValueEl.textContent = scenario;
-scenarioValueEl.style.color = color;
 }
 }
 
