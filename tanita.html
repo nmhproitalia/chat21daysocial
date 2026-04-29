@@ -24,8 +24,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="components/general/header/header.css?v=15.0">
 <link rel="stylesheet" href="components/general/footer/footer.css?v=13.0">
+<link rel="stylesheet" href="components/general/user-manager.css?v=6.0">
+<link rel="stylesheet" href="components/profile/profile-manager.css?v=1.0">
+<link rel="stylesheet" href="components/profile/profile.css?v=1.0">
+<link rel="stylesheet" href="css/identity-system.css?v=5.0">
 <link rel="stylesheet" href="components/tanita/tanita.css?v=1.0">
-<link rel="stylesheet" href="css/utilities.css?v=1.0">
 </head>
 <body class="auth-page">
 <div id="unified-header"></div>
@@ -35,6 +38,37 @@
 <main class="page-main">
 <div class="container">
 <div id="app">
+
+<!-- CARD IDENTITÀ UTENTE -->
+<section class="card">
+<div class="contenuto">
+<div class="profile-header-main">
+<div id="profileImg" class="user-avatar"><i class="fas fa-user"></i></div>
+<div id="badgeStatus" class="badge-status">?</div>
+<h2 id="userNameDisplay">Caricamento...</h2>
+<p id="userRoleDisplay"><i class="fas fa-user"></i> Challenger</p>
+<div class="user-ranking-bar-container">
+<div class="user-ranking-bar" id="rankingBar"></div>
+</div>
+<input type="file" id="photoInput" accept="image/*" class="photo-input-hidden">
+<div class="user-action-menu">
+<a href="welcome.html" class="action-btn-mini btn-challenge"><i class="fas fa-rocket"></i><span>Info Challenge</span></a>
+<a href="https://www.herbalife.it/iscriviti-come-cliente-privilegiato/" target="_blank" class="action-btn-mini btn-privilege"><i class="fas fa-gem"></i><span>Cliente Privilegiato</span></a>
+<a href="https://www.herbalife.it/iscriviti-come-incaricato-alle-vendite/" target="_blank" class="action-btn-mini btn-become-coach"><i class="fas fa-user-tie"></i><span>Diventa Coach</span></a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- DESCRIZIONE SEZIONE TANITA -->
+<section class="card">
+<div class="contenuto">
+<div class="wellness-intro-text">
+<h3 style="color: var(--primary-color); margin-bottom: 0.5rem;"><i class="fas fa-chart-line"></i> Sistema TANITA® - #21GIORNIFIT</h3>
+<p style="margin: 0;">Benvenuto nel sistema di analisi corporea Tanita. Qui puoi inserire i tuoi dati BIA (Bioimpedenza), calcolare i fabbisogni nutrizionali, monitorare il progresso della ricomposizione corporea e valutare il tuo livello di forma fisica. Compila il questionario di benessere per ricevere suggerimenti personalizzati.</p>
+</div>
+</div>
+</section>
 
 <!-- SEZIONE VALUTAZIONE BENESSERE -->
 <div class="profile-section-accordion">
@@ -368,12 +402,57 @@ import { initFooter } from "./components/general/footer/footer-brand.js?v=5.0";
 import { BIAInputController } from "./components/tanita/tanita-controller.js?v=1.1";
 import { updatePhysiqueRatingBar } from "./components/profile/profile-manager.js?v=14.3";
 import { initWellnessTest } from "./components/tanita/wellness-test-controller.js?v=1.0";
+import { loadUserData as loadUserDataFromManager, formatDisplayName, getPhotoURL, getUserDataForUI, initUserListener, getRankClass, getRankIcon } from "./components/general/user-manager.js?v=10.0";
+import { auth, db } from "./js/firebase.js";
+import { doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 document.addEventListener('DOMContentLoaded', () => {
 initHeader();
 initFooter();
 window.biaController = new BIAInputController();
 initWellnessTest();
+
+// Carica dati utente per card identità
+onAuthStateChanged(auth, (user) => {
+if (user) {
+const userId = user.uid;
+loadUserDataFromManager(userId).then(userData => {
+if (userData) {
+const profileImg = document.getElementById('profileImg');
+const userNameDisplay = document.getElementById('userNameDisplay');
+const userRoleDisplay = document.getElementById('userRoleDisplay');
+const badgeStatus = document.getElementById('badgeStatus');
+const rankingBar = document.getElementById('rankingBar');
+
+if (profileImg && userData.photoURL) {
+profileImg.src = userData.photoURL;
+profileImg.innerHTML = '';
+profileImg.style.backgroundImage = `url(${userData.photoURL})`;
+profileImg.classList.remove('placeholder');
+}
+
+if (userNameDisplay) {
+userNameDisplay.textContent = formatDisplayName(userData);
+}
+
+if (userRoleDisplay) {
+const roleText = userData.role === 'admin' ? 'Coach' : userData.role === 'assistant' ? 'Assistente' : 'Challenger';
+userRoleDisplay.innerHTML = `<i class="fas fa-user"></i> ${roleText}`;
+}
+
+if (badgeStatus && userData.badge) {
+badgeStatus.className = `badge-status ${getRankClass(userData.badge)}`;
+badgeStatus.innerHTML = getRankIcon(userData.badge);
+}
+
+if (rankingBar && userData.badge) {
+rankingBar.className = `user-ranking-bar ${getRankClass(userData.badge)}`;
+}
+}
+});
+}
+});
 });
 
 window.toggleAccordion = function(id) {
