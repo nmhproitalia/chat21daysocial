@@ -4,7 +4,7 @@
 /* ############################################################ */
 import { auth, db } from "../../js/firebase.js";
 import { doc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-import { WELLNESS_QUESTIONS } from "../../wellness/wellness-test-questions.js";
+import { WELLNESS_QUESTIONS } from "../profile/wellness-test-questions.js?v=1.0";
 
 
 /* ############################################################ */

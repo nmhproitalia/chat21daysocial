@@ -344,9 +344,6 @@ appearance: textfield;
 <div class="profile-accordion-content" id="content-wellness">
 <section class="card">
 <div class="contenuto">
-<div class="wellness-intro-text">
-Il benessere dell'apparato cardiocircolatorio dipende da una combinazione di fattori; su alcuni non possiamo intervenire (sesso, età, ereditarietà) mentre altri possono essere cambiati (peso, esercizio fisico, fumo) attraverso l'adozione di corrette abitudini alimentari ed uno stile di vita sano e attivo.
-</div>
 <div id="wellnessScoreDisplay" class="wellness-test-container">
 <p class="wellness-message">Più elevato è il punteggio e più lo stile di vita è sano</p>
 <div class="wellness-scale-container">
@@ -370,6 +367,8 @@ Il benessere dell'apparato cardiocircolatorio dipende da una combinazione di fat
 <h4 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-magic"></i> Aree di miglioramento</h4>
 <div class="tips-grid"></div>
 </div>
+</div>
+<button id="retakeWellnessBtn" class="retake-wellness-btn" style="margin-top: 1.5rem;">Rifai Valutazione</button>
 </div>
 </div>
 </section>
@@ -722,7 +721,7 @@ import { doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.1
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 import { calculateBMI, calculateAge, calculateNeeds } from "./components/profile/profile-manager.js";
 import { getPlanByObjective } from "./components/profile/plan-generator.js?v=1.0";
-import { WELLNESS_QUESTIONS } from "./components/profile/wellness-test-questions.js?v=1.0";
+import { initWellnessTest } from "./components/tanita/wellness-test-controller.js?v=1.0";
 
 document.addEventListener('DOMContentLoaded', () => {
 initHeader();
@@ -732,9 +731,9 @@ initGlobalEyes();
 onAuthStateChanged(auth, (user) => {
 if (user) {
 setupProfiloActions(user.uid);
-loadWellnessResults(user.uid);
 loadNeedsResults(user.uid);
 loadBIAResults(user.uid);
+initWellnessTest();
 }
 });
 
@@ -750,65 +749,6 @@ birthDateInput.showPicker();
 });
 }
 }); // Chiusura DOMContentLoaded
-
-// Funzione per caricare risultati Test Benessere
-async function loadWellnessResults(userId) {
-try {
-const userDoc = await getDoc(doc(db, "users", userId));
-if (userDoc.exists()) {
-const wellnessScore = userDoc.data().wellnessScore;
-const wellnessAnswers = userDoc.data().wellnessAnswers;
-
-if (wellnessScore !== undefined) {
-// Mostra punteggio e barra
-const wellnessScoreText = document.getElementById('wellnessScoreText');
-const wellnessScoreLine = document.getElementById('wellnessScoreLine');
-
-if (wellnessScoreText) {
-wellnessScoreText.textContent = `Punteggio: ${wellnessScore}/15`;
-}
-
-if (wellnessScoreLine) {
-const percentage = (wellnessScore / 15) * 100;
-wellnessScoreLine.style.left = `${percentage}%`;
-}
-
-// Genera suggerimenti basati sulle risposte
-if (wellnessAnswers) {
-const tipsContainer = document.querySelector('#wellnessTipsContainer .tips-grid');
-if (tipsContainer) {
-tipsContainer.innerHTML = '';
-
-WELLNESS_QUESTIONS.forEach((question, index) => {
-const answer = wellnessAnswers[index]; // Usa indice 0-based
-if (answer === 'no' || answer === false) {
-const tipItem = document.createElement('div');
-tipItem.className = 'tip-item';
-tipItem.innerHTML = `
-<i class="fas fa-lightbulb"></i>
-<span>${question.tip}</span>
-`;
-tipsContainer.appendChild(tipItem);
-}
-});
-}
-}
-} else {
-// Nessun risultato
-const wellnessScoreText = document.getElementById('wellnessScoreText');
-if (wellnessScoreText) {
-wellnessScoreText.textContent = 'Punteggio: 0/15';
-}
-const tipsContainer = document.querySelector('#wellnessTipsContainer .tips-grid');
-if (tipsContainer) {
-tipsContainer.innerHTML = '<p style="color: #666;">Nessun test benessere completato. Vai alla pagina Tanita per fare la valutazione.</p>';
-}
-}
-}
-} catch (error) {
-console.error('Errore caricamento risultati wellness:', error);
-}
-}
 
 // Funzione per caricare Fabbisogni Calcolati
 async function loadNeedsResults(userId) {
@@ -1094,7 +1034,7 @@ document.getElementById('biaDataDisplay').style.display = 'none';
 document.getElementById('biaResultsContainer').style.display = 'block';
 displayBIADResults(latestBia, userData);
 }
-loadWellnessResult(userData);
+// loadWellnessResult(userData); // Rimosso per unificare con initWellnessTest
 // loadFabbisogni(latestBia, userData); // Rimuovoto per evitare conflitto con loadNeedsResults
 loadPianiAutomatici(latestBia, userData);
 updateBadgeStatus(userData);
@@ -1149,42 +1089,6 @@ badgeEl.className = 'badge-status level-' + level;
 const avgStars = userData.averageRating || 0;
 if (avgStars > 4.5) {
 badgeEl.classList.add('gold');
-}
-}
-
-function loadWellnessResult(userData) {
-const wellnessScore = userData.wellnessScore;
-const wellnessDisplay = document.getElementById('wellnessResultDisplay');
-if (!wellnessDisplay) return;
-if (wellnessScore !== undefined && wellnessScore !== null) {
-let color = '#42a046';
-let level = 'Basso';
-if (wellnessScore >= 6 && wellnessScore <= 9) { color = '#ff9800'; level = 'Medio'; }
-if (wellnessScore >= 10 && wellnessScore <= 13) { color = '#f44336'; level = 'Alto'; }
-const percentage = (wellnessScore / 13) * 100;
-wellnessDisplay.innerHTML = `
-<div class="text-center">
-<h4 class="wellness-title">Punteggio Benessere</h4>
-<div class="wellness-scale-container">
-<div class="wellness-scale-numbers">
-<span>0</span><span>13</span>
-</div>
-<div class="wellness-scale-bar">
-<div class="wellness-segment wellness-segment-low"></div>
-<div class="wellness-segment wellness-segment-medium"></div>
-<div class="wellness-segment wellness-segment-high"></div>
-<div class="wellness-fill" style="width: ${percentage}%"></div>
-<div class="wellness-score-line" style="left: ${percentage}%"></div>
-</div>
-<div class="wellness-scale-labels">
-<span class="wellness-label-low">Basso</span>
-<span class="wellness-label-medium">Medio</span>
-<span class="wellness-label-high">Alto</span>
-</div>
-</div>
-<p class="wellness-score-text">Punteggio: ${wellnessScore}/13 - Livello: <span style="color: ${color}; --dynamic-color: ${color};">${level}</span></p>
-</div>
-`;
 }
 }
 
