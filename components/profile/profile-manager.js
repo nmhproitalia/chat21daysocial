@@ -802,6 +802,123 @@ bmrDisplay.textContent = `${bmr} kcal`;
 }
 }
 
+export function calculatePhysiqueRating(bodyFat, leanMass, gender, height) {
+const bf = parseFloat(bodyFat);
+const lm = parseFloat(leanMass);
+const heightM = parseFloat(height) / 100;
+
+const smi = heightM > 0 ? lm / (heightM * heightM) : 0;
+
+let fatLevel = 'medium';
+if (gender === 'male') {
+if (bf < 13) fatLevel = 'low';
+else if (bf >= 25) fatLevel = 'high';
+} else {
+if (bf < 23) fatLevel = 'low';
+else if (bf >= 34) fatLevel = 'high';
+}
+
+const ratingMatrix = {
+'low-low': { id: 1, name: 'Normal', description: 'Composizione corporea bilanciata' },
+'low-medium': { id: 4, name: 'Standard', description: 'Composizione corporea nella norma' },
+'low-high': { id: 7, name: 'Sottopeso', description: 'Aumento massa grassa raccomandato' },
+'medium-low': { id: 2, name: 'Standard', description: 'Composizione corporea nella norma' },
+'medium-medium': { id: 5, name: 'Normal', description: 'Composizione corporea bilanciata' },
+'medium-high': { id: 8, name: 'Sovrappeso', description: 'Riduzione massa grassa raccomandata' },
+'high-low': { id: 3, name: 'Muscolare', description: 'Alta percentuale muscolare' },
+'high-medium': { id: 6, name: 'Fortemente Muscolare', description: 'Eccellente composizione muscolare' },
+'high-high': { id: 9, name: 'Obeso', description: 'Intervento raccomandato' }
+};
+
+const key = `${fatLevel}-${smi < 7 ? 'low' : smi >= 7 && smi < 10 ? 'medium' : 'high'}`;
+return ratingMatrix[key] || { id: 5, name: 'Normal', description: 'Composizione corporea bilanciata' };
+}
+
+export function updateDots(data, gender, userData) {
+if (!data) return;
+
+const metrics = [
+{ id: 'bmi', value: data.bmi, thresholds: [18.5, 25, 30], higherIsWorse: true },
+{ id: 'bodyFat', value: data.bodyFat, thresholds: [14, 24, 30], higherIsWorse: true },
+{ id: 'hydration', value: data.hydration, thresholds: [45, 55, 65], higherIsWorse: false },
+{ id: 'visceralFat', value: data.visceralFat, thresholds: [5, 10, 15], higherIsWorse: true },
+{ id: 'leanMass', value: data.leanMass, thresholds: [40, 60, 80], higherIsWorse: false },
+{ id: 'boneMass', value: data.boneMass, thresholds: [2.5, 3.5, 4.5], higherIsWorse: false },
+{ id: 'metabolicAge', value: data.metabolicAge, thresholds: [30, 40, 50], higherIsWorse: true }
+];
+
+metrics.forEach(metric => {
+const dot = document.getElementById(`dot-${metric.id}`);
+if (dot && metric.value !== undefined) {
+const value = parseFloat(metric.value);
+dot.className = 'bia-result-dot';
+if (value !== null && !isNaN(value)) {
+if (metric.higherIsWorse) {
+if (value < metric.thresholds[0]) dot.classList.add('bia-dot-good');
+else if (value < metric.thresholds[1]) dot.classList.add('bia-dot-warning');
+else dot.classList.add('bia-dot-bad');
+} else {
+if (value < metric.thresholds[0]) dot.classList.add('bia-dot-bad');
+else if (value < metric.thresholds[1]) dot.classList.add('bia-dot-warning');
+else dot.classList.add('bia-dot-good');
+}
+}
+}
+});
+}
+
+export function updateRecompositionProgress(initialBia, latestBia) {
+if (!initialBia || !latestBia) return;
+
+const initialBodyFat = parseFloat(initialBia.bodyFat?.toString().replace(',', '.') || initialBia.bodyfat?.toString().replace(',', '.') || 0);
+const latestBodyFat = parseFloat(latestBia.bodyFat?.toString().replace(',', '.') || latestBia.bodyfat?.toString().replace(',', '.') || 0);
+const initialLeanKg = parseFloat(initialBia.leanMass || initialBia.leanmass || 0);
+const latestLeanKg = parseFloat(latestBia.leanMass || latestBia.leanmass || 0);
+
+const initialFatKg = (initialBia.weight * initialBodyFat) / 100;
+const latestFatKg = (latestBia.weight * latestBodyFat) / 100;
+
+const deltaWeight = latestBia.weight - initialBia.weight;
+const deltaLean = latestLeanKg - initialLeanKg;
+const deltaFat = latestFatKg - initialFatKg;
+
+const updateEl = (id, value, unit = '') => {
+const el = document.getElementById(id);
+if (el) el.textContent = `${value}${unit}`;
+};
+
+updateEl('initialWeight', initialBia.weight.toFixed(1), ' kg');
+updateEl('currentWeight', latestBia.weight.toFixed(1), ' kg');
+updateEl('initialLean', initialLeanKg.toFixed(1), ' kg');
+updateEl('currentLean', latestLeanKg.toFixed(1), ' kg');
+updateEl('initialFat', initialFatKg.toFixed(1), ' kg');
+updateEl('currentFat', latestFatKg.toFixed(1), ' kg');
+updateEl('deltaWeight', (deltaWeight >= 0 ? '+' : '') + deltaWeight.toFixed(1), ' kg');
+updateEl('deltaLean', (deltaLean >= 0 ? '+' : '') + deltaLean.toFixed(1), ' kg');
+updateEl('deltaFat', (deltaFat >= 0 ? '+' : '') + deltaFat.toFixed(1), ' kg');
+
+const scenarioEl = document.getElementById('recompositionScenario');
+const scenarioValueEl = document.getElementById('recompositionScenarioValue');
+if (scenarioEl && scenarioValueEl) {
+let scenario = 'Maintenance';
+let color = '#6c757d';
+if (deltaLean > 0 && deltaFat < 0) {
+scenario = 'Ricomposizione Perfetta';
+color = '#28a745';
+} else if (deltaFat < 0 && Math.abs(deltaFat) > Math.abs(deltaLean)) {
+scenario = 'Dimagrimento Eccellente';
+color = '#17a2b8';
+} else if (deltaLean > 0 && deltaLean > Math.abs(deltaFat)) {
+scenario = 'Lean Bulk';
+color = '#ffc107';
+}
+scenarioEl.textContent = scenario;
+scenarioEl.style.color = color;
+scenarioValueEl.textContent = scenario;
+scenarioValueEl.style.color = color;
+}
+}
+
 
 /* ############################################################ */
 /* #                                                          # */

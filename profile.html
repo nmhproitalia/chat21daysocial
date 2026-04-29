@@ -713,7 +713,7 @@ import "./components/general/app.js?v=1.0";
 import { loadUserData as loadUserDataFromManager, formatDisplayName, getPhotoURL, getUserDataForUI, renderUserHTML, getRoleStyles, initUserListener, updateUI, getRankClass } from "./components/general/user-manager.js?v=10.0";
 import { initHeader } from "./components/general/header/header.js?v=6.0";
 import { initFooter } from "./components/general/footer/footer-brand.js?v=5.0";
-import { setupProfiloActions, loadPianiAutomatici, displayNeedsResults } from "./components/profile/profile-manager.js?v=14.2";
+import { setupProfiloActions, loadPianiAutomatici, displayNeedsResults, calculatePhysiqueRating, updateDots, updateRecompositionProgress } from "./components/profile/profile-manager.js?v=14.2";
 import { initGlobalEyes } from "./components/general/ui-helper.js?v=4.0";
 import { auth, db } from "./js/firebase.js";
 import { doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
@@ -769,107 +769,6 @@ displayNeedsResults(latestBia.waterNeeds, latestBia.proteinNeeds, latestBia.bmr)
 } catch (error) {
 console.error('Errore caricamento fabbisogni:', error);
 }
-}
-
-// Funzione per calcolare Physique Rating (copia da tanita-controller.js)
-function calculatePhysiqueRating(bodyFat, leanMass, gender, height) {
-const bf = parseFloat(bodyFat);
-const lm = parseFloat(leanMass);
-const heightM = parseFloat(height) / 100;
-
-// 1. Calcolo SMI (Skeletal Muscle Index)
-const smi = heightM > 0 ? lm / (heightM * heightM) : 0;
-
-// 2. Logica dei Livelli di Grasso (Soglie Tanita ufficiali)
-let fatLevel = 'medium';
-if (gender === 'male') {
-if (bf < 13) fatLevel = 'low';
-else if (bf >= 25) fatLevel = 'high';
-} else {
-if (bf < 23) fatLevel = 'low';
-else if (bf >= 34) fatLevel = 'high';
-}
-
-// 3. Logica dei Livelli Muscolari (Soglie Tanita ufficiali SMI)
-let muscleLevel = 'medium';
-if (gender === 'male') {
-if (smi < 8.2) muscleLevel = 'low';
-else if (smi >= 10.0) muscleLevel = 'high';
-} else {
-if (smi < 6.3) muscleLevel = 'low';
-else if (smi >= 8.0) muscleLevel = 'high';
-}
-
-// 4. Mappatura Combinazioni Fat/Muscle a Physique Rating
-const ratingMatrix = {
-'low-low': { id: 1, name: 'Sottopeso (Underweight)', description: 'Indica una bassa percentuale di grasso corporeo e un basso livello di massa muscolare.<br>Potrebbe essere necessario aumentare sia la massa grassa che quella muscolare per raggiungere un peso sano.' },
-'low-medium': { id: 4, name: 'Poco Allenato (Under exercised)', description: 'Indica una percentuale di grasso media associata a una massa muscolare scarsa.<br>Per migliorare questa condizione, è consigliabile iniziare un programma di allenamento regolare.' },
-'low-high': { id: 9, name: 'Molto Muscoloso (Very Muscular)', description: 'Le persone molto muscolose presentano una bassa percentuale di grasso corporeo e un livello di massa muscolare molto elevato.' },
-'medium-low': { id: 2, name: 'Obeso (Obese)', description: 'Indica un\'alta percentuale di grasso corporeo e un livello di massa muscolare standard.<br>Chi rientra in questa categoria deve prestare attenzione, poiché l\'obesità può causare gravi problemi di salute.' },
-'medium-medium': { id: 3, name: 'Standard (Standard)', description: 'Questa categoria indica una percentuale di grasso corporeo e un livello di massa muscolare nella media.<br>È un buon punto di partenza per migliorare la composizione corporea.' },
-'medium-high': { id: 4, name: 'Poco Allenato (Under exercised)', description: 'Indica una percentuale di grasso media associata a una massa muscolare scarsa.<br>Per migliorare questa condizione, è consigliabile iniziare un programma di allenamento regolare.' },
-'high-low': { id: 2, name: 'Obeso (Obese)', description: 'Indica un\'alta percentuale di grasso corporeo e un livello di massa muscolare standard.<br>Chi rientra in questa categoria deve prestare attenzione, poiché l\'obesità può causare gravi problemi di salute.' },
-'high-medium': { id: 2, name: 'Obeso (Obese)', description: 'Indica un\'alta percentuale di grasso corporeo e un livello di massa muscolare standard.<br>Chi rientra in questa categoria deve prestare attenzione, poiché l\'obesità può causare gravi problemi di salute.' },
-'high-high': { id: 2, name: 'Obeso (Obese)', description: 'Indica un\'alta percentuale di grasso corporeo e un livello di massa muscolare standard.<br>Chi rientra in questa categoria deve prestare attenzione, poiché l\'obesità può causare gravi problemi di salute.' },
-};
-
-const key = `${fatLevel}-${muscleLevel}`;
-return ratingMatrix[key] || ratingMatrix['medium-medium'];
-}
-
-// Funzione per aggiornare Progresso Ricomposizione Corporea
-function updateRecompositionProgress(initialBia, latestBia) {
-if (!initialBia || !latestBia) return;
-
-// Gestisce entrambi i formati (minuscolo e camelCase) per dati esistenti
-const initialBodyFat = parseFloat(initialBia.bodyFat?.toString().replace(',', '.') || initialBia.bodyfat?.toString().replace(',', '.') || 0);
-const latestBodyFat = parseFloat(latestBia.bodyFat?.toString().replace(',', '.') || latestBia.bodyfat?.toString().replace(',', '.') || 0);
-const initialLeanKg = parseFloat(initialBia.leanMass || initialBia.leanmass || 0);
-const latestLeanKg = parseFloat(latestBia.leanMass || latestBia.leanmass || 0);
-
-// Calcola massa grassa usando percentuale bodyFat (formula Tanita)
-const initialFatKg = (initialBia.weight * initialBodyFat) / 100;
-const latestFatKg = (latestBia.weight * latestBodyFat) / 100;
-
-// Delta per ricomposizione
-const fatDeltaKg = latestFatKg - initialFatKg;
-const leanDeltaKg = latestLeanKg - initialLeanKg;
-const weightDelta = latestBia.weight - initialBia.weight;
-
-// Scenari ricomposizione per challenge 21 giorni
-let scenario = '';
-if (fatDeltaKg < 0 && leanDeltaKg > 0) {
-scenario = 'Ricomposizione Perfetta';
-} else if (weightDelta <= -0.5 && fatDeltaKg <= -0.5) {
-scenario = 'Dimagrimento Eccellente';
-} else if (weightDelta >= 0.5 && leanDeltaKg >= 0.5) {
-scenario = 'Lean Bulk';
-} else {
-scenario = 'Maintenance';
-}
-
-// Aggiorna UI con valori iniziali, nuovi e delta
-const weightInitialEl = document.getElementById('weightInitial');
-const leanInitialEl = document.getElementById('leanInitial');
-const fatInitialEl = document.getElementById('fatInitial');
-const weightLatestEl = document.getElementById('weightLatest');
-const leanLatestEl = document.getElementById('leanLatest');
-const fatLatestEl = document.getElementById('fatLatest');
-const weightDeltaEl = document.getElementById('weightDelta');
-const leanDeltaEl = document.getElementById('leanDelta');
-const fatDeltaEl = document.getElementById('fatDelta');
-const scenarioEl = document.getElementById('recompositionScenario');
-
-if (weightInitialEl) weightInitialEl.textContent = `${initialBia.weight} kg`;
-if (leanInitialEl) leanInitialEl.textContent = `${initialLeanKg.toFixed(1)} kg`;
-if (fatInitialEl) fatInitialEl.textContent = `${initialFatKg.toFixed(1)} kg`;
-if (weightLatestEl) weightLatestEl.textContent = `${latestBia.weight} kg`;
-if (leanLatestEl) leanLatestEl.textContent = `${latestLeanKg.toFixed(1)} kg`;
-if (fatLatestEl) fatLatestEl.textContent = `${latestFatKg.toFixed(1)} kg`;
-if (weightDeltaEl) weightDeltaEl.textContent = `${weightDelta >= 0 ? '+' : ''}${weightDelta.toFixed(1)} kg`;
-if (leanDeltaEl) leanDeltaEl.textContent = `${leanDeltaKg >= 0 ? '+' : ''}${leanDeltaKg.toFixed(1)} kg`;
-if (fatDeltaEl) fatDeltaEl.textContent = `${fatDeltaKg >= 0 ? '+' : ''}${fatDeltaKg.toFixed(1)} kg`;
-if (scenarioEl) scenarioEl.textContent = scenario;
 }
 
 // Funzione per aggiornare Barra Physique Rating Assoluto
@@ -1135,50 +1034,6 @@ if (physiqueEl) physiqueEl.textContent = `${physiqueRating.id} - ${physiqueRatin
 
 updateDots(biaData, userData.gender, userData);
 updateRankingBar(userData);
-}
-
-function updateDots(data, gender, userData) {
-if (!data) return;
-
-const metrics = [
-{ id: 'bmi', value: data.bmi, thresholds: [18.5, 25, 30], higherIsWorse: true },
-{ id: 'bodyFat', value: data.bodyFat, thresholds: [14, 24, 30], higherIsWorse: true },
-{ id: 'hydration', value: data.hydration, thresholds: [45, 55, 65], higherIsWorse: false },
-{ id: 'visceralFat', value: data.visceralFat, thresholds: [5, 10, 15], higherIsWorse: true },
-{ id: 'leanMass', value: data.leanMass, thresholds: [40, 60, 80], higherIsWorse: false },
-{ id: 'boneMass', value: data.boneMass, thresholds: [2.5, 3.5, 4.5], higherIsWorse: false },
-{ id: 'metabolicAge', value: data.metabolicAge, thresholds: [30, 40, 50], higherIsWorse: true }
-];
-
-metrics.forEach(metric => {
-const dotEl = document.getElementById(`${metric.id}Dot`);
-if (!dotEl || !metric.value) return;
-
-let color;
-if (metric.higherIsWorse) {
-if (metric.value <= metric.thresholds[0]) {
-color = '#266431';
-} else if (metric.value <= metric.thresholds[1]) {
-color = '#42a046';
-} else if (metric.value <= metric.thresholds[2]) {
-color = '#f39c12';
-} else {
-color = '#e74c3c';
-}
-} else {
-if (metric.value >= metric.thresholds[2]) {
-color = '#266431';
-} else if (metric.value >= metric.thresholds[1]) {
-color = '#42a046';
-} else if (metric.value >= metric.thresholds[0]) {
-color = '#f39c12';
-} else {
-color = '#e74c3c';
-}
-}
-
-dotEl.style.backgroundColor = color;
-});
 }
 
 function getTanitaStatus(field, value, gender, userData) {

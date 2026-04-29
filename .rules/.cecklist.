@@ -688,6 +688,24 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Rimosso completamente wellness-intro-text che non c'era in origine
    - Form ora come versione originale senza testo introduttivo
    - Deploy completato
+
+104. AGGIUNTO TESTO INTRODUTTIVO SEMPLICE IN TANITA
+   - Aggiunto testo introduttivo generico per valutazione benessere
+   - Testo: "Compila questo questionario per valutare il tuo stile di vita e ricevere suggerimenti personalizzati per migliorare il tuo benessere."
+   - Deploy completato
+
+105. UNIFICATO FUNZIONI FABBISOGNI CALCOLATI PROFILO E TANITA
+   - Aggiunto displayNeedsResults in profile-manager.js
+   - Profile usa loadNeedsResultsUnified → displayNeedsResults
+   - Tanita usa updateBIAParamsUI → displayNeedsResults
+   - Entrambe ora usano la stessa funzione per mostrare fabbisogni
+   - Deploy completato
+
+106. FIX FABBISOGNI CALCOLATI NON SI AGGIORNANO QUANDO CAMBIO PARAMETRI
+   - Aggiunti event listeners per height, age, gender in setupEventListeners
+   - Corretto event listener per gender (select, non radio button)
+   - Fabbisogni calcolati ora si aggiornano in tempo reale
+   - Deploy completato
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults
