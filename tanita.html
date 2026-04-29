@@ -402,9 +402,8 @@ import { initFooter } from "./components/general/footer/footer-brand.js?v=5.0";
 import { BIAInputController } from "./components/tanita/tanita-controller.js?v=1.1";
 import { updatePhysiqueRatingBar } from "./components/profile/profile-manager.js?v=14.3";
 import { initWellnessTest } from "./components/tanita/wellness-test-controller.js?v=1.0";
-import { loadUserData as loadUserDataFromManager, formatDisplayName, getPhotoURL, getUserDataForUI, initUserListener, getRankClass } from "./components/general/user-manager.js?v=10.0";
-import { auth, db } from "./js/firebase.js";
-import { doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { setupProfiloActions } from "./components/profile/profile-manager.js?v=14.3";
+import { auth } from "./js/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -413,44 +412,10 @@ initFooter();
 window.biaController = new BIAInputController();
 initWellnessTest();
 
-// Carica dati utente per card identità
 onAuthStateChanged(auth, (user) => {
 if (user) {
-const userId = user.uid;
-loadUserDataFromManager(db, userId).then(userData => {
-if (userData) {
-const profileImg = document.getElementById('profileImg');
-const userNameDisplay = document.getElementById('userNameDisplay');
-const userRoleDisplay = document.getElementById('userRoleDisplay');
-const badgeStatus = document.getElementById('badgeStatus');
-const rankingBar = document.getElementById('rankingBar');
-
-if (profileImg && userData.photoURL) {
-profileImg.src = userData.photoURL;
-profileImg.innerHTML = '';
-profileImg.style.backgroundImage = `url(${userData.photoURL})`;
-profileImg.classList.remove('placeholder');
-}
-
-if (userNameDisplay) {
-userNameDisplay.textContent = formatDisplayName(userData);
-}
-
-if (userRoleDisplay) {
-const roleText = userData.role === 'admin' ? 'Coach' : userData.role === 'assistant' ? 'Assistente' : 'Challenger';
-userRoleDisplay.innerHTML = `<i class="fas fa-user"></i> ${roleText}`;
-}
-
-if (badgeStatus && userData.badge) {
-badgeStatus.className = `badge-status ${getRankClass(userData.badge)}`;
-badgeStatus.innerHTML = `<i class="fas fa-trophy"></i>`;
-}
-
-if (rankingBar && userData.badge) {
-rankingBar.className = `user-ranking-bar ${getRankClass(userData.badge)}`;
-}
-}
-});
+setupProfiloActions(user.uid);
+initWellnessTest();
 }
 });
 });
