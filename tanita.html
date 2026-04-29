@@ -417,7 +417,7 @@ initWellnessTest();
 onAuthStateChanged(auth, (user) => {
 if (user) {
 const userId = user.uid;
-loadUserDataFromManager(userId).then(userData => {
+loadUserDataFromManager(db, userId).then(userData => {
 if (userData) {
 const profileImg = document.getElementById('profileImg');
 const userNameDisplay = document.getElementById('userNameDisplay');
