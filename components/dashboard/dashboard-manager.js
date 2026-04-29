@@ -391,6 +391,34 @@ bmr = user.latest_bia.bmr + ' kcal';
 bmr = user.bmr + ' kcal';
 }
 
+// Calcola scenario Progresso Ricomposizione Corporea
+let scenario = 'N/D';
+let scenarioColor = '#6c757d';
+if (user.initial_bia && user.latest_bia) {
+const initialBodyFat = parseFloat(user.initial_bia.bodyFat || 0);
+const latestBodyFat = parseFloat(user.latest_bia.bodyFat || 0);
+const initialLeanKg = parseFloat(user.initial_bia.leanMass || 0);
+const latestLeanKg = parseFloat(user.latest_bia.leanMass || 0);
+const initialFatKg = (user.initial_bia.weight * initialBodyFat) / 100;
+const latestFatKg = (user.latest_bia.weight * latestBodyFat) / 100;
+const fatDeltaKg = latestFatKg - initialFatKg;
+const leanDeltaKg = latestLeanKg - initialLeanKg;
+const weightDelta = user.latest_bia.weight - user.initial_bia.weight;
+
+if (fatDeltaKg < 0 && leanDeltaKg > 0) {
+scenario = 'Ricomposizione Perfetta';
+scenarioColor = '#28a745';
+} else if (weightDelta <= -0.5 && fatDeltaKg <= -0.5) {
+scenario = 'Dimagrimento Eccellente';
+scenarioColor = '#17a2b8';
+} else if (weightDelta >= 0.5 && leanDeltaKg >= 0.5) {
+scenario = 'Lean Bulk';
+scenarioColor = '#ffc107';
+} else {
+scenario = 'Maintenance';
+}
+}
+
 // Pattern identico a challengers-manager.js
 const originalRole = user.role || 'challenger';
 const roleValue = originalRole.toLowerCase();
@@ -462,6 +490,9 @@ ${avatarHTML}
 <span class="user-info-icon bmr-icon"><i class="fas fa-fire"></i></span>
 <span class="user-info-value">${bmr}</span>
 </div>
+</div>
+<div class="recomposition-scenario-dashboard" style="text-align: center; margin-top: 15px; padding: 10px; background: rgba(255, 255, 255, 0.8); border-radius: 8px;">
+<span class="scenario-value" style="font-size: 1.125rem; font-weight: 700; color: ${scenarioColor};">${scenario}</span>
 </div>
 <div id="delete-msg-${d.id}" class="delete-message-area"></div>
 </div>
