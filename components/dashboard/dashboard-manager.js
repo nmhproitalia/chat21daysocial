@@ -440,17 +440,14 @@ ${avatarHTML}
 <div class="user-info-grid user-info-grid-dashboard">
 <div class="user-info-item">
 <span class="user-info-icon">🎯</span>
-<span class="user-info-label">Obiettivo:</span>
 <span class="user-info-value">${goal}</span>
 </div>
 <div class="user-info-item">
 <span class="user-info-icon">💧</span>
-<span class="user-info-label">Acqua:</span>
 <span class="user-info-value">${water}</span>
 </div>
 <div class="user-info-item">
 <span class="user-info-icon">🥩</span>
-<span class="user-info-label">Proteina:</span>
 <span class="user-info-value">${protein}</span>
 </div>
 </div>
