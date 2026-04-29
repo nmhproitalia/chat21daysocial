@@ -857,25 +857,38 @@ const metrics = [
 ];
 
 metrics.forEach(metric => {
-const dot = document.getElementById(`${metric.id}Dot`);
-console.log(`[DEBUG updateDots] Metric ${metric.id}: value=${metric.value}, dot found=${!!dot}`);
-if (dot && metric.value !== undefined) {
+const dotEl = document.getElementById(`${metric.id}Dot`);
+console.log(`[DEBUG updateDots] Metric ${metric.id}: value=${metric.value}, dot found=${!!dotEl}`);
+if (!dotEl || !metric.value) return;
+
 const value = parseFloat(metric.value);
 console.log(`[DEBUG updateDots] Metric ${metric.id}: parsed=${value}`);
-dot.className = 'tanita-dot';
-if (value !== null && !isNaN(value)) {
+
+let color;
 if (metric.higherIsWorse) {
-if (value < metric.thresholds[0]) dot.classList.add('bia-dot-good');
-else if (value < metric.thresholds[1]) dot.classList.add('bia-dot-warning');
-else dot.classList.add('bia-dot-bad');
+if (value <= metric.thresholds[0]) {
+color = '#266431';
+} else if (value <= metric.thresholds[1]) {
+color = '#42a046';
+} else if (value <= metric.thresholds[2]) {
+color = '#f39c12';
 } else {
-if (value < metric.thresholds[0]) dot.classList.add('bia-dot-bad');
-else if (value < metric.thresholds[1]) dot.classList.add('bia-dot-warning');
-else dot.classList.add('bia-dot-good');
+color = '#e74c3c';
 }
-console.log(`[DEBUG updateDots] Metric ${metric.id}: classes=${dot.className}`);
+} else {
+if (value >= metric.thresholds[2]) {
+color = '#266431';
+} else if (value >= metric.thresholds[1]) {
+color = '#42a046';
+} else if (value >= metric.thresholds[0]) {
+color = '#f39c12';
+} else {
+color = '#e74c3c';
 }
 }
+
+dotEl.style.background = color;
+console.log(`[DEBUG updateDots] Metric ${metric.id}: color=${color}`);
 });
 }
 
