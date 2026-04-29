@@ -136,13 +136,13 @@ if (bmiEl && this.userProfile.bmi) bmiEl.value = this.userProfile.bmi;
 if (this.userProfile.latest_bia) {
 this.updateBIAResults(this.userProfile.latest_bia);
 
-// NON sovrascrivere i fabbisogni dai dati salvati, usa i valori calcolati in tempo reale
-// const waterEl = document.getElementById('waterNeedsDisplay');
-// const proteinEl = document.getElementById('proteinNeedsDisplay');
-// const bmrEl = document.getElementById('bmrDisplay');
-// if (waterEl && this.userProfile.latest_bia.waterNeeds) waterEl.textContent = `${this.userProfile.latest_bia.waterNeeds} L/giorno`;
-// if (proteinEl && this.userProfile.latest_bia.proteinNeeds) proteinEl.textContent = `${this.userProfile.latest_bia.proteinNeeds} g/giorno`;
-// if (bmrEl && this.userProfile.latest_bia.bmr) bmrEl.textContent = `${this.userProfile.latest_bia.bmr} kcal`;
+// Visualizza fabbisogni dai dati salvati in latest_bia
+const waterEl = document.getElementById('waterNeedsDisplay');
+const proteinEl = document.getElementById('proteinNeedsDisplay');
+const bmrEl = document.getElementById('bmrDisplay');
+if (waterEl && this.userProfile.latest_bia.waterNeeds) waterEl.textContent = `${this.userProfile.latest_bia.waterNeeds} L/giorno`;
+if (proteinEl && this.userProfile.latest_bia.proteinNeeds) proteinEl.textContent = `${this.userProfile.latest_bia.proteinNeeds} g/giorno`;
+if (bmrEl && this.userProfile.latest_bia.bmr) bmrEl.textContent = `${this.userProfile.latest_bia.bmr} kcal`;
 
 const rating = this.calculatePhysiqueRating(
 this.userProfile.latest_bia.bodyFat,
