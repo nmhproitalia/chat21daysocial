@@ -435,7 +435,7 @@ ${userMenu}
 ${avatarHTML}
 <div id="badgeStatus-${d.id}" class="badge-status">?</div>
 <h2 id="userNameDisplay-${d.id}">${formattedName}</h2>
-<p id="userRoleDisplay-${d.id}"><i class="fas ${roleMeta.icon}"></i> ${roleMeta.label}</p>
+<p id="userRoleDisplay-${d.id}"><i class="fas ${roleMeta.icon} role-display-icon" style="color: ${roleMeta.color};"></i> ${roleMeta.label}</p>
 </div>
 <div class="user-info-grid user-info-grid-dashboard" style="width:100%; margin-top:15px;">
 <div class="user-info-item">
