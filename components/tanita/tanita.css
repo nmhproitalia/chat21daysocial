@@ -422,6 +422,7 @@ transform: rotate(180deg);
 max-height: 0;
 overflow: hidden;
 transition: max-height 0.3s ease-out;
+margin-bottom: 30px;
 }
 
 .profile-accordion-content.expanded {
