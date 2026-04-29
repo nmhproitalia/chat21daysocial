@@ -658,31 +658,7 @@ showServiceMessage('Errore nell\'aggiornamento del ruolo: ' + error.message, "er
 /* #                                                          # */
 /* ############################################################ */
 
-export function toggleAccordion(id) {
-const content = document.getElementById('content-' + id);
-const icon = document.getElementById('icon-' + id);
-if (content && icon) {
-if (content.classList.contains('expanded')) {
-content.classList.remove('expanded');
-icon.classList.remove('rotated');
-} else {
-content.classList.add('expanded');
-icon.classList.add('rotated');
-}
-}
-}
-
-// Esporta come funzione globale per compatibilità con onclick inline
-if (typeof window !== 'undefined') {
-window.toggleAccordion = toggleAccordion;
-}
-
-// Assicura che la funzione sia disponibile anche se chiamata prima del caricamento completo
-setTimeout(() => {
-if (typeof window !== 'undefined') {
-window.toggleAccordion = toggleAccordion;
-}
-}, 100);
+/* toggleAccordion rimosso - ora importato da profile-accordion.js per evitare duplicati */
 
 
 /* ############################################################ */
