@@ -731,6 +731,9 @@ setupProfiloActions(user.uid);
 loadNeedsResultsUnified(user.uid);
 loadBIAResults(user.uid);
 initWellnessTest();
+
+// Aggiungi event listeners per aggiornare calcoli BIA in tempo reale
+setupBIAInputListeners();
 }
 });
 
@@ -746,6 +749,37 @@ birthDateInput.showPicker();
 });
 }
 }); // Chiusura DOMContentLoaded
+
+// Funzione per setup event listeners input BIA
+function setupBIAInputListeners() {
+const inputs = ['initialHeight', 'initialAge', 'initialWeight', 'initialGender', 'initialBodyFat', 'initialMetabolicAge', 'initialHydration', 'initialVisceralFat', 'initialLeanMass', 'initialBoneMass'];
+inputs.forEach(id => {
+const el = document.getElementById(id);
+if (el) {
+el.addEventListener('input', () => {
+updateBIACalculations();
+});
+}
+});
+}
+
+// Funzione per aggiornare calcoli BIA in tempo reale
+function updateBIACalculations() {
+try {
+const height = parseFloat(document.getElementById('initialHeight')?.value) || 0;
+const weight = parseFloat(document.getElementById('initialWeight')?.value) || 0;
+const age = parseFloat(document.getElementById('initialAge')?.value) || 0;
+const gender = document.getElementById('initialGender')?.value || 'male';
+
+if (height && weight) {
+const bmi = weight / ((height / 100) ** 2);
+const bmiEl = document.getElementById('initialBMI');
+if (bmiEl) bmiEl.value = bmi.toFixed(1);
+}
+} catch (e) {
+console.error('Errore aggiornamento calcoli BIA:', e);
+}
+}
 
 async function loadNeedsResultsUnified(userId) {
 try {
