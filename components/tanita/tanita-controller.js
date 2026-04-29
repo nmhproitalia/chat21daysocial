@@ -397,9 +397,9 @@ if (descEl && rating) descEl.innerHTML = rating.description;
 if (dotEl && rating) {
 let color;
 if (rating.id <= 3) {
-color = '#e74c3c';
+color = '#f44336';
 } else if (rating.id <= 6) {
-color = '#f39c12';
+color = '#ff9800';
 } else if (rating.id <= 8) {
 color = '#42a046';
 } else {
