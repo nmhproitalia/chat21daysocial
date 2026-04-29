@@ -178,56 +178,60 @@
 
 <!-- MODAL BIA -->
 <div id="biaModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:99999; align-items:center; justify-content:center; flex-direction:column;">
-<div class="card form-container" style="max-width:600px; max-height:90vh; overflow-y:auto; position:relative; z-index:100000; padding-bottom:20px;">
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-<h3><i class="fas fa-calculator"></i> Inserisci Dati BIA</h3>
+<div class="card form-container" style="max-width:600px; max-height:90vh; overflow-y:auto; position:relative; z-index:100000; padding:40px;">
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+<h3 style="margin:0; font-size:1.25rem; font-weight:700; color:#266431;"><i class="fas fa-calculator"></i> Inserisci Dati BIA</h3>
 <button onclick="closeBIAModal()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:#666;">&times;</button>
 </div>
 <form id="biaModalForm">
-<div class="form-group">
-<label for="modalHeight">Altezza (cm)</label>
+<div class="form-grid">
+<div class="input_container">
+<label for="modalHeight" class="input_label">Altezza (cm)</label>
 <input type="number" id="modalHeight" step="0.1" required placeholder="Es. 175">
 </div>
-<div class="form-group">
-<label for="modalAge">Età</label>
+<div class="input_container">
+<label for="modalAge" class="input_label">Età</label>
 <input type="number" id="modalAge" step="1" required placeholder="Es. 35">
 </div>
-<div class="form-group">
-<label for="modalGender">Sesso</label>
+<div class="input_container">
+<label for="modalGender" class="input_label">Sesso</label>
 <select id="modalGender" required>
 <option value="male">Maschio</option>
 <option value="female">Femmina</option>
 </select>
 </div>
-<div class="form-group">
-<label for="modalWeight">Peso (kg)</label>
+<div class="input_container">
+<label for="modalWeight" class="input_label">Peso (kg)</label>
 <input type="number" id="modalWeight" step="0.1" required placeholder="Es. 75.0">
 </div>
-<div class="form-group">
-<label for="modalBodyFat">Massa Grassa (%)</label>
+<div class="input_container">
+<label for="modalBodyFat" class="input_label">Massa Grassa (%)</label>
 <input type="text" id="modalBodyFat" step="0.1" required placeholder="Es. 20.5">
 </div>
-<div class="form-group">
-<label for="modalHydration">Idratazione (%)</label>
+<div class="input_container">
+<label for="modalHydration" class="input_label">Idratazione (%)</label>
 <input type="text" id="modalHydration" step="0.1" required placeholder="Es. 55.0">
 </div>
-<div class="form-group">
-<label for="modalVisceralFat">Grasso Viscerale</label>
+<div class="input_container">
+<label for="modalVisceralFat" class="input_label">Grasso Viscerale</label>
 <input type="text" id="modalVisceralFat" step="1" required placeholder="Es. 8">
 </div>
-<div class="form-group">
-<label for="modalLeanMass">Massa Magra (kg)</label>
+<div class="input_container">
+<label for="modalLeanMass" class="input_label">Massa Magra (kg)</label>
 <input type="text" id="modalLeanMass" step="0.1" required placeholder="Es. 55.0">
 </div>
-<div class="form-group">
-<label for="modalBoneMass">Massa Ossea (kg)</label>
+<div class="input_container">
+<label for="modalBoneMass" class="input_label">Massa Ossea (kg)</label>
 <input type="text" id="modalBoneMass" step="0.1" required placeholder="Es. 2.5">
 </div>
-<div class="form-group">
-<label for="modalMetabolicAge">Età Metabolica</label>
+<div class="input_container">
+<label for="modalMetabolicAge" class="input_label">Età Metabolica</label>
 <input type="text" id="modalMetabolicAge" step="1" required placeholder="Es. 30">
 </div>
+</div>
+<div class="input_container full-width" style="margin-top:20px;">
 <button type="submit" class="sign-in_btn">SALVA DATI BIA</button>
+</div>
 </form>
 <div id="biaModalMsg"></div>
 </div>
