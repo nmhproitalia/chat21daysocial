@@ -391,7 +391,7 @@ Il Physique Rating assoluto mostra il tuo livello attuale di forma fisica basato
 import { initHeader } from "./components/general/header/header.js?v=6.0";
 import { initFooter } from "./components/general/footer/footer-brand.js?v=5.0";
 import { BIAInputController } from "./components/tanita/tanita-controller.js?v=1.1";
-import { updatePhysiqueRatingBar, updateProfileHeader } from "./components/profile/profile-manager.js?v=14.3";
+import { updatePhysiqueRatingBar, updateProfileHeader, updateBadgeStatus } from "./components/profile/profile-manager.js?v=14.4";
 import { initWellnessTest } from "./components/tanita/wellness-test-controller.js?v=1.0";
 import { setupProfiloActions } from "./components/profile/profile-manager.js?v=14.3";
 import { auth, db } from "./js/firebase.js";
@@ -415,6 +415,7 @@ const userDoc = await getDoc(doc(db, "users", userId));
 if (userDoc.exists()) {
 const userData = userDoc.data();
 updateProfileHeader(userData);
+updateBadgeStatus(userData);
 }
 }
 });
