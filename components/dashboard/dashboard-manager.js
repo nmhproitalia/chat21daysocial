@@ -382,7 +382,7 @@ const roleClass = isCoach ? 'role-coach' : 'role-challenger';
 const goal = user.mainGoal ? formatGoal(user.mainGoal) : 'N/D';
 const water = user.waterNeeds ? user.waterNeeds + ' L' : 'N/D';
 const protein = user.proteinNeeds ? user.proteinNeeds + ' g' : 'N/D';
-const bmr = user.bmr ? user.bmr + ' kcal' : 'N/D';
+const bmr = user.latest_bia?.bmr ? user.latest_bia.bmr + ' kcal' : 'N/D';
 
 // Pattern identico a challengers-manager.js
 const originalRole = user.role || 'challenger';
@@ -440,15 +440,15 @@ ${avatarHTML}
 </div>
 <div class="user-info-grid user-info-grid-dashboard">
 <div class="user-info-item">
-<span class="user-info-icon">🎯</span>
+<span class="user-info-icon"><i class="fas fa-bullseye"></i></span>
 <span class="user-info-value">${goal}</span>
 </div>
 <div class="user-info-item">
-<span class="user-info-icon">💧</span>
+<span class="user-info-icon"><i class="fas fa-tint"></i></span>
 <span class="user-info-value">${water}</span>
 </div>
 <div class="user-info-item">
-<span class="user-info-icon">🥩</span>
+<span class="user-info-icon"><i class="fas fa-drumstick-bite"></i></span>
 <span class="user-info-value">${protein}</span>
 </div>
 <div class="user-info-item">
