@@ -752,13 +752,18 @@ birthDateInput.showPicker();
 
 // Funzione per setup event listeners input BIA
 function setupBIAInputListeners() {
+console.log('[DEBUG setupBIAInputListeners] Setup event listeners');
 const inputs = ['initialHeight', 'initialAge', 'initialWeight', 'initialGender', 'initialBodyFat', 'initialMetabolicAge', 'initialHydration', 'initialVisceralFat', 'initialLeanMass', 'initialBoneMass'];
 inputs.forEach(id => {
 const el = document.getElementById(id);
 if (el) {
+console.log('[DEBUG setupBIAInputListeners] Event listener aggiunto a:', id);
 el.addEventListener('input', () => {
+console.log('[DEBUG setupBIAInputListeners] Input changed:', id);
 updateBIACalculations();
 });
+} else {
+console.log('[DEBUG setupBIAInputListeners] Elemento non trovato:', id);
 }
 });
 }
