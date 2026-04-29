@@ -803,11 +803,15 @@ bmrDisplay.textContent = `${bmr} kcal`;
 }
 
 export function calculatePhysiqueRating(bodyFat, leanMass, gender, height) {
+console.log('[DEBUG calculatePhysiqueRating] Input:', { bodyFat, leanMass, gender, height });
 const bf = parseFloat(bodyFat);
 const lm = parseFloat(leanMass);
 const heightM = parseFloat(height) / 100;
 
+console.log('[DEBUG calculatePhysiqueRating] Parsed:', { bf, lm, heightM });
+
 const smi = heightM > 0 ? lm / (heightM * heightM) : 0;
+console.log('[DEBUG calculatePhysiqueRating] SMI:', smi);
 
 let fatLevel = 'medium';
 if (gender === 'male') {
@@ -817,6 +821,7 @@ else if (bf >= 25) fatLevel = 'high';
 if (bf < 23) fatLevel = 'low';
 else if (bf >= 34) fatLevel = 'high';
 }
+console.log('[DEBUG calculatePhysiqueRating] fatLevel:', fatLevel);
 
 const ratingMatrix = {
 'low-low': { id: 1, name: 'Normal', description: 'Composizione corporea bilanciata' },
@@ -831,7 +836,10 @@ const ratingMatrix = {
 };
 
 const key = `${fatLevel}-${smi < 7 ? 'low' : smi >= 7 && smi < 10 ? 'medium' : 'high'}`;
-return ratingMatrix[key] || { id: 5, name: 'Normal', description: 'Composizione corporea bilanciata' };
+console.log('[DEBUG calculatePhysiqueRating] key:', key);
+const result = ratingMatrix[key] || { id: 5, name: 'Normal', description: 'Composizione corporea bilanciata' };
+console.log('[DEBUG calculatePhysiqueRating] result:', result);
+return result;
 }
 
 export function updateDots(data, gender, userData) {
