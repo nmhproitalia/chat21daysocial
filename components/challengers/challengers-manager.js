@@ -3,10 +3,10 @@
 /* #           1. IMPORTAZIONE FIREBASE E CONFIGURAZIONE     # */
 /* #                                                          # */
 /* ############################################################ */
-import { db, auth, storage } from './firebase.js';
+import { db, auth, storage } from '../../js/firebase.js';
 import { collection, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-import { getPhotoURL, getRankClass, formatDisplayName } from "../components/general/user-manager.js";
-import { getRoleMetadata } from "./auth-core.js";
+import { getPhotoURL, getRankClass, formatDisplayName } from "../../components/general/user-manager.js";
+import { getRoleMetadata } from "../../components/general/auth-core.js";
 
 // Variabile globale per ruolo utente corrente
 let currentUserRole = null;

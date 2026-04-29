@@ -3,13 +3,13 @@
 /* #           1. IMPORTAZIONE FIREBASE E CONFIGURAZIONE     # */
 /* #                                                          # */
 /* ############################################################ */
-import { db, auth, storage } from './firebase.js';
+import { db, auth, storage } from '../../js/firebase.js';
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 import { collection, getDocs, query, where, doc, getDoc, updateDoc, deleteDoc, setDoc, serverTimestamp, onSnapshot, arrayUnion } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import { ref, deleteObject, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
-import { showServiceMessage, validatePhoneNumber } from "./ui-helper.js";
-import { getPhotoURL, getRoleStyles, renderUserHTML, getRankClass } from "../components/general/user-manager.js";
-import { getRoleMetadata } from "./auth-core.js";
+import { showServiceMessage, validatePhoneNumber } from "../../components/general/ui-helper.js";
+import { getPhotoURL, getRoleStyles, renderUserHTML, getRankClass } from "../../components/general/user-manager.js";
+import { getRoleMetadata } from "../../components/general/auth-core.js";
 
 const ADMIN_EMAIL = "cristian.mulino@gmail.com";
 let dashboardInitialized = false;

@@ -6,10 +6,10 @@
 import { auth, db, storage } from "../../js/firebase.js";
 import { doc, updateDoc, serverTimestamp, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import { updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-import { showServiceMessage, updatePasswordUI, initGlobalEyes, validatePhoneNumber } from "../../js/ui-helper.js";
+import { showServiceMessage, updatePasswordUI, initGlobalEyes, validatePhoneNumber } from "../../components/general/ui-helper.js";
 import { validateTanitaValue, applyTanitaConstraints } from "../tanita/tanita-form-validator.js";
-import { getRoleMetadata } from "../../js/auth-core.js";
-import { loadUserData as loadUserDataFromManager, formatDisplayName, getPhotoURL, getRoleStyles, initUserListener, updateUI, getRankClass } from "../general/user-manager.js";
+import { getRoleMetadata } from "../../components/general/auth-core.js";
+import { loadUserData as loadUserDataFromManager, formatDisplayName, getPhotoURL, getRoleStyles, initUserListener, updateUI, getRankClass } from "../../components/general/user-manager.js";
 
 
 /* ############################################################ */
@@ -157,28 +157,39 @@ return (weight / (heightInMeters * heightInMeters)).toFixed(1);
 }
 
 export function calculateNeeds(weight, height, age, gender, leanMass = null, goal = 'maintenance') {
-const water = (weight * 0.035).toFixed(1);
+// Specifiche Tanita ufficiali per acqua (differenziate per genere)
+let water = 0;
+if (gender === 'male') {
+water = (weight * 0.035).toFixed(1); // 35ml/kg per uomini
+} else {
+water = (weight * 0.030).toFixed(1); // 30ml/kg per donne
+}
+
+// Specifiche Tanita per proteine (differenziate per genere)
 let protein = 0;
 if (leanMass) {
 switch(goal) {
 case 'fat_loss':
-protein = Math.round(leanMass * 2.0);
+protein = gender === 'male' ? Math.round(leanMass * 2.0) : Math.round(leanMass * 1.8);
 break;
 case 'muscle_gain':
-protein = Math.round(leanMass * 2.2);
+protein = gender === 'male' ? Math.round(leanMass * 2.2) : Math.round(leanMass * 2.0);
 break;
 default:
-protein = Math.round(leanMass * 1.8);
+protein = gender === 'male' ? Math.round(leanMass * 1.8) : Math.round(leanMass * 1.6);
 }
 } else {
-protein = Math.round(weight * 1.5);
+protein = gender === 'male' ? Math.round(weight * 1.6) : Math.round(weight * 1.2);
 }
+
+// Formula Mifflin-St Jeor (standard Tanita per BMR)
 let bmr = 0;
 if (gender === 'male') {
 bmr = Math.round((10 * weight) + (6.25 * height) - (5 * age) + 5);
 } else {
 bmr = Math.round((10 * weight) + (6.25 * height) - (5 * age) - 161);
 }
+
 return { water, protein, bmr };
 }
 
@@ -263,14 +274,140 @@ return;
 }
 }
 
-['firstName', 'lastName', 'userPhone', 'birthDate', 'height', 'gender', 'userEmail'].forEach(f => {
+['firstName', 'lastName', 'userPhone', 'birthDate', 'userEmail'].forEach(f => {
 const el = document.getElementById(f);
 if (el) data[f] = el.value;
 });
-await updateDoc(doc(db, "users", uid), { ...data, updatedAt: serverTimestamp() });
-showServiceMessage("Profilo aggiornato!", "success", btn);
-loadUserData(uid);
-} catch (e) { showServiceMessage(e.message, "error", btn); }
+
+const userRef = doc(db, "users", uid);
+await updateDoc(userRef, data);
+showServiceMessage("Anagrafica salvata con successo!", "success", btn);
+} catch (error) {
+console.error(error);
+showServiceMessage("Errore durante il salvataggio: " + error.message, "error", btn);
+}
+}
+
+export async function saveInitialBia(uid) {
+const btn = document.getElementById('saveInitialBiaBtn');
+try {
+const fields = ['initialHeight', 'initialAge', 'initialGender', 'initialWeight', 'initialBodyFat', 'initialHydration', 'initialVisceralFat', 'initialLeanMass', 'initialBoneMass', 'initialMetabolicAge'];
+const biaData = {};
+fields.forEach(f => {
+const el = document.getElementById(f);
+if (el && el.value !== '') {
+const fieldName = f.replace('initial', '').toLowerCase();
+if (fieldName === 'gender' || fieldName === 'bodyfat' || fieldName === 'hydration') {
+biaData[fieldName] = el.value;
+} else {
+const parsedValue = parseFloat(el.value);
+if (!isNaN(parsedValue)) {
+biaData[fieldName] = parsedValue;
+}
+}
+}
+});
+
+if (Object.keys(biaData).length === 0) {
+showServiceMessage("Inserisci almeno un dato BIA", "error", btn);
+return;
+}
+
+console.log('Dati BIA da salvare:', biaData);
+const userRef = doc(db, "users", uid);
+await updateDoc(userRef, {
+initial_bia: biaData
+});
+showServiceMessage("Misurazione BIA iniziale salvata con successo!", "success", btn);
+} catch (error) {
+console.error(error);
+showServiceMessage("Errore durante il salvataggio: " + error.message, "error", btn);
+}
+}
+
+export async function loadInitialBiaData(uid) {
+try {
+console.log('Caricamento dati BIA iniziali per UID:', uid);
+const userRef = doc(db, "users", uid);
+const userSnap = await getDoc(userRef);
+if (userSnap.exists()) {
+const userData = userSnap.data();
+console.log('Dati utente:', userData);
+const initialBia = userData.initial_bia;
+console.log('Dati initial_bia:', initialBia);
+if (initialBia) {
+const fieldMapping = {
+height: 'initialHeight',
+age: 'initialAge',
+gender: 'initialGender',
+weight: 'initialWeight',
+bodyfat: 'initialBodyFat',
+hydration: 'initialHydration',
+visceralfat: 'initialVisceralFat',
+leanmass: 'initialLeanMass',
+bonemass: 'initialBoneMass',
+metabolicage: 'initialMetabolicAge'
+};
+
+Object.keys(fieldMapping).forEach(key => {
+const elementId = fieldMapping[key];
+const el = document.getElementById(elementId);
+console.log(`Campo ${key} -> ${elementId}, valore: ${initialBia[key]}, elemento trovato: ${!!el}`);
+if (el && initialBia[key] !== undefined) {
+el.value = initialBia[key];
+console.log(`Impostato ${elementId} = ${initialBia[key]}`);
+}
+});
+} else {
+console.log('Nessun dato initial_bia trovato');
+}
+} else {
+console.log('Utente non trovato');
+}
+} catch (error) {
+console.error('Errore caricamento dati BIA iniziali:', error);
+}
+}
+
+export async function saveObiettivi(uid) {
+const btn = document.querySelector('#obiettiviForm button[type="submit"]');
+try {
+const mainGoal = document.getElementById('mainGoal').value;
+const targetWeight = document.getElementById('target_weight').value;
+
+if (!mainGoal) {
+showServiceMessage("Seleziona un obiettivo principale", "error", btn);
+return;
+}
+
+const data = {
+mainGoal: mainGoal,
+targetWeight: targetWeight ? parseFloat(targetWeight) : null
+};
+
+const userRef = doc(db, "users", uid);
+await updateDoc(userRef, data);
+showServiceMessage("Obiettivi salvati con successo!", "success", btn);
+} catch (error) {
+console.error(error);
+showServiceMessage("Errore durante il salvataggio: " + error.message, "error", btn);
+}
+}
+
+export async function loadObiettiviData(uid) {
+try {
+const userRef = doc(db, "users", uid);
+const userSnap = await getDoc(userRef);
+if (userSnap.exists()) {
+const userData = userSnap.data();
+const mainGoalEl = document.getElementById('mainGoal');
+const targetWeightEl = document.getElementById('target_weight');
+if (mainGoalEl && userData.mainGoal) mainGoalEl.value = userData.mainGoal;
+if (targetWeightEl && userData.targetWeight) targetWeightEl.value = userData.targetWeight;
+}
+} catch (error) {
+console.error('Errore caricamento dati obiettivi:', error);
+}
 }
 
 /* ############################################################ */
@@ -317,8 +454,95 @@ updateProfileHeader(data);
 updateCoachDisplay(data);
 updateCalculations();
 updateBIAParams(data);
+await loadBIAData(uid); // Carica dati BIA dal database
 }
 } catch (e) { console.error(e); }
+}
+
+export async function loadBIAData(uid) {
+try {
+const userRef = doc(db, "users", uid);
+const userDoc = await getDoc(userRef);
+const userData = userDoc.data();
+const latestBia = userData?.latest_bia;
+
+if (latestBia) {
+// Aggiorna UI con dati BIA
+updateBIADisplay(latestBia);
+}
+} catch (error) {
+console.error("Errore caricamento dati BIA:", error);
+}
+}
+
+export function updateBIADisplay(biaData) {
+// Aggiorna barra ricomposizione corporea
+const rankingIndicator = document.getElementById('rankingIndicator');
+const rankingText = document.getElementById('rankingText');
+
+if (rankingIndicator && biaData.bodyFat) {
+const bodyFat = parseFloat(biaData.bodyFat);
+const gender = biaData.gender || document.getElementById('gender')?.value;
+
+let position = 0;
+let text = '--';
+
+if (gender === 'male') {
+if (bodyFat >= 8 && bodyFat <= 19) {
+position = 75;
+text = 'Eccellente';
+} else if (bodyFat >= 20 && bodyFat <= 24) {
+position = 50;
+text = 'Buono';
+} else if (bodyFat >= 25 && bodyFat <= 29) {
+position = 25;
+text = 'Sufficiente';
+} else {
+position = 5;
+text = 'Scarso';
+}
+} else {
+if (bodyFat >= 14 && bodyFat <= 20) {
+position = 75;
+text = 'Eccellente';
+} else if (bodyFat >= 21 && bodyFat <= 28) {
+position = 50;
+text = 'Buono';
+} else if (bodyFat >= 29 && bodyFat <= 32) {
+position = 25;
+text = 'Sufficiente';
+} else {
+position = 5;
+text = 'Scarso';
+}
+}
+
+rankingIndicator.style.left = `${position}%`;
+if (rankingText) rankingText.textContent = text;
+}
+
+// Aggiorna fabbisogni calcolati
+const waterNeedsDisplay = document.getElementById('waterNeedsDisplay');
+const proteinNeedsDisplay = document.getElementById('proteinNeedsDisplay');
+const bmrDisplay = document.getElementById('bmrDisplay');
+const needsDataDisplay = document.getElementById('needsDataDisplay');
+const needsResultsContainer = document.getElementById('needsResultsContainer');
+
+if (waterNeedsDisplay && biaData.waterNeeds) {
+waterNeedsDisplay.textContent = `${biaData.waterNeeds} L/giorno`;
+}
+if (proteinNeedsDisplay && biaData.proteinNeeds) {
+proteinNeedsDisplay.textContent = `${biaData.proteinNeeds} g/giorno`;
+}
+if (bmrDisplay && biaData.bmr) {
+bmrDisplay.textContent = `${biaData.bmr} kcal`;
+}
+
+// Mostra risultati nascondendo messaggio "nessun dato"
+if (needsDataDisplay && needsResultsContainer) {
+needsDataDisplay.classList.add('hidden');
+needsResultsContainer.classList.remove('results-container-hidden');
+}
 }
 
 export function setupProfiloActions(uid) {
@@ -341,6 +565,34 @@ if (passwordForm) {
 passwordForm.addEventListener('submit', (e) => {
 e.preventDefault();
 handleChangePassword();
+});
+}
+
+// Gestione submit form BIA iniziale
+const initialBiaForm = document.getElementById('initialBiaForm');
+if (initialBiaForm) {
+initialBiaForm.addEventListener('submit', (e) => {
+e.preventDefault();
+const uidToUse = targetUid || (auth.currentUser && auth.currentUser.uid);
+if (uidToUse) {
+saveInitialBia(uidToUse);
+} else {
+console.error('Nessun UID disponibile per salvare i dati BIA iniziali');
+}
+});
+}
+
+// Gestione submit form obiettivi
+const obiettiviForm = document.getElementById('obiettiviForm');
+if (obiettiviForm) {
+obiettiviForm.addEventListener('submit', (e) => {
+e.preventDefault();
+const uidToUse = targetUid || (auth.currentUser && auth.currentUser.uid);
+if (uidToUse) {
+saveObiettivi(uidToUse);
+} else {
+console.error('Nessun UID disponibile per salvare gli obiettivi');
+}
 });
 }
 
@@ -518,6 +770,10 @@ updateUI(userData, auth.currentUser);
 });
 // Carica coach e assistenti
 loadCoachesAndAssistantsForProfile();
+// Carica dati BIA iniziali
+loadInitialBiaData(targetUid);
+// Carica dati obiettivi
+loadObiettiviData(targetUid);
 }
 }
 });

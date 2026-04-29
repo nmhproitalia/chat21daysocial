@@ -1,5 +1,5 @@
-import { handleRegister, handleLogin, resetPassword } from "../../js/auth.js";
-import { updatePasswordUI } from "../../js/ui-helper.js";
+import { handleRegister, handleLogin, resetPassword } from "../../components/general/auth.js";
+import { updatePasswordUI } from "../../components/general/ui-helper.js";
 
 /**
  * COMPONENT: AUTH FORMS

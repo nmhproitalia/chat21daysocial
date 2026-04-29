@@ -68,11 +68,11 @@ margin-bottom: 0.5rem;
 }
 
 .tanita-dot {
-width: 16px;
-height: 16px;
+width: 20px;
+height: 20px;
 border-radius: 50%;
 margin: 0.5rem auto;
-background: #e0e0e0;
+background: #333333;
 transition: background 0.3s ease;
 }
 
@@ -95,28 +95,29 @@ background: #f44336;
 /* FORM BENESSERE */
 .wellness-intro-text {
 text-align: left;
-padding: 0.5rem;
-margin-bottom: 0.5rem;
+padding: 1rem;
+margin-bottom: 1rem;
 font-style: italic;
 color: #666;
 font-size: 0.9rem;
+background: #f8f8f8;
+border-radius: 8px;
 }
 
 .wellness-test-container {
-text-align: center;
-padding: 2rem;
+padding: 0rem 1.5rem;
 }
 
 .wellness-opt-btn {
 flex: 1;
-padding: 1rem 2rem;
+padding: 0.75rem 1.5rem;
 border: none;
-border-radius: 8px;
+border-radius: 7px;
 color: #ffffff;
-font-size: 1rem;
+font-size: 0.9rem;
 font-weight: 600;
 cursor: pointer;
-transition: all 0.2s ease;
+transition: all 0.3s ease;
 }
 
 .wellness-yes-btn {
@@ -124,7 +125,7 @@ background: #42a046;
 }
 
 .wellness-no-btn {
-background: #f44336 !important;
+background: #f44336;
 }
 
 .retake-wellness-btn {
@@ -133,29 +134,18 @@ padding: 0.75rem 1.5rem;
 background: #266431;
 color: white;
 border: none;
-border-radius: 8px;
+border-radius: 7px;
 cursor: pointer;
 font-weight: 600;
+transition: all 0.3s ease;
 }
 
 .wellness-opt-btn:hover {
 transform: translateY(-2px);
-box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-.wellness-score-container {
-margin-top: 1.5rem;
-padding: 1rem;
-background: rgba(255,255,255,0.5);
-border-radius: 8px;
-text-align: center;
-}
-
-.wellness-message {
-text-align: center;
-margin-bottom: 1rem;
-font-weight: 500;
-color: #333;
+.retake-wellness-btn:hover {
+transform: translateY(-2px);
 }
 
 .wellness-scale-container {
@@ -163,6 +153,7 @@ border: 2px solid #e0e0e0;
 border-radius: 8px;
 padding: 1rem;
 background: #ffffff;
+margin-top: 1rem;
 }
 
 .wellness-scale-numbers {
@@ -216,6 +207,7 @@ pointer-events: none;
 position: absolute;
 top: 0;
 bottom: 0;
+left: 0;
 width: 4px;
 background: #000000;
 transition: left 0.3s ease;
@@ -251,15 +243,15 @@ color: var(--primary-color);
 
 .wellness-suggestions {
 margin-top: 1rem;
-padding: 1rem;
-background: rgba(255,255,255,0.5);
-border-radius: 8px;
+padding: 1rem 1.5rem;
 display: none;
 }
 
 .wellness-suggestions h4 {
-color: var(--primary-color);
-margin-bottom: 0.5rem;
+color: #266431;
+margin-bottom: 0.75rem;
+font-size: 1rem;
+font-weight: 600;
 }
 
 .wellness-suggestions ul {
@@ -269,9 +261,14 @@ margin: 0;
 }
 
 .wellness-suggestions li {
-padding: 0.25rem 0;
+padding: 0.5rem 0;
 color: #666;
-font-size: 0.875rem;
+font-size: 0.9rem;
+border-bottom: 1px solid #f0f0f0;
+}
+
+.wellness-suggestions li:last-child {
+border-bottom: none;
 }
 
 /* BARRA RANKING */
@@ -328,6 +325,64 @@ transition: left 0.3s ease;
 z-index: 10;
 }
 
+.ranking-progress {
+position: absolute;
+top: 0;
+left: 0;
+height: 100%;
+background: rgba(38, 100, 49, 0.7);
+border-radius: 4px 0 0 4px;
+transition: width 0.3s ease;
+}
+
+/* PROGRESSO RICOMPOSIZIONE CORPOREA */
+.recomposition-stats {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+grid-template-rows: auto auto auto;
+gap: 1rem;
+margin: 1.5rem 0;
+}
+
+.stat-item {
+text-align: center;
+padding: 0.5rem;
+}
+
+.stat-item label {
+display: block;
+font-size: 0.875rem;
+color: #666;
+margin-bottom: 0.5rem;
+}
+
+.stat-item .stat-value {
+font-size: 1.25rem;
+font-weight: 700;
+color: var(--primary-color);
+}
+
+.recomposition-scenario {
+text-align: center;
+margin-top: 1rem;
+padding: 1rem;
+background: #f8f8f8;
+border-radius: 8px;
+}
+
+.recomposition-scenario label {
+display: block;
+font-size: 0.875rem;
+color: #666;
+margin-bottom: 0.5rem;
+}
+
+.scenario-value {
+font-size: 1.1rem;
+font-weight: 600;
+color: #266431;
+}
+
 
 /* ############################################################ */
 /* #                                                          # */
@@ -338,7 +393,7 @@ z-index: 10;
 .wellness-question-text {
 margin: 1.5rem 0;
 font-weight: bold;
-font-size: 1.1rem;
+font-size: 0.95rem;
 color: #1a1a1a;
 }
 
@@ -354,4 +409,74 @@ display: none;
 
 .user-selection-section-hidden {
 display: none;
+}
+
+/* Rimuovi frecce su/giù dai campi number nel form BIA */
+#biaForm input[type="number"]::-webkit-inner-spin-button,
+#biaForm input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+
+#biaForm input[type="number"] {
+-moz-appearance: textfield;
+}
+
+/* Fix overflow testo su mobile per Risultati BIA */
+.bia-results-row,
+.bia-results-row-simple {
+overflow-wrap: break-word;
+word-wrap: break-word;
+word-break: break-word;
+}
+
+.physique-rating-container {
+overflow-wrap: break-word;
+word-wrap: break-word;
+word-break: break-word;
+}
+
+.physique-rating-value {
+font-size: 1.25rem;
+font-weight: 700;
+color: var(--primary-color);
+margin-top: 0.5rem;
+text-align: center;
+}
+
+.physique-rating-description {
+font-size: 0.875rem;
+color: #666;
+margin-top: 0.75rem;
+text-align: center;
+line-height: 1.5;
+}
+
+.reset-initial-bia-container {
+text-align: center;
+margin: 1rem 0;
+}
+
+.btn-reset-initial-bia {
+background: #f44336;
+color: white;
+border: none;
+padding: 8px 16px;
+border-radius: 8px;
+font-size: 0.875rem;
+cursor: pointer;
+transition: background 0.2s;
+}
+
+.btn-reset-initial-bia:hover {
+background: #d32f2f;
+}
+
+.ranking-label-full {
+display: block;
+font-size: 0.875rem;
+color: #666;
+margin-top: 1rem;
+margin-bottom: 0.5rem;
+text-align: center;
 }

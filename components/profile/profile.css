@@ -60,7 +60,7 @@ background: rgba(255,255,255,0.8);
 padding: 12px;
 border-radius: 8px;
 border-left: 3px solid #b1933a;
-min-width: 180px;
+min-width: 200px;
 flex: 0 0 auto;
 text-align: left;
 }
@@ -70,7 +70,7 @@ background: rgba(255,255,255,0.8);
 padding: 12px;
 border-radius: 8px;
 border-left: 3px solid #6B3E26;
-min-width: 180px;
+min-width: 200px;
 flex: 0 0 auto;
 text-align: left;
 }
@@ -230,7 +230,6 @@ margin-top: 10px;
 padding: 12px;
 background: rgba(255,255,255,0.8);
 border-radius: 8px;
-border-left: 4px solid var(--primary-color);
 }
 
 .password-rules-title {

@@ -1,4 +1,4 @@
-import { db } from "../../js/firebase.js";
+import { db } from "../../../js/firebase.js";
 import { doc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
 /**

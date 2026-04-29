@@ -62,7 +62,7 @@ return Object.values(rules).every(r => r === true);
 /* #           2. SISTEMA NOTIFICHE E CHALLENGE UI             # */
 /* #                                                          # */
 /* ############################################################ */
-import { db } from "./firebase.js";
+import { db } from "../../js/firebase.js";
 import { doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
 /**

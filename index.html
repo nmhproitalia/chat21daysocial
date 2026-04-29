@@ -18,9 +18,9 @@
 <link rel="stylesheet" href="css/style.css?v=12.0">
 <link rel="stylesheet" href="css/utilities.css?v=1.0">
 <link rel="stylesheet" href="css/pwa/pwa.css?v=1.0">
-<link rel="stylesheet" href="components/register-login/register-login.css?v=12.0">
-<link rel="stylesheet" href="components/header/header.css?v=15.0">
-<link rel="stylesheet" href="components/footer/footer.css?v=10.5">
+<link rel="stylesheet" href="components/index/index.css?v=12.0">
+<link rel="stylesheet" href="components/general/header/header.css?v=15.0">
+<link rel="stylesheet" href="components/general/footer/footer.css?v=13.0">
 </head>
 
 
@@ -79,7 +79,7 @@
 <div class="password-field-wrapper">
 <i class="fas fa-lock icon"></i>
 <input type="password" id="regPassword" required placeholder="Password sicura" class="input_field">
-<i class="fas fa-eye-slash eye-toggle" data-target="regPassword"></i>
+<i class="fas fa-eye eye-toggle" data-target="regPassword"></i>
 </div>
 </div>
 </div>
@@ -121,7 +121,7 @@
 <div class="password-field-wrapper">
 <i class="fas fa-lock icon"></i>
 <input type="password" id="loginPassword" required placeholder="La tua password" class="input_field">
-<i class="fas fa-eye-slash eye-toggle" data-target="loginPassword"></i>
+<i class="fas fa-eye eye-toggle" data-target="loginPassword"></i>
 </div>
 </div>
 <div id="loginStatus" class="system-message hidden"></div>
@@ -169,10 +169,10 @@
 
 <!-- SEZIONE SCRIPT MODULE INIT -->
 <script type="module">
-import { initHeaderIndex } from "./components/header/header-index.js?v=10.5";
-import { initFooter } from "./components/footer/footer-brand.js?v=10.5";
-import { initAuthForms } from "./components/register-login/register-login.js?v=10.5";
-import { initGlobalEyes } from "./js/ui-helper.js?v=10.5";
+import { initHeaderIndex } from "./components/general/header/header-index.js?v=10.5";
+import { initFooter } from "./components/general/footer/footer-brand.js?v=5.0";
+import { initAuthForms } from "./components/index/index.js?v=10.5";
+import { initGlobalEyes } from "./components/general/ui-helper.js?v=10.5";
 document.addEventListener('DOMContentLoaded', () => {
 initHeaderIndex();
 initFooter();

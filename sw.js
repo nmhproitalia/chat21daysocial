@@ -1,11 +1,17 @@
-const CACHE_NAME = 'fit21-cache-v1';
+const CACHE_NAME = 'fit21-cache-v3';
 const ASSETS = [
   'index.html',
   'css/style-variables.css',
   'css/base-layout.css',
   'css/style.css',
+  'css/forms.css',
+  'css/cards.css',
+  'css/utilities.css',
   'js/firebase.js',
-  'js/ui-helper.js'
+  'components/general/ui-helper.js',
+  'components/general/header/header.css',
+  'components/general/footer/footer.css',
+  'components/index/index.css'
 ];
 
 self.addEventListener('install', (event) => {

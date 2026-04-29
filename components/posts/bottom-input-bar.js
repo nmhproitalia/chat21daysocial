@@ -3,7 +3,7 @@
 * Gestisce la barra di input fisso in basso per la bacheca
 */
 // Import funzioni user-manager
-import { loadUserData as loadUserDataFromManager, getUserDataForUI, renderUserHTML, renderUserAvatarOnly, formatDisplayName, getPhotoURL } from "../general/user-manager.js";
+import { loadUserData as loadUserDataFromManager, getUserDataForUI, renderUserHTML, renderUserAvatarOnly, formatDisplayName, getPhotoURL } from "../../components/general/user-manager.js";
 
 // Funzioni globali per accesso da HTML
 window.openPostModal = () => {

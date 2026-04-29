@@ -2,9 +2,9 @@
 /* #                                                          # */
 /* #           1. IMPORTAZIONE MODULI E CONFIGURAZIONE       # */
 /* ############################################################ */
-import { auth, db } from "./firebase.js";
+import { auth, db } from "../../js/firebase.js";
 import { initAuth, handleRegister, handleLogin } from "./auth.js";
-import { initPosts, cleanupPosts, setupMediaUpload } from "./posts.js";
+import { initPosts, cleanupPosts, setupMediaUpload } from "../posts/posts.js";
 import { signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import { initGlobalEyes, initUnifiedHeader } from "./ui-helper.js";

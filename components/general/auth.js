@@ -4,7 +4,7 @@
 /* #                                                          # */
 /* ############################################################ */
 import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-import { auth, db } from "./firebase.js";
+import { auth, db } from "../../js/firebase.js";
 import { doc, setDoc, serverTimestamp, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
 

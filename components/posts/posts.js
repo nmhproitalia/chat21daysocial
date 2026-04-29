@@ -3,14 +3,14 @@
 /* #           CORE POSTS ENGINE - IRINA FULL RESTORE         # */
 /* #                                                          # */
 /* ############################################################ */
-import { db, auth, storage } from "./firebase.js";
+import { db, auth, storage } from "../../js/firebase.js";
 import {
 collection, query, orderBy, onSnapshot, doc, getDoc,
 where, addDoc, serverTimestamp, updateDoc, deleteDoc, setDoc
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import { ref as storageRef, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
-import { generateAvatarFallback, loadUserData as loadUserDataFromManager, getUserDataForUI, renderUserHTML, checkPermission } from "../components/general/user-manager.js";
-import { getRoleMetadata } from "./auth-core.js";
+import { generateAvatarFallback, loadUserData as loadUserDataFromManager, getUserDataForUI, renderUserHTML, checkPermission } from "../../components/general/user-manager.js";
+import { getRoleMetadata } from "../../components/general/auth-core.js";
 
 /**
  * Converti percorso Firebase Storage in URL pubblico

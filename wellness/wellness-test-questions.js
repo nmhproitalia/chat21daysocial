@@ -19,86 +19,106 @@
 export const WELLNESS_QUESTIONS = [
 {
 id: 1,
-question: "Bevi almeno 2 litri di acqua al giorno?",
-category: "idratazione",
-trigger_product: ["aloe", "infuso"],
+question: "Consumi in prevalenza carni bianche, pollo, carni magre, pesce e proteine vegetali (fagioli, lenticchie, soia) invece che bistecche, arrosti e altre carni rosse?",
+category: "nutrizione",
+trigger_product: ["shake", "pdm"],
+tip: "Bilanciamento Proteico: Le carni bianche e il pesce contengono meno grassi saturi. Se consumi spesso carni rosse, bilancia l'apporto proteico inserendo più spesso pollo, tacchino o proteine vegetali come soia e tofu per non appesantire l'organismo.",
 weight: 1
 },
 {
 id: 2,
-question: "Fai colazione equilibrata ogni mattina?",
+question: "Mangi una buona varietà di frutta e verdura colorate e almeno cinque porzioni al giorno?",
 category: "nutrizione",
-trigger_product: ["shake", "pdm"],
-weight: 2
+trigger_product: ["integratori"],
+tip: "Varietà Cromatica: Per garantire al corpo vitamine e minerali, non basta mangiare verdura, serve varietà. Se non raggiungi le 5 porzioni, prova a 'mangiare l'arcobaleno', scegliendo frutta e verdura di colori diversi ogni giorno.",
+weight: 1
 },
 {
 id: 3,
-question: "Consumi 5 porzioni di frutta e verdura al giorno?",
+question: "Mangi pesce grasso (come salmone, sgombro, sardine, trota) almeno 3 volte la settimana?",
 category: "nutrizione",
-trigger_product: ["integratori"],
+trigger_product: ["omega3"],
+tip: "Supporto Omega-3: Gli oli del pesce grasso (salmone, sgombro) proteggono il cuore. Se non li consumi 3 volte a settimana, bilancia la dieta con noci e semi o valuta un'integrazione specifica per mantenere il peso e la salute cardiaca.",
 weight: 1
 },
 {
 id: 4,
-question: "Dormi 7-8 ore per notte?",
-category: "sonno",
-trigger_product: ["relax"],
-weight: 2
+question: "Pensi di consumare abbastanza fibre nella tua dieta quotidiana?",
+category: "nutrizione",
+trigger_product: ["fibra"],
+tip: "Regolarità e Fibre: Un apparato digerente regolare elimina le tossine e bilancia il colesterolo. Se hai problemi di regolarità, aumenta l'apporto a 25g di fibra giornalieri combinando cereali integrali, frutta e almeno 8 bicchieri d'acqua.",
+weight: 1
 },
 {
 id: 5,
-question: "Fai attività fisica regolare (3+ volte a settimana)?",
-category: "attività",
-trigger_product: ["energia"],
-weight: 2
+question: "Fai almeno 30 minuti di attività fisica per 3-5 giorni la settimana?",
+category: "attività fisica",
+trigger_product: ["shake"],
+tip: "Attivazione Metabolica: Il cuore ha bisogno di stimoli costanti. Se non fai movimento, inizia con 30 minuti per 3-5 volte a settimana: non solo aiuterai il sistema cardiovascolare, ma ridurrai sensibilmente lo stress quotidiano.",
+weight: 1
 },
 {
 id: 6,
-question: "Mangi spuntini sani tra i pasti?",
-category: "nutrizione",
-trigger_product: ["barrette", "snack"],
+question: "Riesci a mantenere il tuo peso equilibrato?",
+category: "peso",
+trigger_product: ["termogenici", "controllo"],
+tip: "Stabilità del Metabolismo: I rapidi cali o aumenti di peso danneggiano il metabolismo. Se non riesci a mantenerlo costante, punta su una dieta a base di proteine magre e cereali integrali per preservare la massa muscolare.",
 weight: 1
 },
 {
 id: 7,
-question: "Limiti cibi processati e zuccheri?",
+question: "Di solito hai tempo per prepararti pasti equilibrati?",
 category: "nutrizione",
-trigger_product: ["detox"],
-weight: 2
+trigger_product: ["shake"],
+tip: "Soluzioni Pasti Veloci: Se mangi sempre di corsa, non cedere al junk food. Esistono alternative sane e rapide come insalate pronte, verdure surgelate o petti di pollo veloci da cuocere che permettono di nutrire il corpo anche in pochi minuti.",
+weight: 1
 },
 {
 id: 8,
-question: "Hai un buon livello di energia durante il giorno?",
-category: "energia",
-trigger_product: ["b-complex", "vitamine"],
-weight: 2
+question: "Riesci ad evitare bibite gasate e spuntini poco sani (patatine, dolci) nel corso della giornata e dopo cena?",
+category: "nutrizione",
+trigger_product: ["snack", "detox"],
+tip: "Gestione Stress e Snack: Spesso mangiamo snack grassi o zuccherati per noia o stress. Prova a sostituire le patatine o i dolci con uno spuntino sano e placa la voglia di 'conforto' con un infuso caldo alle erbe.",
+weight: 1
 },
 {
 id: 9,
-question: "Gestisci lo stress in modo efficace?",
-category: "stress",
-trigger_product: ["relax", "magnesio"],
+question: "Hai l'energia e la concentrazione necessarie per svolgere le tue attività quotidiane senza avvertire stanchezza?",
+category: "energia",
+trigger_product: ["b-complex", "vitamine"],
+tip: "Energia Costante: Se avverti cali durante il giorno, la causa potrebbe essere una nutrizione incompleta. Assicurati di fornire all'organismo i nutrienti necessari per favorire la produzione di energia senza dover ricorrere a troppi caffè o zuccheri.",
 weight: 1
 },
 {
 id: 10,
-question: "Hai una buona digestione?",
-category: "digestione",
-trigger_product: ["probiotici", "enzimi"],
+question: "Bevi almeno 8 bicchieri d'acqua al giorno?",
+category: "idratazione",
+trigger_product: ["aloe", "infuso"],
+tip: "Idratazione Profonda: Non aspettare di avere sete: la sete è già un segnale di disidratazione. Bevi 8 bicchieri d'acqua (circa 2 litri) distribuiti nella giornata per mantenere sani i tessuti e supportare le funzioni vitali.",
 weight: 1
 },
 {
 id: 11,
-question: "Mantieni un peso sano?",
-category: "peso",
-trigger_product: ["termogenici", "controllo"],
-weight: 2
+question: "Assumi la razione giornaliera raccomandata di calcio?",
+category: "nutrizione",
+trigger_product: ["calcio"],
+tip: "Integrazione di Calcio: 800mg di calcio al giorno sono vitali per ossa e denti. Se non consumi abbastanza latticini magri, bilancia con alimenti rinforzati e vitamina D, fondamentale per l'assorbimento corretto del calcio.",
+weight: 1
 },
 {
 id: 12,
-question: "Ti senti soddisfatto del tuo stato di benessere generale?",
+question: "Ritieni che il tuo stile di vita e la tua alimentazione siano adeguati per il benessere dell'apparato cardiocircolatorio?",
 category: "benessere",
 trigger_product: ["multivitaminico"],
+tip: "Supporto Cardiovascolare: Il benessere del cuore dipende da ciò che puoi cambiare: fumo, peso e dieta. Con l'età la produzione di Ossido Nitrico diminuisce; è essenziale adottare abitudini che ne supportino i livelli ottimali.",
+weight: 1
+},
+{
+id: 13,
+question: "Fai spuntini sani nel corso della giornata?",
+category: "nutrizione",
+trigger_product: ["barrette", "snack"],
+tip: "Spuntini Intelligenti: Lo spuntino non deve essere un 'extra' vuoto, ma un supporto energetico. Scegli spuntini ricchi di proteine e fibre ma poveri di zuccheri per evitare picchi glicemici e arrivare al pasto successivo con la giusta fame.",
 weight: 1
 }
 ];
@@ -111,24 +131,24 @@ weight: 1
 export const SCORING_CONFIG = {
 // --- PUNTEGGIO BASE ---
 baseScore: 0,
-maxScore: 12,
+maxScore: 15,
 yesScore: 1,
 noScore: 0,
 
 // --- SOGLIE CRITICHE ---
 thresholds: {
-excellent: 10,
-good: 8,
-moderate: 6,
+excellent: 12,
+good: 10,
+moderate: 7,
 poor: 4
 },
 
 // --- CATEGORIE PUNTEGGIO ---
 categories: {
-excellent: { min: 10, max: 12, label: "Eccellente", color: "#28a745" },
-good: { min: 8, max: 9, label: "Buono", color: "#17a2b8" },
-moderate: { min: 6, max: 7, label: "Medio", color: "#ffc107" },
-poor: { min: 0, max: 5, label: "Da migliorare", color: "#dc3545" }
+excellent: { min: 12, max: 15, label: "Eccellente", color: "#28a745" },
+good: { min: 10, max: 11, label: "Buono", color: "#17a2b8" },
+moderate: { min: 7, max: 9, label: "Medio", color: "#ffc107" },
+poor: { min: 0, max: 6, label: "Da migliorare", color: "#dc3545" }
 }
 };
 

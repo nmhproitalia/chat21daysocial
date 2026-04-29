@@ -17,6 +17,218 @@ text-align: left;
 text-align: right;
 }
 
+/* BIA PARAMS GRID */
+.bia-params-grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 1rem;
+padding: 1rem;
+}
+
+.bia-param-item {
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0.75rem;
+background: #f5f5f5;
+border-radius: 8px;
+}
+
+.bia-param-item label {
+font-weight: 600;
+color: #666;
+font-size: 0.875rem;
+margin-bottom: 0.5rem;
+}
+
+.bia-param-item .param-value {
+font-size: 1.125rem;
+font-weight: 700;
+color: #266431;
+}
+
+/* TANITA RESULT ITEMS (copia da tanita.css) */
+.tanita-result-item {
+text-align: center;
+padding: 1rem;
+}
+
+.tanita-result-item label {
+font-size: 0.875rem;
+color: #666;
+display: block;
+margin-bottom: 0.5rem;
+}
+
+.tanita-result-item .result-value {
+font-size: 1.25rem;
+font-weight: 700;
+color: #266431;
+margin-bottom: 0.5rem;
+}
+
+.tanita-dot {
+width: 20px;
+height: 20px;
+border-radius: 50%;
+margin: 0.5rem auto;
+background: #333333;
+transition: background 0.3s ease;
+}
+
+/* Fix overflow testo su mobile per Risultati BIA */
+.bia-results-row,
+.bia-results-row-simple {
+overflow-wrap: break-word;
+word-wrap: break-word;
+word-break: break-word;
+}
+
+.physique-rating-container {
+overflow-wrap: break-word;
+word-wrap: break-word;
+word-break: break-word;
+margin-top: 1rem;
+}
+
+.physique-rating-label {
+font-size: 0.875rem;
+font-weight: 600;
+color: #333;
+display: block;
+margin-bottom: 0.5rem;
+}
+
+.physique-rating-value {
+font-size: 1.125rem;
+font-weight: 700;
+color: #266431;
+margin-bottom: 0.5rem;
+}
+
+.physique-rating-description {
+font-size: 0.875rem;
+color: #666;
+line-height: 1.5;
+margin-bottom: 1.5rem;
+}
+
+/* PROGRESSO RICOMPOSIZIONE CORPOREA */
+.recomposition-stats {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+grid-template-rows: auto auto auto;
+gap: 1rem;
+margin: 1.5rem 0;
+}
+
+.stat-item {
+text-align: center;
+padding: 0.5rem;
+}
+
+.stat-item label {
+display: block;
+font-size: 0.875rem;
+color: #666;
+margin-bottom: 0.5rem;
+}
+
+.stat-item .stat-value {
+font-size: 1.25rem;
+font-weight: 700;
+color: #266431;
+}
+
+.recomposition-scenario {
+text-align: center;
+margin-top: 1rem;
+padding: 1rem;
+background: #f8f8f8;
+border-radius: 8px;
+}
+
+.recomposition-scenario label {
+display: block;
+font-size: 0.875rem;
+color: #666;
+margin-bottom: 0.5rem;
+}
+
+.scenario-value {
+font-size: 1.125rem;
+font-weight: 700;
+color: #266431;
+}
+
+/* BARRA RANKING */
+.ranking-bar-container {
+padding: 0.75rem 1rem;
+}
+
+.ranking-labels-row {
+display: flex;
+justify-content: space-between;
+margin-bottom: 0.25rem;
+}
+
+.ranking-label {
+font-size: 0.65rem;
+font-weight: 600;
+text-transform: uppercase;
+flex: 1;
+text-align: center;
+}
+
+.ranking-label-scarso {
+color: #f44336;
+}
+
+.ranking-label-sufficiente {
+color: #ff9800;
+}
+
+.ranking-label-buono {
+color: #42a046;
+}
+
+.ranking-label-eccellente {
+color: #266431;
+}
+
+.ranking-bar {
+position: relative;
+height: 20px;
+background: linear-gradient(to right, #f44336 0%, #ff9800 33%, #42a046 66%, #266431 100%);
+border-radius: 4px;
+margin: 0.5rem 0;
+}
+
+.ranking-indicator {
+position: absolute;
+top: -3px;
+width: 6px;
+height: 26px;
+background: #000;
+border-radius: 2px;
+transition: left 0.3s ease;
+}
+
+.ranking-label-full {
+display: block;
+font-size: 0.875rem;
+color: #666;
+margin-top: 0.5rem;
+text-align: center;
+}
+
+.ranking-text-value {
+font-size: 1.125rem;
+font-weight: 700;
+color: #266431;
+text-align: center;
+}
+
 /* MARGIN UTILITY */
 .margin-top-20 {
 margin-top: 20px;
@@ -196,7 +408,6 @@ padding: 12px;
 border-radius: 8px;
 border-left: 3px solid #b1933a;
 min-width: 200px;
-flex: 1;
 }
 
 .assistant-card {
@@ -205,7 +416,6 @@ padding: 12px;
 border-radius: 8px;
 border-left: 3px solid #6B3E26;
 min-width: 200px;
-flex: 1;
 }
 
 /* EMPTY STATE MESSAGES */
@@ -328,7 +538,7 @@ margin-top: 5px;
 .wellness-question-text {
 margin: 1.5rem 0;
 font-weight: bold;
-font-size: 1.1rem;
+font-size: 0.95rem;
 color: #1a1a1a;
 }
 
@@ -372,6 +582,30 @@ transition: width 1s ease-in-out;
 .wellness-tips-section {
 background: #fff;
 margin-top: 1rem;
+box-shadow: none;
+}
+
+.wellness-tips-section.card {
+box-shadow: none !important;
+}
+
+.wellness-tips-section .tip-item {
+padding: 1rem 0;
+border-bottom: 1px solid #e0e0e0;
+text-align: left;
+display: flex;
+align-items: center;
+justify-content: flex-start;
+gap: 1rem;
+}
+
+.wellness-tips-section .tip-item:last-child {
+border-bottom: none;
+}
+
+.wellness-tips-section .tip-item i {
+color: #f39c12;
+font-size: 1.5rem;
 }
 
 /* POSTS FEED STYLES */

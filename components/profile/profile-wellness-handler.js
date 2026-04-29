@@ -2,29 +2,18 @@
 /* #                                                          # */
 /* #           1. IMPORTAZIONE FIREBASE E CONFIGURAZIONE     # */
 /* ############################################################ */
-import { auth, db } from "./firebase.js";
+import { auth, db } from "../../js/firebase.js";
 import { doc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { WELLNESS_QUESTIONS } from "../../wellness/wellness-test-questions.js";
 
 
 /* ############################################################ */
 /* #                                                          # */
 /* #           2. CLASSE GESTIONE WELLNESS UFFICIALE         # */
 /* ############################################################ */
-class ProfileWellnessHandler {
+export class ProfileWellnessHandler {
 constructor() {
-this.questions = [
-{ id: "meat", text: "Consumi carne bianca magra, pesce o proteine vegetali almeno 5 volte a settimana?", tip: "Prova a sostituire la carne rossa con pollo, tacchino o legumi." },
-{ id: "fruit", text: "Mangi almeno 5 porzioni di frutta e verdura al giorno?", tip: "Inizia ogni pasto con una porzione di verdura fresca." },
-{ id: "fish", text: "Consumi pesce grasso (salmone, sgombro, noci) almeno 2-3 volte a settimana?", tip: "Il pesce grasso fornisce Omega-3 essenziali per il cuore." },
-{ id: "fiber", text: "Consumi cereali integrali, pane integrale o avena quotidianamente?", tip: "Le fibre aiutano la digestione e aumentano il senso di sazietà." },
-{ id: "exercise", text: "Fai almeno 30 minuti di attività fisica moderata 5 volte a settimana?", tip: "Basta una camminata veloce ogni giorno per fare la differenza." },
-{ id: "weight", text: "Sei soddisfatto del tuo peso attuale?", tip: "Piccoli cambiamenti costanti portano a grandi risultati nel tempo." },
-{ id: "meals", text: "Ti prendi almeno 20 minuti per consumare ogni pasto principale?", tip: "Mangiare lentamente favorisce la digestione e il controllo dell'appetito." },
-{ id: "snacks", text: "Fai spuntini sani durante il giorno?", tip: "Scegli frutta secca o yogurt greco per i tuoi spuntini.", hasText: true },
-{ id: "energy", text: "Ti senti energico per tutto l'arco della giornata?", tip: "Controlla l'idratazione e il bilanciamento dei nutrienti se ti senti stanco." },
-{ id: "water", text: "Bevi almeno 2 litri di acqua al giorno?", tip: "Porta sempre con te una borraccia per ricordarti di bere." },
-{ id: "cardio", text: "Ti senti in buona salute cardiovascolare?", tip: "L'attività aerobica costante migliora la salute del cuore." }
-];
+this.questions = WELLNESS_QUESTIONS;
 this.answers = {};
 this.currentQuestionIndex = 0;
 this.init();
@@ -33,8 +22,11 @@ this.init();
 
 // --- INIZIALIZZAZIONE ---
 async init() {
+console.log('[DEBUG] ProfileWellnessHandler init called');
 const startBtn = document.getElementById('startWellnessTestBtn');
+console.log('[DEBUG] startWellnessTestBtn found:', startBtn);
 const isBiaPage = window.location.pathname.includes('tanita.html');
+console.log('[DEBUG] isBiaPage:', isBiaPage);
 
 if (startBtn) {
 if (isBiaPage) {
@@ -73,8 +65,8 @@ if (!container) return;
 const q = this.questions[this.currentQuestionIndex];
 container.innerHTML = `
 <div class="wellness-test-container">
-<h4>Valutazione Benessere - Domanda ${this.currentQuestionIndex + 1} di 11</h4>
-<p class="wellness-question-text">${q.text}</p>
+<h4>Valutazione Benessere - Domanda ${this.currentQuestionIndex + 1} di ${this.questions.length}</h4>
+<p class="wellness-question-text">${q.question}</p>
 <div class="wellness-options-container">
 <button class="btn-discord wellness-opt-btn" data-value="yes" style="background: var(--success-color)">SÌ</button>
 <button class="btn-discord wellness-opt-btn" data-value="no" style="background: var(--danger-color)">NO</button>
@@ -150,18 +142,26 @@ console.error("Errore salvataggio wellness:", error);
 
 // --- VISUALIZZAZIONE RISULTATI ---
 displayResults(score, date, answers) {
+console.log('[DEBUG] displayResults called with:', { score, date, answers });
 const container = document.getElementById('wellnessSummary');
+console.log('[DEBUG] wellnessSummary container:', container);
 if (!container) return;
 
 const formattedDate = date instanceof Date ? date.toLocaleDateString() : (date?.toDate ? date.toDate().toLocaleDateString() : "Data non disponibile");
 const status = this.getScoreStatus(score);
 const isBiaPage = window.location.pathname.includes('tanita.html');
 
-// Genera suggerimenti basati sui NO
-const tips = this.questions
-.filter(q => answers[q.id]?.val === 'no')
-.map(q => `<div class="tip-item"><i class="fas fa-lightbulb"></i> ${q.tip}</div>`)
-.join('');
+// Genera suggerimenti basati sui NO - logica semplice
+let tipsHtml = '';
+if (answers && this.questions) {
+for (const q of this.questions) {
+const answer = answers[q.id];
+if (answer && answer.val === 'no' && q.tip) {
+tipsHtml += `<div class="tip-item"><i class="fas fa-lightbulb"></i> ${q.tip}</div>`;
+}
+}
+}
+const finalTips = tipsHtml || '<p>Complimenti! Il tuo stile di vita è eccellente.</p>';
 
 container.innerHTML = `
 <div class="status-header">
@@ -182,7 +182,7 @@ container.innerHTML = `
 <div class="wellness-tips-section card">
 <h4 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-magic"></i> Suggerimenti Personalizzati</h4>
 <div class="tips-grid">
-${tips || '<p>Complimenti! Il tuo stile di vita è eccellente.</p>'}
+${finalTips}
 </div>
 </div>
 `;

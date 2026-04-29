@@ -32,9 +32,9 @@
 <link rel="stylesheet" href="css/user-roles.css?v=4.0">
 <link rel="stylesheet" href="css/cards.css?v=1.0">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="components/header/header.css?v=15.0">
+<link rel="stylesheet" href="components/general/header/header.css?v=15.0">
 <link rel="stylesheet" href="components/general/user-manager.css?v=7.0">
-<link rel="stylesheet" href="components/footer/footer.css?v=12.0">
+<link rel="stylesheet" href="components/general/footer/footer.css?v=13.0">
 </head>
 
 
@@ -80,10 +80,10 @@
 
 <!-- SEZIONE SCRIPT -->
 <script type="module">
-import { initHeader } from "./components/header/header.js?v=6.0";
-import { initFooter } from "./components/footer/footer-brand.js?v=4.0";
-import { initChallengers } from "./js/challengers-manager.js?v=15.0";
-import "./js/app.js?v=1.0";
+import { initHeader } from "./components/general/header/header.js?v=6.0";
+import { initFooter } from "./components/general/footer/footer-brand.js?v=5.0";
+import { initChallengers } from "./components/challengers/challengers-manager.js?v=15.0";
+import "./components/general/app.js?v=1.0";
 document.addEventListener('DOMContentLoaded', () => {
 initHeader();
 initFooter();

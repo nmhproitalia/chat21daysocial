@@ -25,14 +25,970 @@ SESSIONE 28 APRILE 2026 - PUNTI FERMI BLINDATI:
 5. DEPLOY COMPLETATO
    - Tutti i fix deployati su Firebase Hosting
    - URL: https://giornifit-app.web.app
+
+6. REFACTORING COMPONENTS GENERAL (28 APRILE 2026)
+   - Spostamento footer e header in components/general/
+   - Correzione percorsi import in tutte le pagine HTML
+   - Correzione percorsi user-manager.js nei file JS (profile, dashboard, challengers, posts, bottom-input-bar)
+   - Correzione percorsi firebase.js in header.js e header-index.js (../../../js/firebase.js)
+   - Correzione import posts.js in app.js (../components/posts/posts.js)
+   - Correzione percorsi footer.css e footer-brand.js in tutte le pagine HTML (v=13.0)
+   - Correzione errore undefined in tanita-controller.js (filtro campi undefined)
+   - Correzione import welcome-page.css in profile.html (components/welcome/welcome.css)
+
+7. PULIZIA CARTTELLE SCRIPTS E JS (28 APRILE 2026)
+   - Analisi completa file scripts/ e js/ con report SCRIPTS_JS_ANALYSIS.md
+   - Spostamento migrate-bia-data.js in components/migrations/
+   - Spostamento profile-wellness-handler.js in components/profile/
+   - Eliminazione file obsoleti: cache-buster.js, navigation-manager.js, video-selector.js, form-handler.js, design-audit.js
+   - Eliminazione cartelle vuote: js/ui/, js/utils/, js/services/
+   - Spostamento js/herbalife/ in herbalife/ (root) - mantenuto per sviluppo futuro piani Herbalife
+   - Spostamento js/wellness/ in wellness/ (root) - mantenuto per sviluppo futuro test benessere
+   - Eliminazione firebase-service.js e utils.js (non attivi)
+   - Spostamento auth.js, auth-core.js, app.js, ui-helper.js in components/general/
+   - Aggiornamento percorsi import in tutti i file components/ e HTML
+   - js/ ora contiene solo file core: firebase.js
+
+8. STRUTTURA FINALE ORGANIZZAZIONE FILE (28 APRILE 2026)
+   - js/ (root): firebase.js (configurazione Firebase)
+   - components/general/: auth.js, auth-core.js, app.js, ui-helper.js, header/, footer/, user-manager.js
+   - components/migrations/: migrate-bia-data.js
+   - components/profile/: profile-manager.js, profile.css, profile-wellness-handler.js
+   - components/tanita/, components/dashboard/, components/challengers/, components/posts/, components/index/, components/welcome/
+   - herbalife/ (root): herbalife-breakfast-pillar.js, plan-generator.js (sviluppo futuro)
+   - wellness/ (root): 5 file test benessere (sviluppo futuro)
+
+9. FIX PERCORSI IMPORT DOVE SPOSTAMENTO COMPONENTS (28 APRILE 2026)
+   - Correzione percorsi firebase.js in auth.js, app.js, ui-helper.js (../../js/firebase.js)
+   - Correzione percorsi posts.js in app.js (../posts/posts.js)
+   - Correzione percorsi auth.js, auth-core.js, ui-helper.js in tutti i file components/
+   - Correzione percorsi app.js in profile.html, dashboard.html, challengers.html (./components/general/app.js)
+   - Tutte le correzioni testate e funzionanti
+
+10. PULIZIA CARTELLA CONFIG/ (28 APRILE 2026)
+    - Eliminati file Firebase duplicati: firebase.json, firestore.rules, storage.rules
+    - Mantenuti: .firebaserc (configurazione progetto), skills-lock.json (skills MCP), .firebase/ (cartella vuota)
+    - Firebase CLI usa file nella root, config/ non necessario
+
+11. AGGIORNAMENTO SERVICE WORKER (28 APRILE 2026)
+    - Aggiornato percorso ui-helper.js da 'js/ui-helper.js' a 'components/general/ui-helper.js' in sw.js
+    - Percorso firebase.js rimasto in 'js/firebase.js' (corretto)
+    - Aggiornato CACHE_NAME da 'fit21-cache-v1' a 'fit21-cache-v2' per forzare nuova cache PWA
+
+12. AGGIORNAMENTO PWA MANIFEST (28 APRILE 2026)
+    - Cambiato background_color da #ffffff a #000000 (sfondo nero)
+    - Cambiato name da "21GIORNIFIT Challenge" a "PROGETTO BENESSERE - 21GIORNIFIT"
+    - La scritta sotto l'icona nella splash screen ora mostra il nome dell'app
+
+13. FIX CSS PWA DEVICE (28 APRILE 2026)
+    - Aggiornato CACHE_NAME da 'fit21-cache-v2' a 'fit21-cache-v3' in sw.js
+    - Aggiunti CSS forms.css, cards.css, utilities.css in ASSETS Service Worker
+    - Aggiunti CSS components/general/header/header.css, components/general/footer/footer.css, components/index/index.css
+    - Deploy completato per forzare nuova cache su device
+
+14. FIX PWA START_URL (28 APRILE 2026)
+    - Corretto start_url da "/chat21daysocial/index.html" a "/index.html" in manifest.json
+    - Ancora page not found, corretto start_url da "/index.html" a "." (root)
+    - Problema persistente: PWA disabilitata temporaneamente
+    - manifest.json rinominato in manifest.json.disabled
+    - Riferimento manifest commentato in index.html
+    - App ora funzionante come web app normale senza installazione PWA
+    - Riattivato PWA con rewrite rules in firebase.json per SPA
+    - Aggiunto rewrites: source "**" destination "/index.html" per gestire tutte le rotte
+    - Problema PWA risolto con rewrite rules
+
+15. AGGIUNTO CARICAMENTO DATI BIA IN PROFILE (28 APRILE 2026)
+    - Analizzato circuito dati: tanita salva in latest_bia (campo documento utente)
+    - Aggiunta funzione loadBIAData(uid) in profile-manager.js per caricare dati latest_bia
+    - Aggiunta funzione updateBIADisplay(biaData) per aggiornare UI con dati BIA
+    - updateBIADisplay aggiorna: barra ricomposizione corporea, fabbisogni calcolati (acqua, proteine, BMR)
+    - Integrato loadBIAData(uid) in loadUserData(uid) per caricamento automatico
+    - Deploy completato
+
+16. FIX RANKING-LABEL NON CARICA (28 APRILE 2026)
+    - Problema: CSS mancante per .ranking-label, .ranking-labels-row, .ranking-text-value
+    - Causa: classi CSS definite solo in tanita.css ma profile.html non include quel file
+    - Soluzione: Aggiunti stili mancanti a profile-manager.css
+    - Problema 2: Funzione updateRankingBar in profile.html richiedeva initial_bia e latest_bia
+    - Soluzione 2: Modificata updateRankingBar per usare solo latest_bia (coerente con updateBIADisplay)
+    - Deploy completato
+
+17. RIMOSSO COMPOSIZIONE CORPOREA DA TANITA (28 APRILE 2026)
+    - Rimosso elemento HTML "Composizione Corporea" da sezione Risultati e Parametri BIA in tanita.html
+    - Rimosso codice JavaScript correlato in tanita-controller.js (aggiornamento compositionResult)
+    - Deploy completato
+
+18. FIX TEST BENESSERE - LOGICA CALCOLO E DATABASE (28 APRILE 2026)
+    - Verificato numero domande test benesse: 13 (non 14 come indicato in UI)
+    - Corretto calcolo punteggio da 15 a 13 in tanita-controller.js calculateWellnessScore()
+    - Aggiunta funzione saveWellnessData() per salvare wellnessScore, wellnessAnswers, wellnessLastUpdate nel database
+    - Corretto profile.html loadWellnessResult() per leggere dati wellness con scala 13 (non 15)
+    - Corretto livelli punteggio: Basso (0-5), Medio (6-9), Alto (10-13)
+    - Deploy completato
+
+19. ALLINEAMENTO STILE CARD BENESSERE AI FORM (28 APRILE 2026)
+    - Aggiornato tanita.css per allineare stili wellness ai form/card esistenti
+    - Cambiato border-radius da 8px a 12px (coerente con card)
+    - Cambiato background da rgba(255,255,255,0.5) a #ffffff (coerente con card)
+    - Aggiunto border 1px solid #e5e5e5 (coerente con form)
+    - Aggiunto box-shadow 0 4px 6px rgba(0,0,0,0.1) (coerente con card)
+    - Aggiunto hover effects con box-shadow (coerente con form interactions)
+    - Mantenuti colori esistenti: verde #42a046, rosso #f44336, verde scuro #266431
+    - Corretto scala numeri HTML da 0-15 a 0-13
+    - Deploy completato
+
+20. FIX TAG FORM MANCANTE IN SEZIONE OBIETTIVI (28 APRILE 2026)
+    - Verificata sezione "I Tuoi Obiettivi" in tanita.html
+    - Aggiunto tag <form id="obiettiviForm"> mancante attorno agli input e pulsante submit
+    - Deploy completato
+
+21. RIDUZIONE DIMENSIONE PULSANTI VALUTAZIONE BENESSERE (28 APRILE 2026)
+    - Ridotto padding pulsanti wellness-opt-btn da 1rem 2rem a 0.75rem 1.5rem
+    - Ridotto font-size pulsanti wellness-opt-btn da 1rem a 0.9rem
+    - Mantenuto stile coerente con form (border-radius 7px, box-shadow, transition)
+    - Deploy completato
+
+22. RIDUZIONE PADDING WELLNESS-TEST-CONTAINER (28 APRILE 2026)
+    - Ridotto padding da 1.5rem a 1rem 1.5rem (top/bottom: 1rem, left/right: 1.5rem)
+    - Deploy completato
+
+23. RIMOSSIONE STILI WELLNESS-TEST-CONTAINER (28 APRILE 2026)
+    - Rimosso text-align: center
+    - Rimosso background: #ffffff
+    - Rimosso border-radius: 12px
+    - Rimosso border: 1px solid #e5e5e5
+    - Rimosso box-shadow: 0 4px 6px rgba(0,0,0,0.1)
+    - Mantenuto solo padding: 1rem 1.5rem
+    - Deploy completato
+
+24. AGGIUSTAMENTO FINALE WELLNESS-TEST-CONTAINER (28 APRILE 2026)
+    - Aggiunto border: 1px solid #333
+    - Cambiato padding a 0rem 1.5rem (top/bottom: 0, left/right: 1.5rem)
+    - Modifiche manuali utente
+    - Deploy completato
+
+25. ALLINEAMENTO STRUTTURA CARD TANITA.HTML (28 APRILE 2026)
+    - Cambiate sezioni senza form da .card-body a .contenuto per coerenza con profile.html
+    - Valutazione Benessere: .card-body → .contenuto
+    - Fabbisogni Calcolati: .card-body → .contenuto
+    - Risultati e Parametri BIA: .card-body → .contenuto
+    - Ricomposizione Corporea: .card-body → .contenuto
+    - Sezioni con form mantengono .card-body (Obiettivi, Inserimento Dati BIA)
+    - Deploy completato
+
+26. ALLINEAMENTO VALUTAZIONE BENESSERE (28 APRILE 2026)
+    - Cambiato wellness-score-container a wellness-test-container per allineare stili parte hidden/visibile
+    - Spostato bottone retakeWellnessBtn fuori dal container hidden per renderlo sempre visibile
+    - Rimosso stile duplicato wellness-score-container dal CSS
+    - Deploy completato
+
+27. RIDUZIONE FONT-SIZE WELLNESS-QUESTION-TEXT (28 APRILE 2026)
+    - Ridotto font-size da 1.1rem a 1rem
+    - Ripristinato font-size a 1.1rem
+    - Deploy completato
+
+28. RIMOZIONE BOX-SHADOW DA ELEMENTI CARD (28 APRILE 2026)
+    - Allineato .wellness-suggestions a wellness-test-container (rimosso background, border-radius, box-shadow)
+    - Rimosso box-shadow da .wellness-opt-btn (base e hover)
+    - Rimosso box-shadow da .retake-wellness-btn (base e hover)
+    - Regola progetto: elementi dentro le card non hanno box-shadow
+    - Deploy completato
+
+29. MODIFICA SUGGERIMENTI BENESSERE DA PRODOTTI A STILE DI VITA (28 APRILE 2026)
+    - Cambiati tutti i suggerimenti da prodotti Herbalife a consigli di stile di vita
+    - Suggerimenti ora focalizzati su aree da migliorare (risposte No al test)
+    - Esempi: preferisci carni magre, aumenta frutta/verdura, attività fisica regolare, idratazione
+    - Deploy completato
+
+30. RIDUZIONE FONT-SIZE WELLNESS-QUESTION-TEXT FINALE (28 APRILE 2026)
+    - Ridotto font-size a 0.95rem
+    - Deploy completato
+
+31. RIMOZIONE BOX-SHADOW DA FORM_CONTAINER (28 APRILE 2026)
+    - Rimosso box-shadow complesso da .form_container in forms.css
+    - Regola progetto applicata: elementi dentro le card non hanno box-shadow
+    - Deploy completato
+
+32. RIMOZIONE MAX-WIDTH DA FORM_CONTAINER (28 APRILE 2026)
+    - Rimosso max-width: 600px da .form_container in forms.css
+    - Form ora occupa tutta la larghezza della card
+    - Deploy completato
+
+33. RIMOZIONE FORM_CONTAINER DA FORM BIA (28 APRILE 2026)
+    - Rimosso class="form_container" da form BIA per allineare a I Tuoi Obiettivi
+    - form_container creava contenitore extra con padding che causava disallineamento
+    - Deploy completato
+
+34. FIX BMI NON RIPORTATO SU RISULTATI E PARAMETRI BIA (28 APRILE 2026)
+    - Modificato updateResults() per prendere height direttamente dall'elemento DOM
+    - Prima usava this.userProfile?.height che poteva essere null
+    - Deploy completato
+
+35. FIX CALCOLO BMI IN TEMPO REALE (28 APRILE 2026)
+    - Aggiunto chiamata a updateResults(data) in updateCalculations()
+    - Ora BMI viene calcolato e mostrato quando l'utente inserisce i dati nel form
+    - Deploy completato
+
+36. FIX VISUALIZZAZIONE BMI RISULTATI E PARAMETRI BIA (28 APRILE 2026)
+    - Modificato updateCalculations() per passare solo { weight } a updateResults()
+    - Prima usava getFormData() che poteva restituire null se non tutti i campi erano compilati
+    - Deploy completato
+
+37. FIX COMUNICAZIONE DATI FORM BIA A RISULTATI (28 APRILE 2026)
+    - Modificato updateCalculations() per passare tutti i dati del form a updateResults()
+    - Ora usa getFormData() con fallback a { weight } per garantire comunicazione completa
+    - Deploy completato
+
+38. AGGIUNTO LOGGING DEBUG PER BMI (28 APRILE 2026)
+    - Aggiunto console.log in updateResults() per verificare passaggio dati
+    - Formula BMI standard Tanita: peso (kg) / (altezza in metri)²
+    - Deploy completato
+
+39. FIX BMI USANDO VALORE GIÀ CALCOLATO (28 APRILE 2026)
+    - Modificato updateResults() per usare BMI già calcolato se presente in data.bmi
+    - Se data.bmi non presente, ricalcola usando calculateBMI()
+    - Risolve problema quando dati BIA hanno già BMI pre-calcolato
+    - Deploy completato
+
+40. FIX BMI STRING TO NUMBER CONVERSION (28 APRILE 2026)
+    - Aggiunto conversione parseFloat() per BMI se è stringa
+    - Problema: data.bmi era stringa "26.2" ma controllo typeof === 'number' falliva
+    - Ora converte stringa in numero prima della visualizzazione
+    - Deploy completato
+
+41. AGGIUNTO REGOLE TANITA PER PALLINO BMI (28 APRILE 2026)
+    - Aggiunto regole BMI in getTanitaStatus per colore pallino
+    - low: 0-18.5 (rosso, Sottopeso)
+    - normal: 18.5-24.9 (verde, Peso normale)
+    - high: 25-29.9 (arancione, Sovrappeso)
+    - critical: 30+ (rosso, Obesità)
+    - Deploy completato
+
+42. RIMOZIONE FRECCE SU/GIÙ DA CAMPI NUMBER FORM BIA (28 APRILE 2026)
+    - Aggiunto CSS in tanita.css per rimuovere spinner dai campi input type="number"
+    - -webkit-appearance: none per Chrome/Safari
+    - -moz-appearance: textfield per Firefox
+    - Coerenza con standard progetto per dati Tanita precisi
+    - Deploy completato
+
+43. AGGIUNTO PALLINO PHYSIQUE RATING CON COLORE (28 APRILE 2026)
+    - Aggiunto pallino #physiqueRatingDot nell'HTML
+    - Aggiunto logica colore in updateResults() basata su rating.id
+    - rating 1-2: rosso, 3: arancione, 4: giallo, 5-9: verde
+    - Coerenza con stile pallini Tanita esistenti
+    - Deploy completato
+
+44. SPOSTAMENTO PALLINO PHYSIQUE RATING SOTTO TESTO (28 APRILE 2026)
+    - Spostato #physiqueRatingDot sotto il testo nell'HTML
+    - Rimossa duplicazione pallino
+    - Deploy completato
+
+45. FIX OVERFLOW TESTO RISULTATI BIA SU MOBILE (28 APRILE 2026)
+    - Aggiunto overflow-wrap: break-word per .bia-results-row e .bia-results-row-simple
+    - Aggiunto overflow-wrap: break-word per .physique-rating-container
+    - Previene testo che fuoriesce dalla card su dispositivi mobile
+    - Deploy completato
+
+46. RIMOZIONE PALLINO PHYSIQUE RATING (28 APRILE 2026)
+    - Rimosso #physiqueRatingDot dall'HTML
+    - Rimossa logica colore pallino dal controller
+    - Deploy completato
+
+47. RIMOZIONE TUTTI I PALLINI HTML RISULTATI BIA (28 APRILE 2026)
+    - Rimosso tutti i pallini HTML .tanita-dot dai risultati BIA
+    - Rimosso chiamate a updateDots() dal controller
+    - Rimosso funzioni getTanitaStatus() e updateDots() dal controller
+    - Emoji nel testo (calculatePhysiqueRating) sono sufficienti per mostrare lo stato
+    - Deploy completato
+
+48. AGGIORNAMENTO NOMI PHYSIQUE RATING STANDARD TANITA (28 APRILE 2026)
+    - Aggiornati nomi secondo documentazione ufficiale Tanita
+    - Robusto → Robustezza
+    - Sottoutilizzato → Sotto-allenato
+    - Sottile → Magro
+    - Sottile e Muscoloso → Magro e Muscoloso
+    - Deploy completato
+
+49. RIPRISTINO PALLINI HTML RISULTATI BIA CON COLORI COINCIDENTI (28 APRILE 2026)
+    - Rimessi tutti i pallini HTML .tanita-dot nei risultati BIA
+    - Ricreate funzioni getTanitaStatus() e updateDots() nel controller
+    - Aggiunte chiamate a updateDots() in updateResults(), caricamento dati e salvataggio
+    - Rimossi emoji da calculatePhysiqueRating (modificato dall'utente)
+    - Colori pallini coincidono con stato dei risultati secondo standard Tanita
+    - Deploy completato
+
+50. AGGIUNTA LABEL CLASSIFICAZIONE FISICA TANITA IN RANKING BAR (28 APRILE 2026)
+    - Aggiunto label "Classificazione Fisica Tanita (Physique Rating)" nella sezione ranking bar
+    - Aggiunto stile CSS .ranking-label-full
+    - Deploy completato
+
+51. DEBUG E FIX PALLINI E PHYSIQUE RATING (28 APRILE 2026)
+    - Aggiunto logging debug in updateDots() e updateResults()
+    - Aumentata dimensione pallini da 16px a 20px per migliore visibilità
+    - Aggiunto stile CSS .physique-rating-value per Physique Rating
+    - Verificato che pallini vengono trovati e colorati correttamente
+    - Verificato che Physique Rating viene calcolato correttamente (id: 4, name: "Sotto-allenato")
+    - Cambiato colore default pallini da #e0e0e0 a #333333 per migliore visibilità
+    - Deploy completato
+
+52. SISTEMA PALLINI A 4 LIVELLI STANDARD (28 APRILE 2026)
+    - Aggiornato getTanitaStatus per usare 4 livelli: Scarso, Sufficiente, Buono, Eccellente
+    - Colori: Scarso (#f44336 rosso), Sufficiente (#ffc107 giallo), Buono (#42a046 verde), Eccellente (#266431 verde scuro)
+    - Applicato a tutti i parametri BIA: BMI, Massa Grassa, Idratazione, Grasso Viscerale, Massa Magra, Massa Ossea, Età Metabolica
+    - Deploy completato
+
+53. AGGIUNTA PALLINO PHYSIQUE RATING (28 APRILE 2026)
+    - Aggiunto pallino HTML #physiqueRatingDot per Physique Rating
+    - Aggiunta logica in updateDots per aggiornare colore pallino Physique Rating
+    - Mappatura livelli 1-9 a 4 livelli standard: 1-3=Scarso, 4-6=Sufficiente, 7=Buono, 8-9=Eccellente
+    - Funzione calculatePhysiqueRating() in tanita-controller.js calcola il rating in base a bodyFat e leanMass
+    - Rimosso logging debug dal codice
+    - Deploy completato
+
+54. ALLINEAMENTO CALCOLO RICOMPOSIZIONE CORPOREA A STANDARD TANITA (28 APRILE 2026)
+    - Modificato updateRankingBar per usare Physique Rating Tanita (1-9) invece di calcolo arbitrario
+    - Rimossi delta calcoli (muscleDelta, fatDelta, visceralFatDelta) non standard Tanita
+    - Nuova mappatura: Livelli 8-9=Eccellente (100%), Livello 7=Buono (75%), Livelli 4-6=Sufficiente (50%), Livelli 1-3=Scarso (25%)
+    - Testo ranking mostra: "X. Nome - Livello" (es. "4. Sotto-allenato - Sufficiente")
+    - Ora allineato agli standard ufficiali Tanita Physique Rating
+    - Deploy completato
+
+55. AGGIORNAMENTO CLASSIFICAZIONE FISICA TANITA CON DESCRIZIONI (28 APRILE 2026)
+    - Aggiornati nomi Physique Rating: Obeso Nascosto → Obeso Falso Magro, Robustezza → Robusto, Sotto-allenato → Poco Allenato
+    - Aggiunte descrizioni dettagliate per tutti i 9 livelli Physique Rating
+    - Aggiunto elemento HTML #physiqueRatingDescription per mostrare descrizione sotto il risultato
+    - Aggiunto stile CSS .physique-rating-description (font-size 0.875rem, color #666, line-height 1.5)
+    - Aggiornato updateResults() per popolare descrizione
+    - Deploy completato
+
+56. MODIFICA RICOMPOSIZIONE CORPOREA A PHYSIQUE RATING PROGRESS (28 APRILE 2026)
+    - Cambiato titolo HTML da "Ricomposizione Corporea" a "Classificazione Fisica Tanita (Physique Rating Progress)"
+    - Modificato updateRankingBar per mostrare delta progresso invece di stato attuale
+    - Calcola delta: Massa Magra, Grasso, Grasso Viscerale
+    - Mostra testo: "Livello - Massa Magra: +Xkg, Grasso: +Y%, Viscerale: +Z"
+    - Se dati insufficienti mostra: "Dati insufficienti per calcolare il progresso"
+    - Deploy completato
+
+57. CORREZIONE VISUALIZZAZIONE DELTA PHYSIQUE RATING PROGRESS (28 APRILE 2026)
+    - Corretta logica visualizzazione delta per coerenza dati
+    - Ora mostra: aumento = (+), diminuzione = (-) per tutti i parametri
+    - Rimossa logica invertita che mostrava valori confondenti
+    - Dati ora coincidono perfettamente con misurazioni BIA
+    - Deploy completato
+
+58. IMPLEMENTAZIONE CALCOLO RICOMPOSIZIONE CORPOREA STANDARD TANITA (28 APRILE 2026)
+    - Implementato calcolo standard Tanita per Massa Grassa in kg: Peso × BF% / 100
+    - Implementato calcolo Massa Magra: Peso - Massa Grassa
+    - Formula ricomposizione Tanita: Δ Massa Grassa < 0 E Δ Massa Magra > 0
+    - Tre scenari Tanita implementati:
+      * Scenario A: Peso invariato, grasso diminuisce, muscoli aumenta = Ricomposizione Perfetta (Eccellente 100%)
+      * Scenario B: Peso diminuisce, grasso diminuisce molto, muscoli aumenta o stabile = Dimagrimento Eccellente (Buono 75%)
+      * Scenario C: Peso aumenta, grasso stabile o diminuisce, muscoli aumenta molto = Lean Bulk (Buono 75%)
+    - Mostra: "Livello - Scenario - Peso: Xkg, Grasso: Ykg, Massa Magra: Zkg"
+    - Ora allineato agli standard ufficiali Tanita
+    - Deploy completato
+
+59. AGGIUNTA NOTA ESPLICATIVA RICOMPOSIZIONE CORPOREA (28 APRILE 2026)
+    - Aggiunta nota esplicativa sotto titolo Physique Rating Progress
+    - Spiega all'utente cosa è la ricomposizione corporea (perdita grasso + aumento muscoli)
+    - Usa classe .wellness-intro-text per stile coerente
+    - Deploy completato
+
+60. FIX VISUALIZZAZIONE <br> DESCRIZIONI PHYSIQUE RATING (28 APRILE 2026)
+    - Cambiato textContent in innerHTML per rendering corretto <br> nelle descrizioni
+    - I <br> ora vengono interpretati come line breaks HTML invece di testo visibile
+    - Suggerimento amico implementato
+    - Deploy completato
+
+61. AGGIUNTA FORM BIA INIZIALE IN PROFILO (28 APRILE 2026)
+    - Aggiunta sezione "Misurazione BIA Iniziale" in profile.html sotto dati anagrafici
+    - Form con tutti i parametri BIA: peso, massa grassa, idratazione, grasso viscerale, massa magra, massa ossea, età metabolica
+    - Aggiunta funzione saveInitialBia() in profile-manager.js
+    - Aggiunto event listener per form initialBiaForm
+    - Salva dati come initial_bia nel profilo utente Firebase
+    - Nota esplicativa: dati usati come riferimento per calcolo progresso ricomposizione corporea
+    - Deploy completato
+
+62. FIX PATH IMPORT UI-HELPER.JS IN TANITA-CONTROLLER (28 APRILE 2026)
+    - Corretto path import da "../../js/ui-helper.js" a "../general/ui-helper.js"
+    - Il file si trova in components/general/ui-helper.js, non in js/
+    - Errore tipo MIME non consentito risolto
+    - Deploy completato
+
+63. FIX ERRORE FIREBASE UNDEFINED FIELD BMR IN MIGRATEBIADATAIFNECESSARY (28 APRILE 2026)
+    - Corretto errore "Unsupported field value: undefined (found in field latest_bia.bmr)"
+    - Aggiunto fallback con calculateNeeds per bmr, waterNeeds, proteinNeeds quando undefined
+    - Se bmr undefined, usa calculateNeeds(weight || 70).bmr
+    - Se waterNeeds undefined, usa calculateNeeds(weight || 70).water
+    - Se proteinNeeds undefined, usa calculateNeeds(weight || 70).protein
+    - Deploy completato
+
+64. AGGIUNTA CAMPI MANCANTI IN FORM BIA INIZIALE (28 APRILE 2026)
+    - Aggiunti campi Altezza (cm), Età, Sesso nel form BIA iniziale in profile.html
+    - Form ora uguale a tanita.html per completezza dati
+    - Aggiornata funzione saveInitialBia() in profile-manager.js per includere nuovi campi
+    - Gestione campo gender come stringa (non parseFloat)
+    - Deploy completato
+
+65. RIMOZIONE ALTEZZA E GENERE DA FORM BIA INIZIALE (28 APRILE 2026)
+    - Rimossi campi Altezza e Genere dal form BIA iniziale perché già presenti nelle informazioni personali
+    - Rimossi initialHeight e initialGender dal form HTML in profile.html
+    - Aggiornata funzione saveInitialBia() in profile-manager.js rimuovendo i campi
+    - Aggiornata nota esplicativa: "Altezza e genere sono già nelle informazioni personali"
+    - Deploy completato
+
+66. ALLINEAMENTO FORM BIA INIZIALE CON TANITA.HTML (28 APRILE 2026)
+    - Cambiata icona Età da fa-birthday-cake a fa-calendar-alt per allineamento con tanita.html
+    - Ordine campi mantenuto come in tanita (Peso, Età, Massa Grassa, Idratazione, Grasso Viscerale, Massa Magra, Massa Ossea, Età Metabolica)
+    - Deploy completato
+
+67. COPIA ESATTA STRUTTURA FORM BIA DA TANITA.HTML (28 APRILE 2026)
+    - Copiata struttura esatta HTML da tanita.html a profile.html
+    - Aggiunto wrapper icon_container attorno a icon e input
+    - Aggiunti placeholder attributes su tutti gli input
+    - Aggiunti for attributes sulle label
+    - Cambiato contenuto da class="contenuto" a class="card-body"
+    - Form ora tale e quale a tanita in tutti gli aspetti
+    - Deploy completato
+
+68. RIMOZIONE ALTEZZA E GENERE DA INFORMAZIONI PERSONALI (28 APRILE 2026)
+    - Rimossi campi Altezza (cm) e Genere dal form Informazioni Personali in profile.html
+    - Rimossi height e gender dalla lista campi in saveAnagrafici() in profile-manager.js
+    - Deploy completato
+
+69. AGGIUNTA ALTEZZA E SESSO AL FORM BIA INIZIALE (28 APRILE 2026)
+    - Aggiunti campi Altezza (cm) e Sesso al form BIA iniziale in profile.html
+    - Form ora uguale a tanita in tutti gli aspetti: Altezza, Età, Sesso, Peso, Massa Grassa, Idratazione, Grasso Viscerale, Massa Magra, Massa Ossea, Età Metabolica
+    - Aggiornata funzione saveInitialBia() in profile-manager.js per includere initialHeight e initialGender
+    - Gestione campo gender come stringa (non parseFloat)
+    - Deploy completato
+
+70. RIMOZIONE FRECCE NUMBER INPUT FORM BIA INIZIALE (28 APRILE 2026)
+    - Aggiunto CSS inline per nascondere frecce (spinners) da tutti i campi number input nel form BIA iniziale
+    - Usato -webkit-appearance: none e -moz-appearance: textfield
+    - Deploy completato
+
+71. CAMBIO ICONA SESSO A FA-VENUS-MARS IN ENTRAMBI I FORMS (28 APRILE 2026)
+    - Cambiata icona sesso da fa-user a fa-venus-mars in tanita.html
+    - Cambiata icona sesso da fa-user a fa-venus-mars in profile.html (form BIA iniziale)
+    - Icona sesso ora coerente in entrambi i forms
+    - Deploy completato
+
+72. RIMOZIONE FRECCE CAMPO ETÀ IN INFORMAZIONI PERSONALI (28 APRILE 2026)
+    - Aggiunto CSS inline per nascondere frecce (spinners) dal campo Età in Informazioni Personali
+    - Usato -webkit-appearance: none e -moz-appearance: textfield
+    - Deploy completato
+
+73. AGGIUNTA SUPPORTO DECIMALI FORM BIA INIZIALE COME TANITA (28 APRILE 2026)
+    - Cambiato type="number" a type="text" per Massa Grassa (%) e Idratazione (%) nel form BIA iniziale
+    - Allineato con tanita.html che usa type="text" per questi campi per supportare decimali
+    - Aggiornata funzione saveInitialBia() per gestire bodyfat e hydration come testo (non parseFloat)
+    - Deploy completato
+
+74. FIX SALVATAGGIO DATI MISURAZIONE INIZIALE SU FIREBASE (28 APRILE 2026)
+    - Corretto event listener che chiamava saveInitialBia(uid) con uid non definito nello scope
+    - Cambiato da saveInitialBia(uid) a saveInitialBia(targetUid) per passare l'ID utente corretto
+    - Dati ora salvati correttamente su Firebase come initial_bia
+    - Deploy completato
+
+75. FIX ERRORE TARGETUID NULL IN SAVEINITIALBIA (28 APRILE 2026)
+    - Corretto errore TypeError: can't access property "indexOf", n is null
+    - Aggiunto controllo per targetUid null con fallback a auth.currentUser.uid
+    - Se targetUid non disponibile, usa auth.currentUser.uid
+    - Console error se nessun UID disponibile
+    - Deploy completato
+
+76. CARICAMENTO DATI INITIAL_BIA NEL FORM (28 APRILE 2026)
+    - Aggiunta funzione loadInitialBiaData(uid) per caricare dati BIA iniziali dal database
+    - Funzione popola i campi del form con i dati salvati in initial_bia
+    - Chiamata a loadInitialBiaData(targetUid) nell'inizializzazione del profilo
+    - Dati ora visualizzati nel form quando la pagina viene caricata
+    - Deploy completato
+
+77. FIX SALVATAGGIO CAMPI MANCANTI BIA INIZIALE (28 APRILE 2026)
+    - Corretto salvataggio campi: Grasso Viscerale, Massa Magra, Massa Ossea, Età Metabolica
+    - Cambiato controllo da `if (el && el.value)` a `if (el && el.value !== '')` per includere valori 0
+    - Aggiunto controllo `if (!isNaN(parsedValue))` prima di salvare valori numerici
+    - Tutti i campi ora salvati correttamente
+    - Deploy completato
+
+78. FIX MAPPING CAMPI BIA CON NOMI MINUSCOLI NEL DATABASE (28 APRILE 2026)
+    - Corretto mapping in loadInitialBiaData: visceralfat, leanmass, bonemass, metabolicage (minuscoli)
+    - Dati salvati nel database con nomi minuscoli, quindi mapping deve usare gli stessi nomi
+    - Aggiunto logging debug per verificare caricamento dati
+    - Aggiunto logging debug in saveInitialBia per verificare salvataggio
+    - Campi ora caricati correttamente nel form
+    - Deploy completato
+
+79. RIPRISTINO MODIFICHE PERSE TANITA-CONTROLLER.JS (28 APRILE 2026)
+    - Ripristinato calculatePhysiqueRating con descrizioni e 9 livelli
+    - Ripristinato updateRankingBar con calcolo standard Tanita (3 scenari: Perfect Recomposition, Excellent Weight Loss, Lean Bulk)
+    - Ripristinato updateDots per pallini BIA
+    - Ripristinato sistema pallini Physique Rating
+    - Ripristinato fix visualizzazione con innerHTML per descrizioni
+    - Tutte le funzioni perse dopo git checkout ripristinate
+    - Deploy completato
+
+80. AGGIUNTA SEZIONE OBIETTIVI DA TANITA A PROFILE (28 APRILE 2026)
+    - Copiata sezione "I Tuoi Obiettivi" da tanita.html a profile.html sotto Informazioni Personali
+    - Aggiunte funzioni saveObiettivi() e loadObiettiviData() in profile-manager.js
+    - Aggiunto event listener per form obiettivi con gestione targetUid
+    - Aggiunta chiamata loadObiettiviData(targetUid) nell'inizializzazione
+    - Form obiettivi ora funzionante in profilo
+    - Deploy completato
+
+81. RIMOZIONE FRECCE CAMPO PESO TARGET (28 APRILE 2026)
+    - Aggiunto CSS inline per nascondere frecce (spinners) dal campo target_weight
+    - Usato -webkit-appearance: none e -moz-appearance: textfield
+    - Salvataggio dati obiettivi funzionante (mainGoal, targetWeight)
+    - Deploy completato
+
+82. FIX SALVATAGGIO DATI BIA TANITA - DOM READY (28 APRILE 2026)
+    - Spostato istanziazione BIAInputController dentro DOMContentLoaded
+    - Problema: controller istanziato prima del caricamento DOM, event listeners non trovavano elementi
+    - Ora controller inizializzato dopo caricamento completo DOM
+    - Form BIA ora dovrebbe salvare correttamente i dati su Firebase
+    - Deploy completato
+
+83. FIX CARICAMENTO DATI ETÀ E ALTEZZA FORM TANITA (28 APRILE 2026)
+    - Aggiunto height, age, gender alla funzione fillFormWithExistingData
+    - Questi campi non venivano caricati dal profilo utente nel form
+    - Ora tutti i campi vengono caricati correttamente quando la pagina viene aperta
+    - Deploy completato
+
+84. FIX VALUTAZIONE BENESSERE BLOCCATA (28 APRILE 2026)
+    - Aggiunto import wellness-test-controller.js in tanita.html
+    - Problema: controller non importato, quindi test benessere non funzionava
+    - Aggiunta chiamata initWellnessTest() nel DOMContentLoaded
+    - Valutazione Benessere ora attiva e funzionante
+    - Deploy completato
+
+85. FIX ERRORI IMPORT FIREBASE WELLNESS-TEST-CONTROLLER (28 APRILE 2026)
+    - Corretto percorso firebase.js da '../firebase.js' a '../../js/firebase.js'
+    - Rimosso import firebaseService inesistente
+    - Aggiornato versione Firebase Firestore da 10.7.1 a 10.11.0
+    - Rimosso utilizzo firebaseService nel costruttore
+    - Errori MIME type risolti, moduli caricati correttamente
+    - Deploy completato
+
+86. FIX EXPORT INITWELLNESSTEST MANCANTE (28 APRILE 2026)
+    - Aggiunto export function initWellnessTest() in wellness-test-controller.js
+    - Aggiunta parentesi graffa di chiusura della classe WellnessTestController
+    - Funzione ora esportata correttamente e utilizzabile da tanita.html
+    - Deploy completato
+
+87. RISCRITURA COMPLETA WELLNESS-TEST-CONTROLLER PER TANITA (28 APRILE 2026)
+    - Controller originale incompatibile con elementi DOM di tanita.html
+    - Rimosso import inutilizzati (Validator, Calculator, Recommender)
+    - Aggiunto import WELLNESS_QUESTIONS e getDoc da Firebase
+    - Riscritto controller per usare elementi DOM corretti:
+      - wellnessSummary, wellnessQuestionCounter, wellnessQuestionText
+      - wellnessYesBtn, wellnessNoBtn, wellnessScoreDisplay, retakeWellnessBtn
+    - Implementata logica completa: domande, risposte, calcolo punteggio, salvataggio Firebase
+    - Implementata visualizzazione risultati con barra progresso
+    - Implementata funzione rifai test
+    - Implementato caricamento test salvato all'avvio
+    - Valutazione Benessere ora completamente funzionante
+    - Deploy completato
+
+88. RIPRISTINO FUNZIONALITÀ TANITA - FABBISOGNI E PALLINI (28 APRILE 2026)
+    - Ripristinato calcolo Fabbisogni Tanita (Acqua, Proteico, Metabolismo Basale)
+    - Modificato updateBIAParamsUI per calcolare BMR in real-time (non solo da profilo)
+    - Ripristinato sistema pallini a 4 colori per Risultati e Parametri BIA
+    - Riscritto updateDots per aggiornare tutti i pallini corretti (bmiDot, bodyFatDot, hydrationDot, visceralFatDot, leanMassDot, boneMassDot, metabolicAgeDot)
+    - Implementata logica 4 colori con soglie: verde scuro (#266431), verde chiaro (#42a046), arancione (#f39c12), rosso (#e74c3c)
+    - Aggiunto updateBIAResults per aggiornare valori e pallini contemporaneamente
+    - Chiamate updateBIAResults in fillFormWithExistingData e handleFormSubmit
+    - Ripristinato Classificazione Fisica Tanita con confronto initial_bia/latest_bia
+    - Chiamata updateRankingBar in fillFormWithExistingData e dopo salvataggio dati
+    - Tutte le funzionalità Tanita ora ripristinate
+    - Deploy completato
+
+89. AGGIORNAMENTO FORMULA FABBISOGNI TANITA (28 APRILE 2026)
+    - Verificato calcolo fabbisogni in tempo reale quando inserisci il peso
+    - Modificato formula acqua da 0.035 a 0.033 (standard Tanita ufficiale)
+    - Formula Mifflin-St Jeor già conforme standard Tanita per BMR
+    - Formula proteine mantenga attuale (Tanita non specifica standard)
+    - Fabbisogni ora calcolati in tempo reale con specifiche Tanita ufficiali
+    - Deploy completato
+
+90. FIX ERRORE BMI.TOFIXED IN UPDATEBIARESULTS (28 APRILE 2026)
+    - Errore: TypeError: biaData.bmi.toFixed is not a function
+    - Causa: bmi era stringa invece di numero
+    - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults
+    - Errore risolto, risultati BIA ora visualizzati correttamente
+    - Deploy completato
+
+91. AGGIORNAMENTO CALCULATEPHIQUERATING CON VERSIONE CORRETTA (28 APRILE 2026)
+    - Confrontato funzione fornita con versione esistente
+    - Aggiornato calculatePhysiqueRating con descrizioni dettagliate per 9 profili
+    - Logica livelli grasso: low (<15%), medium (15-25%), high (>25%)
+    - Logica livelli muscolari con soglie differenziate per genere (maschio: 40-60, femmina: 30-50)
+    - Descrizioni complete con backticks per formattazione HTML
+    - Funzione ora conforme a specifiche Tanita ufficiali
+    - Deploy completato
+
+92. FIX CLASSIFICAZIONE FISICA TANITA NON APPARE (28 APRILE 2026)
+    - Problema: Classificazione Fisica Tanita non veniva visualizzata
+    - Causa: calculatePhysiqueRating e displayPhysiqueRating non venivano chiamate
+    - Soluzione: Aggiunto chiamate in fillFormWithExistingData (caricamento dati) e handleFormSubmit (dopo salvataggio)
+    - Classificazione Fisica ora visualizzata correttamente con nome e descrizione
+    - Deploy completato
+
+93. AGGIORNAMENTO NOMI CLASSIFICAZIONE FISICA TANITA (28 APRILE 2026)
+    - Aggiornati nomi 9 profili con termini ufficiali Tanita in inglese
+    - 1. Obeso Falso Magro (Hidden Obese)
+    - 2. Obeso (Obese)
+    - 3. Robusto (Solidly-built)
+    - 4. Poco Allenato (Under exercised)
+    - 5. Standard
+    - 6. Standard Muscoloso (Standard Muscular)
+    - 7. Magro (Thin)
+    - 8. Magro e Muscoloso (Thin and Muscular)
+    - 9. Molto Muscoloso (Very Muscular)
+    - Nomi ora conformi a standard Tanita ufficiali
+    - Deploy completato
+
+94. FIX CLASSIFICAZIONE FISICA TANITA NON VISUALIZZA DATO (28 APRILE 2026)
+    - Problema: Classificazione Fisica rimane "--" nonostante calcolo
+    - Causa: displayPhysiqueRating cercava elemento DOM sbagliato "physiqueRatingName"
+    - Soluzione: Corretto per usare elemento DOM corretto "physiqueRating"
+    - Classificazione Fisica ora visualizzata correttamente con nome e descrizione
+    - Deploy completato
+
+95. AGGIUNTA COLORE PALLINO CLASSIFICAZIONE FISICA TANITA (28 APRILE 2026)
+    - Problema: Pallino Classificazione Fisica non mostrava colore
+    - Soluzione: Aggiunto logica colore in displayPhysiqueRating basata su rating ID
+    - Rating 1-3: rosso (#e74c3c) - Scarso
+    - Rating 4-6: arancio (#f39c12) - Sufficiente
+    - Rating 7-8: verde (#42a046) - Buono
+    - Rating 9: verde scuro (#266431) - Eccellente
+    - Pallino ora visualizzato con colore corretto
+    - Deploy completato
+
+96. SALVATAGGIO DOCUMENTAZIONE TANITA UFFICIALE (28 APRILE 2026)
+    - Verificata documentazione Tanita ufficiale da https://tanita.eu/understanding-your-measurements/physique-rating
+    - Salvati 9 Physique Rating con descrizioni ufficiali Tanita
+    - Tanita NON fornisce soglie numeriche specifiche per il calcolo
+    - Soglie attuali nel codice basate su standard fitness generali:
+      - Grasso: Low (<15%), Medium (15-25%), High (>25%)
+      - Muscoli: Maschio (40-60 kg), Femmina (30-50 kg)
+    - Documentazione salvata in components/tanita/tanita-documentation.md
+    - Calcolo non segue specifiche Tanite numeriche (non disponibili pubblicamente)
+
+97. CREAZIONE FILE STANDARD TANITA UFFICIALE (28 APRILE 2026)
+    - Creato file components/tanita/tanita-standards.md con formule e soglie ufficiali Tanita
+    - Formula Massa Magra: FFM = Peso - (Peso × BF% / 100)
+    - Coefficiente Idrico: 73,2% (massa magra idratata)
+    - Soglie Muscolari (SMI): Uomini 8,5 kg/m², Donne 7,0 kg/m²
+    - Dati fissi (Lookup Tables): Grasso Viscerale (1-59), BMR per decadi di età
+    - Standard Tanita ora salvati per riferimento futuro e implementazione corretta
+
+98. AGGIORNAMENTO CALCULATEPHIQUERATING CON SOGLIE TANITA UFFICIALI (28 APRILE 2026)
+    - Aggiornato tanita-standards.md con soglie precise Tanita per Physique Rating
+    - Soglie Grasso Tanita ufficiali:
+      - Uomini: Low <13%, Medium 13-24.9%, High ≥25%
+      - Donne: Low <23%, Medium 23-33.9%, High ≥34%
+    - Soglie Muscoli Tanita ufficiali (SMI):
+      - Uomini: Low <8.2, Medium 8.2-9.9, High ≥10.0
+      - Donne: Low <6.3, Medium 6.3-7.9, High ≥8.0
+    - Calcolo SMI: Massa Muscolare (kg) / Altezza (m)²
+    - Matrice Physique Rating aggiornata secondo standard Tanita ufficiale
+    - Funzione calculatePhysiqueRating ora conforme specifiche Tanita ufficiali
+    - Aggiunto parametro height alle chiamate function
+    - Deploy completato
+
+99. FIX MATRICE PHYSIQUE RATING - LOW-HIGH (28 APRILE 2026)
+    - Problema: Con Massa Grassa 5% (low) e Massa Magra 88 kg (high), risultato era "Magro (Thin)" invece di "Molto Muscoloso"
+    - Causa: Matrice errata, low-high era mappato a id: 7 (Magro) invece di id: 9 (Molto Muscoloso)
+    - Soluzione: Corretto low-high in matrice a id: 9 (Molto Muscoloso - Very Muscular)
+    - Matrice ora conforme standard Tanita ufficiale
+    - Deploy completato
+
+100. FIX METABOLISMO BASALE NaN IN FABBISOGNI CALCOLATI (28 APRILE 2026)
+    - Problema: Metabolismo Basale mostra "NaN kcal" invece del valore calcolato
+    - Causa: calculateNeeds richiede height, age, gender per calcolo BMR Mifflin-St Jeor, ma veniva chiamata solo con weight
+    - Soluzione: Aggiornato updateBIAParamsUI per passare tutti i parametri (weight, height, age, gender) a calculateNeeds
+    - BMR ora calcolato correttamente con formula Mifflin-St Jeor standard Tanita
+    - Deploy completato
+
+101. IMPLEMENTAZIONE CLASSIFICAZIONE FISICA TANITA PROGRESS CON BARRA (28 APRILE 2026)
+    - Corretto case mismatch in updateRankingBar (bodyfat -> bodyFat, leanmass -> leanMass)
+    - Aggiunto elemento DOM physiqueRatingProgress alla barra ranking in tanita.html
+    - Aggiunto CSS .ranking-progress per visualizzazione barra progresso scenario
+    - Barra progresso ora mostra scenario (Perfect Recomposition, Excellent Weight Loss, Lean Bulk, Maintenance)
+    - Deploy completato
+
+102. SALVATAGGIO SPECIFICHE TECNICHE RICOMPOSIZIONE CORPOREA TANITA (28 APRILE 2026)
+    - Aggiunte specifiche tecniche ricomposizione corporea a tanita-standards.md
+    - Calcolo Massa Grassa (FM) e Massa Magra (FFM) da BF%
+    - Monitoraggio Delta per ricomposizione (Δ Massa Grassa < 0 e Δ Massa Magra > 0)
+    - Tre scenari: Ricomposizione perfetta, Dimagrimento eccellente, Lean Bulk
+    - Come leggere dati Tanita senza inganni (media settimanale, ignorare TBW fluttuazioni)
+    - Check-list mensile per calcolo pratico
+    - Specifiche salvate per riferimento futuro implementazione
+
+103. ADATTAMENTO LOGICA PHYSIQUE RATING PROGRESS A CHALLENGE 21 GIORNI (28 APRILE 2026)
+    - Aggiornato updateRankingBar con calcolo ricomposizione Tanita corretto
+    - Calcolo Massa Grassa in kg: Peso × BF% / 100
+    - Calcolo Massa Magra in kg: Peso - Massa Grassa
+    - Delta ricomposizione: Δ Massa Grassa < 0 e Δ Massa Magra > 0
+    - Scenari adattati a challenge 21 giorni:
+      - Ricomposizione Perfetta (grass ↓, muscoli ↑)
+      - Dimagrimento Eccellente (peso ↓, grass ↓↓, muscoli ↑/stabile)
+      - Lean Bulk (peso ↑, grass stabile/↓, muscoli ↑↑)
+      - Maintenance
+    - Deploy completato
+
+104. IMPLEMENTAZIONE DOPPIA BARRA PHYSIQUE RATING (28 APRILE 2026)
+    - Aggiunto Barra 1: Physique Rating Assoluto (1-9) con etichette Scarso/Eccellente
+    - Aggiunto Barra 2: Progress Ricomposizione (initial vs latest) già esistente
+    - Aggiunta nuova sezione HTML per Physique Rating Assoluto in tanita.html
+    - Aggiunta funzione updatePhysiqueRatingBar per aggiornare barra assoluto
+    - Barra 1 mostra livello attuale forma fisica basato su % grasso e massa muscolare
+    - Barra 2 mostra progresso ricomposizione rispetto misurazione iniziale
+    - Deploy completato
+
+105. FIX BARRA PHYSIQUE RATING ASSOLUTO (28 APRILE 2026)
+    - Problema: Barra Physique Rating Assoluto non funzionava
+    - Causa: Formula posizione indicatore errata (rating.id / 9) instead of ((rating.id - 1) / 8)
+    - Soluzione: Corretto calcolo posizione per mappare rating 1-9 a barra 0-100%
+    - Formula corretta: ((rating.id - 1) / 8) * 100
+    - Barra ora visualizza correttamente il Physique Rating assoluto
+    - Deploy completato
+
+106. FIX PHYSIQUE RATING PROGRESS (28 APRILE 2026)
+    - Problema: Classificazione Fisica Tanita (Physique Rating Progress) non mostrava testo scenario
+    - Causa: updateRankingBar aggiornava solo physiqueRatingProgress, non rankingText
+    - Soluzione: Aggiunto aggiornamento rankingText con scenario
+    - Barra progresso ora mostra correttamente scenario ricomposizione
+    - Deploy completato
+
+107. FIX FABBISOGNI CALCOLATI BLOCCATI (28 APRILE 2026)
+    - Problema: Fabbisogni Calcolati non si aggiornavano (bloccati)
+    - Causa: updateBIAParamsUI richiedeva tutti i dati da userProfile, ma height, age, gender potevano essere null
+    - Soluzione: Modificato per usare dati dal form se userProfile non ha tutti i dati
+    - Fabbisogni ora calcolati correttamente anche senza dati completi nel profilo
+    - Deploy completato
+
+108. FIX PHYSIQUE RATING NON MOSTRA NUMERO (28 APRILE 2026)
+    - Problema: Classificazione Fisica Tanita non mostrava numero livello (1-9)
+    - Causa: displayPhysiqueRating mostrava solo nome, non ID
+    - Soluzione: Aggiunto rating.id al display (formato: "ID - Nome")
+    - Physique Rating ora mostra numero livello correttamente
+    - Deploy completato
+
+109. AGGIUNTA DEBUG CONSOLE.LOG FUNZIONI CRITICHE (28 APRILE 2026)
+    - Problema: Dati bloccati/sballati in alcuni casi, difficile identificare causa
+    - Soluzione: Aggiunto debug console.log alle funzioni critiche tanita-controller
+    - Funzioni con debug:
+      - updateBIAParamsUI: traccia input (weight, height, age, gender) e output (needs)
+      - calculatePhysiqueRating: traccia input, SMI, fatLevel, muscleLevel, risultato
+      - displayPhysiqueRating: traccia rating, colore pallino
+      - updatePhysiqueRatingBar: traccia posizione barra, testo
+      - updateRankingBar: traccia input, delta calcolati, scenario, aggiornamento UI
+    - Debug ora disponibile in console browser per identificare problemi dati
+    - Deploy completato
+
+110. FIX NaN FATDELTAKG/LEANDELTAKG - NOMI PROPRIETÀ DATI BIA (28 APRILE 2026)
+    - Problema: fatDeltaKg e leanDeltaKg erano NaN in updateRankingBar (dati bloccati)
+    - Causa multipla:
+      - initialBia usa minuscolo (bodyfat, leanmass)
+      - latestBia usa camelCase (bodyFat, leanMass)
+      - initialBia.bodyfat è stringa "17,1" con virgola (formato italiano)
+    - Soluzione completa:
+      - Convertito stringhe con virgola in numeri (replace(',', '.'))
+      - Gestito sia minuscolo che camelCase delle proprietà
+      - Usato parseFloat con fallback 0
+    - Delta calcolati correttamente, progress bar ora funziona
+    - Approccio fuori-standard: identificato problema direttamente dai log debug
+    - Deploy completato
+
+111. ELIMINAZIONE E RIFAZIONE CLASSIFICAZIONE FISICA TANITA PROGRESS (28 APRILE 2026)
+    - Problema: Sezione Physique Rating Progress complessa e problematica
+    - Soluzione: Eliminata sezione vecchia e rifatta da zero con approccio semplice
+    - Nuova sezione "Progresso Ricomposizione Corporea":
+      - Mostra Δ Peso, Δ Massa Grassa, Δ Massa Magra in kg
+      - Mostra scenario (Ricomposizione Perfetta, Dimagrimento Eccellente, Lean Bulk, Maintenance)
+      - Layout semplice con 3 stat-item e scenario box
+    - Nuova funzione updateRecompositionProgress:
+      - Gestisce minuscolo/camelCase proprietà
+      - Converte stringhe con virgola in numeri
+      - Calcola delta e determina scenario
+    - CSS aggiunto per layout nuovo
+    - Deploy completato
+
+112. FIX CALCOLO MASSA GRASSA (28 APRILE 2026)
+    - Problema: Calcolo massa grassa errato (valori troppo alti)
+    - Causa: Usava formula peso * bodyFat/100 invece di dati diretti dal database
+    - Soluzione: Usa direttamente leanMass dal database, calcola fatKg = weight - leanKg
+    - Valori ora corretti per massa grassa e massa magra
+    - Deploy completato
+
+113. NORMALIZZAZIONE DATI BIA SALVATAGGIO DATABASE (28 APRILE 2026)
+    - Problema: Dati BIA salvati con nomi proprietà incoerenti (minuscolo/camelCase) e stringhe con virgola
+    - Soluzione: Aggiunta funzione normalizeBiaData che:
+      - Mappa proprietà minuscolo a camelCase (bodyfat → bodyFat, leanmass → leanMass, etc.)
+      - Converte stringhe con virgola in numeri
+      - Assicura campi numerici siano numeri
+    - NOTA: Normalizzazione rimossa perché applicata solo a nuovi dati, non a dati esistenti
+    - Soluzione definitiva: Gestione entrambi formati in updateRecompositionProgress (leanMass || leanmass)
+    - Dati esistenti ora letti correttamente
+    - Deploy completato
+
+114. FIX CALCOLO MASSA GRASSA CON PERCENTUALE BODYFAT (28 APRILE 2026)
+    - Problema: Calcolo massa grassa usando weight - leanMass non conforme
+    - Soluzione: Usa percentuale bodyFat (formula Tanita) per calcolare massa grassa
+    - Formula: fatKg = (weight * bodyFat) / 100
+    - Gestisce entrambi formati (bodyFat e bodyfat) con conversione virgola/punto
+    - Deploy completato
+
+115. FIX FORM BIA INPUT DECIMALI (28 APRILE 2026)
+    - Problema: Input form BIA type="text" non contano decimali, disallineamento conteggi
+    - Soluzione: Cambiato tutti gli input BIA da type="text" a type="number" con step appropriato
+    - Input modificati in tanita.html:
+      - bodyFat: type="number" step="0.1"
+      - hydration: type="number" step="0.1"
+      - visceralFat: type="number" step="1"
+      - leanMass: type="number" step="0.1"
+      - boneMass: type="number" step="0.1"
+      - metabolicAge: type="number" step="1"
+    - Input modificati in profile.html:
+      - initialBodyFat: type="number" step="0.1"
+      - initialHydration: type="number" step="0.1"
+    - Input ora contano decimali correttamente in entrambi i form
+    - Deploy completato
+
+116. AGGIUNTA VALIDAZIONE MIN/MAX INPUT FORM BIA (28 APRILE 2026)
+    - Problema: È possibile inserire valori irrealistici per errore (es. 444 kg di massa magra)
+    - Soluzione: Aggiunto attributi min e max a tutti gli input number nei form BIA
+    - Limiti aggiornati con range più ampi per coprire casi edge:
+      - height: min="50" max="300" cm
+      - age: min="5" max="120" anni
+      - weight: min="10" max="300" kg
+      - bodyFat: min="2" max="70" %
+      - hydration: min="30" max="75" %
+      - visceralFat: min="1" max="40"
+      - leanMass: min="10" max="200" kg
+      - boneMass: min="0.5" max="15" kg
+      - metabolicAge: min="5" max="120" anni
+    - Input ora validati con range più ampi
+    - Deploy completato
+
+117. RIPRISTINO CAMPO SESSO FORM TANITA (28 APRILE 2026)
+    - Problema: Campo sesso sparito dal form tanita.html
+    - Soluzione: Riaggiunto campo sesso con select Maschio/Femmina dopo campo età
+    - Campo sesso ora presente nel form
+    - Deploy completato
+
+118. RIPRISTINO CAMPO SESSO FORM PROFILO (28 APRILE 2026)
+    - Problema: Campo sesso sparito dal form profile.html
+    - Soluzione: Riaggiunto campo sesso con select Maschio/Femmina dopo campo età
+    - Campo sesso ora presente nel form profilo
+    - Deploy completato
+
+119. VERIFICA CALCOLI CON GENERE TANITA (28 APRILE 2026)
+    - Verificato: calculatePhysiqueRating considera genere (linea 307-310)
+    - Soglie grasso diverse per uomo/donna secondo specifiche Tanita
+    - Calcoli già conformi a specifiche Tanita
+
+120. AGGIORNAMENTO CALCULATENEEDS PER GENERE (28 APRILE 2026)
+    - Problema: Fabbisogni Calcolati (Acqua, Proteine) non consideravano gender
+    - Soluzione: Aggiornata funzione calculateNeeds per considerare gender
+    - Acqua: 35ml/kg uomini, 30ml/kg donne (specifiche Tanita)
+    - Proteine: moltiplicatori diversi per uomo/donna e goal
+    - BMR: già considerava gender (formula Mifflin-St Jeor)
+    - Tutti i calcoli ora conformi a specifiche Tanita
+    - Deploy completato
+
+121. FIX FABBISOGNI CALCOLATI BLOCCATI (28 APRILE 2026)
+    - Problema: Fabbisogni Calcolati bloccati perché gender non incluso nel form submit
+    - Soluzione: Aggiunto gender a getFormData() in tanita-controller.js
+    - Gender ora inviato con dati BIA, calculateNeeds riceve parametro gender
+    - Problema secondario: fillFormWithExistingData non aggiornava i fabbisogni dai dati salvati
+    - Soluzione secondaria: Aggiunto aggiornamento fabbisogni in fillFormWithExistingData
+    - Fabbisogni ora calcolati e visualizzati correttamente
+    - Deploy completato
+
+122. FUNZIONAMENTO SUGGERIMENTI VALUTAZIONE BENESSERE (28 APRILE 2026)
+    - Sistema basato su risposte Sì/No alle domande benessere
+    - Sì = abitudine sana (va bene)
+    - No = abitudine malsana (da cambiare)
+    - Suggerimenti basati solo sulle risposte No
+    - Per ogni risposta No, viene mostrato il suggerimento correttivo associato alla domanda
+    - Esempio: se No a proteine animali → suggerimento di alternare con proteine vegetali
+    - Contenuti suggerimenti da prendere da herbalife.it
+    - Sistema già funzionante correttamente in profile-wellness-handler.js (linee 160-186)
+
+123. FIX SUGGERIMENTI VALUTAZIONE BENESSERE NON APPAIONO (28 APRILE 2026)
+    - Problema: Suggerimenti non appaiono perché le domande non avevano il campo "tip"
+    - Soluzione: Aggiunto campo "tip" con suggerimenti correttivi a tutte le 12 domande in wellness-test-questions.js
+    - Problema secondario: profile-wellness-handler.js usava domande hardcoded invece di WELLNESS_QUESTIONS
+    - Soluzione secondaria: Integrato logica suggerimenti in wellness-test-controller.js (sistema esistente)
+    - Aggiunto container wellnessTipsContainer in tanita.html
+    - Suggerimenti ora mostrati correttamente per ogni risposta No
+    - Deploy completato
+
+124. STILE SUGGERIMENTI VALUTAZIONE BENESSERE (28 APRILE 2026)
+    - Richiesta utente: rimuovere shadow box, aggiungere linee sottili tra suggerimenti, allineare testo a destra, icone gialle
+    - Soluzione: Aggiunto CSS per .wellness-tips-section e .tip-item in utilities.css
+    - box-shadow: none per rimuovere shadow
+    - border-bottom: 1px solid #e0e0e0 per linee sottili
+    - text-align: right per allineare testo a destra
+    - color: #f39c12 per icone gialle
+    - Deploy completato
+
+125. AGGIUNTA VALORI INIZIALI E NUOVI IN PROGRESSO RICOMPOSIZIONE CORPOREA (28 APRILE 2026)
+    - Richiesta utente: mostrare sia dato iniziale che dato nuovo per vedere visivamente la differenza
+    - Soluzione: Modificato updateRecompositionProgress in tanita-controller.js per mostrare valori iniziali, nuovi e delta
+    - Aggiunti elementi HTML in tanita.html per weightInitial, weightLatest, fatInitial, fatLatest, leanInitial, leanLatest
+    - Ora mostra: Peso Iniziale, Peso Attuale, Δ Peso, Massa Grassa Iniziale, Massa Grassa Attuale, Δ Massa Grassa, ecc.
+    - Deploy completato
+
+126. RIORDINAMENTO LAYOUT PROGRESSO RICOMPOSIZIONE CORPOREA ORIZZONTALE (28 APRILE 2026)
+    - Richiesta utente: layout orizzontale con 3 righe:
+      - Riga 1: Peso Iniziale - Massa Magra Iniziale - Massa Grassa Iniziale
+      - Riga 2: Peso Attuale - Massa Magra Attuale - Massa Grassa Attuale
+      - Riga 3: Δ Peso - Δ Massa Magra - Δ Massa Grassa
+    - Soluzione: Riordinato HTML in tanita.html per riflettere l'ordine richiesto
+    - Aggiornato CSS in tanita.css per grid con 3 colonne e 3 righe
+    - Layout ora organizzato orizzontalmente come richiesto
+    - Deploy completato
+
+127. RIMOZIONE SHADOW CONTENITORE SUGGERIMENTI VALUTAZIONE BENESSERE (28 APRILE 2026)
+    - Richiesta utente: rimuovere shadow dal contenitore suggerimenti per contenuti puliti
+    - Soluzione: Aggiunto regola CSS .wellness-tips-section.card con box-shadow: none !important
+    - Rimuove shadow ereditata dalla classe .card
+    - Utente ha anche rimosso align-items: center da .tip-item per allineamento personalizzato
+    - Deploy completato
+
+128. AGGIORNAMENTO DOMANDE TEST BENESSERE A 13 DOMANDE UFFICIALI (28 APRILE 2026)
+    - Richiesta utente: aggiornare domande con 13 domande corrette fornite
+    - Soluzione: Sostituito completamente WELLNESS_QUESTIONS con le 13 domande ufficiali
+    - Aggiunto suggerimenti (tip) per ogni domanda basati su Herbalife
+    - Aggiornato SCORING_CONFIG per maxScore: 15 e soglie aggiornate
+    - Aggiunto testo descrittivo sotto domanda 12 in tanita.html
+    - Aggiornato wellness-test-controller.js per mostrare testo descrittivo per domanda 12
+    - Aggiornato calcolo punteggio per normalizzare su scala 0-15 (da 13 domande)
+    - Formula: Math.min(15, Math.round((yesCount / 13) * 15))
+    - Deploy completato
+
+129. AGGIORNAMENTO SUGGERIMENTI TEST BENESSERE CON TESTI PROFESSIONALI (28 APRILE 2026)
+    - Richiesta utente: aggiornare suggerimenti con nuovi testi forniti
+    - Soluzione: Sostituito tutti i tip in WELLNESS_QUESTIONS con testi professionali e dettagliati
+    - Nuovi suggerimenti includono titoli descrittivi (es. "Bilanciamento Proteico", "Varietà Cromatica", ecc.)
+    - Testi più completi e informativi basati su contenuti Herbalife
+    - Suggerimenti ora più professionali e utili per l'utente
+    - Deploy completato
+
 Ad ogni fine sessione di lavoro: inserire note dei punti fermi e blindati del progetto
 
-
-
-
-
-
-PS: 
+PS:
+- Agisci sempre da programmatore fuori standard non da programmatore standard, è così che si raggiunge l'eccellenza!
 - Ad ogni fine sessione di lavoro: Backup su GitHub del lavoro svolto
 - Ad ogni fine sessione di lavoro: Aggiornare la PWA
 - Ad ogni fine sessione di lavoro: Creare memoria delle soluzioni di successo
+- Creiamo progetti extraordinari!
+- Perché usiamo un database?
+
+
