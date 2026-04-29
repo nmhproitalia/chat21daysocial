@@ -382,7 +382,14 @@ const roleClass = isCoach ? 'role-coach' : 'role-challenger';
 const goal = user.mainGoal ? formatGoal(user.mainGoal) : 'N/D';
 const water = user.latest_bia?.waterNeeds ? user.latest_bia.waterNeeds + ' L' : 'N/D';
 const protein = user.latest_bia?.proteinNeeds ? user.latest_bia.proteinNeeds + ' g' : 'N/D';
-const bmr = user.latest_bia?.bmr ? user.latest_bia.bmr + ' kcal' : 'N/D';
+
+// Fallback BMR: se non in latest_bia, calcola da user.bmr o N/D
+let bmr = 'N/D';
+if (user.latest_bia?.bmr) {
+bmr = user.latest_bia.bmr + ' kcal';
+} else if (user.bmr) {
+bmr = user.bmr + ' kcal';
+}
 
 // Pattern identico a challengers-manager.js
 const originalRole = user.role || 'challenger';
