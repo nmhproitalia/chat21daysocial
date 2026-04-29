@@ -405,6 +405,8 @@ const fatDeltaKg = latestFatKg - initialFatKg;
 const leanDeltaKg = latestLeanKg - initialLeanKg;
 const weightDelta = user.latest_bia.weight - user.initial_bia.weight;
 
+console.log(`[DEBUG] ${d.id} Scenario: fatDelta=${fatDeltaKg.toFixed(2)}, leanDelta=${leanDeltaKg.toFixed(2)}, weightDelta=${weightDelta.toFixed(2)}`);
+
 if (fatDeltaKg < 0 && leanDeltaKg > 0) {
 scenario = 'Ricomposizione Perfetta';
 scenarioColor = '#28a745';
@@ -417,6 +419,8 @@ scenarioColor = '#ffc107';
 } else {
 scenario = 'Maintenance';
 }
+} else {
+console.log(`[DEBUG] ${d.id} Scenario: dati mancanti - initial_bia=${!!user.initial_bia}, latest_bia=${!!user.latest_bia}`);
 }
 
 // Pattern identico a challengers-manager.js
@@ -493,7 +497,7 @@ ${avatarHTML}
 </div>
 <div class="recomposition-scenario-dashboard" style="text-align: center; margin-top: 15px; padding: 10px; background: rgba(255, 255, 255, 0.8); border-radius: 8px;">
 <div style="font-size: 0.85rem; color: #666; margin-bottom: 5px;">Progresso Ricomposizione Corporea</div>
-<span class="scenario-value" style="font-size: 1.125rem; font-weight: 700; color: ${scenarioColor};">${scenario}</span>
+<span class="scenario-value" style="font-size: 1rem; font-weight: 700; color: ${scenarioColor};">${scenario}</span>
 </div>
 <div id="delete-msg-${d.id}" class="delete-message-area"></div>
 </div>
