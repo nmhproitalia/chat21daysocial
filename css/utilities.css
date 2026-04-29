@@ -143,6 +143,225 @@ flex-wrap: wrap;
 display: none;
 }
 
+/* BIA RESULTS STYLES - SHARED ACROSS PAGES */
+.bia-params-container {
+display: flex;
+justify-content: center;
+gap: 30px;
+margin-top: 0.5rem;
+}
+
+.bia-results-row {
+display: flex;
+justify-content: center;
+gap: 20px;
+}
+
+.bia-results-row-simple {
+display: flex;
+justify-content: center;
+gap: 20px;
+}
+
+/* PROGRESSO RICOMPOSIZIONE CORPOREA */
+.recomposition-stats {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+grid-template-rows: auto auto auto;
+gap: 1rem;
+margin: 1.5rem 0;
+}
+
+.stat-item {
+text-align: center;
+padding: 0.5rem;
+}
+
+.stat-item label {
+display: block;
+font-size: 0.875rem;
+color: #666;
+margin-bottom: 0.25rem;
+}
+
+.stat-item .stat-value {
+font-size: 1.25rem;
+font-weight: 700;
+color: #266431;
+}
+
+.recomposition-scenario {
+text-align: center;
+margin-top: 1rem;
+padding: 1rem;
+background: rgba(255, 255, 255, 0.8);
+border-radius: 8px;
+}
+
+.recomposition-scenario label {
+display: block;
+font-size: 0.875rem;
+color: #666;
+margin-bottom: 0.5rem;
+}
+
+.scenario-value {
+font-size: 1.125rem;
+font-weight: 700;
+color: #266431;
+}
+
+/* RANKING BAR - SHARED ACROSS PAGES */
+.ranking-bar-container {
+padding: 0.75rem 1rem;
+}
+
+.ranking-labels-row {
+display: flex;
+justify-content: space-between;
+margin-bottom: 0.25rem;
+}
+
+.ranking-label {
+font-size: 0.65rem;
+font-weight: 600;
+text-transform: uppercase;
+color: #666;
+}
+
+.ranking-label-scarso {
+color: #f44336;
+}
+
+.ranking-label-sufficiente {
+color: #ff9800;
+}
+
+.ranking-label-buono {
+color: #42a046;
+}
+
+.ranking-label-eccellente {
+color: #266431;
+}
+
+.ranking-bar {
+position: relative;
+height: 20px;
+background: linear-gradient(to right, #f44336 0%, #ff9800 33%, #42a046 66%, #266431 100%);
+border-radius: 10px;
+overflow: hidden;
+}
+
+.ranking-indicator {
+position: absolute;
+top: -3px;
+width: 6px;
+height: 26px;
+background: white;
+border: 2px solid #333;
+border-radius: 2px;
+z-index: 10;
+}
+
+.ranking-progress {
+position: absolute;
+top: 0;
+left: 0;
+height: 100%;
+background: rgba(0, 0, 0, 0.2);
+border-radius: 10px;
+}
+
+.ranking-label-full {
+display: block;
+font-size: 0.875rem;
+color: #666;
+margin-top: 0.5rem;
+}
+
+.ranking-text-value {
+font-size: 1.125rem;
+font-weight: 700;
+color: #266431;
+text-align: center;
+margin-top: 10px;
+font-weight: bold;
+}
+
+/* WELLNESS TEST STYLES */
+.wellness-question-text {
+margin: 1.5rem 0;
+font-weight: bold;
+font-size: 0.95rem;
+color: #1a1a1a;
+}
+
+.wellness-options-container {
+display: flex;
+gap: 1rem;
+margin-bottom: 1rem;
+}
+
+.wellness-text-input-container {
+display: none;
+margin-top: 1rem;
+}
+
+/* WELLNESS RESULT STYLES */
+.wellness-graphic {
+margin: 1.5rem 0;
+}
+
+.wellness-progress-header {
+display: flex;
+justify-content: space-between;
+margin-bottom: 5px;
+font-weight: bold;
+font-size: 0.9rem;
+}
+
+.wellness-progress-bar-container {
+background: #e0e0e0;
+height: 20px;
+border-radius: 10px;
+overflow: hidden;
+}
+
+.wellness-progress-bar-fill {
+height: 100%;
+transition: width 1s ease-in-out;
+}
+
+.wellness-tips-section {
+background: #fff;
+margin-top: 1rem;
+box-shadow: none;
+border: 1px solid #e0e0e0;
+border-radius: 8px;
+padding: 1rem;
+}
+
+.wellness-tips-section.card {
+box-shadow: none !important;
+}
+
+.wellness-tips-section .tip-item {
+padding: 1rem 0;
+border-bottom: 1px solid #e0e0e0;
+text-align: left;
+}
+
+.wellness-tips-section .tip-item:last-child {
+border-bottom: none;
+}
+
+.wellness-tips-section .tip-item i {
+color: #f39c12;
+font-size: 1.5rem;
+margin-right: 10px;
+}
+
 /* LOADING OVERLAY - SHARED ACROSS PAGES */
 .loading-overlay {
 position: fixed;
