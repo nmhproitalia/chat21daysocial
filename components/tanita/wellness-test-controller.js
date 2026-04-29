@@ -99,7 +99,7 @@ const wellnessYesBtn = document.getElementById('wellnessYesBtn');
 const wellnessNoBtn = document.getElementById('wellnessNoBtn');
 
 if (wellnessSummary) {
-wellnessSummary.style.display = 'block';
+wellnessSummary.style.display = 'none';
 }
 
 if (wellnessScoreDisplay) {

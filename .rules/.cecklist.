@@ -666,6 +666,12 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Ridotto padding container per mobile (20px tablet, 15px mobile)
    - Card ora non più attaccate ai margini in PWA
    - Deploy completato
+
+100. FIX VALUTAZIONE BENESSERE TANITA
+   - Corretto numero domande da 14 a 13
+   - Rimosso elemento wellnessQuestion12Description che appariva in alto
+   - Corretto showResults() per evitare blocco finale del test
+   - Deploy completato
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults
