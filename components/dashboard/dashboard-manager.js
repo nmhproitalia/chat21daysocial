@@ -492,6 +492,7 @@ ${avatarHTML}
 </div>
 </div>
 <div class="recomposition-scenario-dashboard" style="text-align: center; margin-top: 15px; padding: 10px; background: rgba(255, 255, 255, 0.8); border-radius: 8px;">
+<div style="font-size: 0.85rem; color: #666; margin-bottom: 5px;">Progresso Ricomposizione Corporea</div>
 <span class="scenario-value" style="font-size: 1.125rem; font-weight: 700; color: ${scenarioColor};">${scenario}</span>
 </div>
 <div id="delete-msg-${d.id}" class="delete-message-area"></div>
