@@ -269,7 +269,7 @@ if (bmrEl) bmrEl.textContent = `${needs.bmr} kcal`;
 }
 }
 }
-
+}
 /* ############################################################ */
 /* #                                                          # */
 /* #           FUNZIONI GESTIONE HEADER PROFILO              # */
