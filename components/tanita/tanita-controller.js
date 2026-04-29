@@ -134,21 +134,31 @@ const bmiEl = document.getElementById('bmi');
 if (bmiEl && this.userProfile.bmi) bmiEl.value = this.userProfile.bmi;
 
 if (this.userProfile.latest_bia) {
-this.updateBIAResults(this.userProfile.latest_bia);
+// Carica tutti i campi da latest_bia nel form
+const latestBia = this.userProfile.latest_bia;
+const fields = ['height', 'age', 'gender', 'weight', 'bodyFat', 'hydration', 'visceralFat', 'leanMass', 'boneMass', 'metabolicAge'];
+fields.forEach(f => {
+const el = document.getElementById(f);
+if (el && latestBia[f] !== undefined) {
+el.value = latestBia[f];
+}
+});
+
+this.updateBIAResults(latestBia);
 
 // Visualizza fabbisogni dai dati salvati in latest_bia
 const waterEl = document.getElementById('waterNeedsDisplay');
 const proteinEl = document.getElementById('proteinNeedsDisplay');
 const bmrEl = document.getElementById('bmrDisplay');
-if (waterEl && this.userProfile.latest_bia.waterNeeds) waterEl.textContent = `${this.userProfile.latest_bia.waterNeeds} L/giorno`;
-if (proteinEl && this.userProfile.latest_bia.proteinNeeds) proteinEl.textContent = `${this.userProfile.latest_bia.proteinNeeds} g/giorno`;
-if (bmrEl && this.userProfile.latest_bia.bmr) bmrEl.textContent = `${this.userProfile.latest_bia.bmr} kcal`;
+if (waterEl && latestBia.waterNeeds) waterEl.textContent = `${latestBia.waterNeeds} L/giorno`;
+if (proteinEl && latestBia.proteinNeeds) proteinEl.textContent = `${latestBia.proteinNeeds} g/giorno`;
+if (bmrEl && latestBia.bmr) bmrEl.textContent = `${latestBia.bmr} kcal`;
 
 const rating = this.calculatePhysiqueRating(
-this.userProfile.latest_bia.bodyFat,
-this.userProfile.latest_bia.leanMass,
-this.userProfile.gender,
-document.getElementById('height')?.value || this.userProfile.height
+latestBia.bodyFat,
+latestBia.leanMass,
+latestBia.gender,
+document.getElementById('height')?.value || latestBia.height
 );
 this.displayPhysiqueRating(rating);
 }
