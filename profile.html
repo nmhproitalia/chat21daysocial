@@ -787,13 +787,6 @@ const physiqueRatingEl = document.getElementById('physiqueRating');
 const physiqueRatingDescEl = document.getElementById('physiqueRatingDescription');
 const physiqueRatingDotEl = document.getElementById('physiqueRatingDot');
 
-if (physiqueRatingEl && rating) {
-physiqueRatingEl.textContent = `${rating.id} - ${rating.name}`;
-}
-if (physiqueRatingDescEl && rating) {
-physiqueRatingDescEl.innerHTML = rating.description;
-}
-if (physiqueRatingDotEl && rating) {
 let color;
 if (rating.id <= 3) {
 color = '#f44336';
@@ -804,6 +797,15 @@ color = '#42a046';
 } else {
 color = '#266431';
 }
+
+if (physiqueRatingEl && rating) {
+physiqueRatingEl.textContent = `${rating.id} - ${rating.name}`;
+physiqueRatingEl.style.color = color;
+}
+if (physiqueRatingDescEl && rating) {
+physiqueRatingDescEl.innerHTML = rating.description;
+}
+if (physiqueRatingDotEl && rating) {
 physiqueRatingDotEl.style.background = color;
 }
 }

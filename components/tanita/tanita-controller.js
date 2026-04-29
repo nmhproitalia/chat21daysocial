@@ -391,10 +391,7 @@ console.log('[DEBUG] displayPhysiqueRating called with:', rating);
 const ratingEl = document.getElementById('physiqueRating');
 const descEl = document.getElementById('physiqueRatingDescription');
 const dotEl = document.getElementById('physiqueRatingDot');
-if (ratingEl && rating) ratingEl.textContent = `${rating.id} - ${rating.name}`;
-if (descEl && rating) descEl.innerHTML = rating.description;
 
-if (dotEl && rating) {
 let color;
 if (rating.id <= 3) {
 color = '#f44336';
@@ -405,6 +402,14 @@ color = '#42a046';
 } else {
 color = '#266431';
 }
+
+if (ratingEl && rating) {
+ratingEl.textContent = `${rating.id} - ${rating.name}`;
+ratingEl.style.color = color;
+}
+if (descEl && rating) descEl.innerHTML = rating.description;
+
+if (dotEl && rating) {
 dotEl.style.background = color;
 console.log('[DEBUG] dot color set:', color);
 }
