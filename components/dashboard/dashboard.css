@@ -294,31 +294,6 @@ transform: rotate(180deg);
 
 .card.user-card .profile-header-main {
 padding: 10px;
-position: relative !important;
-}
-
-.card.user-card .user-avatar {
-width: 60px !important;
-height: 60px !important;
-font-size: 1.5rem;
-}
-
-.card.user-card h2 {
-font-size: 1rem !important;
-margin: 8px 0 4px 0 !important;
-}
-
-.card.user-card p {
-font-size: 0.85rem !important;
-margin: 0 !important;
-}
-
-.card.user-card .badge-status {
-width: 24px !important;
-height: 24px !important;
-font-size: 0.75rem !important;
-top: 5px !important;
-right: 5px !important;
 }
 
 .card.user-card .user-info-grid {
