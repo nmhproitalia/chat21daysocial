@@ -73,19 +73,6 @@ box-sizing: border-box;
 }
 
 /* PWA: padding aumentato per mobile */
-@media (max-width: 768px) {
-.container {
-padding: 0 20px !important;
-}
-}
-
-/* PWA: padding ulteriore per evitare card attaccate ai margini */
-@media (max-width: 480px) {
-.container {
-padding: 0 15px !important;
-}
-}
-
 .content {
     max-width: 100%;
     margin: 0 auto;

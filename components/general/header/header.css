@@ -224,26 +224,6 @@ border: 1px solid #1a1a1a;
 /* ############################################################ */
 
 @media screen and (max-width: 600px) {
-.header-fixed-block {
-position: fixed !important; /* Forza fisso anche su mobile per visibilità banner */
-top: 0 !important;
-}
-
-.page-header {
-position: fixed !important;
-bottom: 0 !important;
-top: auto !important;
-height: 65px !important;
-padding-bottom: env(safe-area-inset-bottom) !important;
-border-top: 1px solid rgba(255,255,255,0.1) !important;
-z-index: 10001 !important;
-}
-
-.page-menu {
-justify-content: space-around !important;
-gap: 0 !important;
-}
-
 .nav-link {
 min-width: 60px !important;
 height: 65px !important;

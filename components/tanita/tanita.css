@@ -427,12 +427,6 @@ transition: max-height 0.3s ease-out;
 margin-bottom: 30px;
 }
 
-@media (max-width: 768px) {
-.profile-accordion-content {
-margin-bottom: 60px;
-}
-}
-
 .profile-accordion-content.expanded {
 max-height: 2000px;
 }
