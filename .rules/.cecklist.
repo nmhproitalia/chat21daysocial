@@ -730,7 +730,11 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - SOSTITUITA LOGICA CLASSI CSS CON INLINE STYLE ESATTA DA TANITA
    - Tanita usa dotEl.style.background = color invece di classi CSS
    - Copiata logica esatta da tanita-controller.js updateDots
-   - Deploy completato
+   - SOSTITUITA FUNZIONE CALCULATEPHIQUERATING CON VERSIONE COMPLETA DA TANITA
+   - Aggiunto muscleLevel con soglie diverse per maschio (8.2/10.0) e femmina (6.3/8.0)
+   - Copiata matrice ratingMatrix completa da Tanita
+   - Verificato: HTML usa stesse classi tanita-dot su Tanita e profilo
+   - Deploy completato - FIX COMPLETATO
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults
