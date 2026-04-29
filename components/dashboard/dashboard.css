@@ -232,28 +232,6 @@ color: #C0C0C0;
 margin-top: 0;
 }
 
-.profile-accordion-icon {
-transition: transform 0.3s;
-}
-
-.profile-accordion-icon.rotated {
-transform: rotate(180deg);
-}
-
-.profile-accordion-content {
-display: block;
-max-height: 0;
-overflow: hidden;
-transition: max-height 0.3s ease-out;
-margin-bottom: 30px;
-}
-
-.profile-accordion-content.expanded {
-max-height: 2000px;
-}
-
-}
-
 
 /* ############################################################ */
 /* #                                                          # */
