@@ -50,6 +50,7 @@ await loadGlobalSettings();
 await fetchUsers();
 await countRoles();
 setupChallengeSettingsForm();
+renderAccordionLists();
 // Vecchio sistema accordion listeners rimosso - ora usa toggleAccordion (sistema profile)
 // initAdminSection rimosso - sostituito da pannello inline in Challengers
 }
@@ -682,4 +683,122 @@ if (typeof window !== 'undefined') {
 window.toggleAccordion = toggleAccordion;
 }
 }, 100);
+
+
+/* ############################################################ */
+/* #                                                          # */
+/* #           FUNZIONI RENDER ACCORDION LISTS                 # */
+/* #                                                          # */
+/* ############################################################ */
+
+async function renderAccordionLists() {
+try {
+const usersSnapshot = await getDocs(collection(db, "users"));
+const coaches = [];
+const assistants = [];
+const challengers = [];
+
+usersSnapshot.forEach(doc => {
+const user = doc.data();
+const role = (user.role || '').toLowerCase();
+
+if (role === 'admin' || role === 'coach') {
+coaches.push({
+uid: doc.id,
+firstName: user.firstName || '',
+lastName: user.lastName || '',
+email: user.email || '',
+phone: user.phone || '',
+photoURL: user.photoURL || '',
+role: user.role || 'coach'
+});
+} else if (role === 'assistant' || role === 'assistente') {
+assistants.push({
+uid: doc.id,
+firstName: user.firstName || '',
+lastName: user.lastName || '',
+email: user.email || '',
+phone: user.phone || '',
+photoURL: user.photoURL || '',
+role: user.role || 'assistant'
+});
+} else {
+challengers.push({
+uid: doc.id,
+firstName: user.firstName || '',
+lastName: user.lastName || '',
+email: user.email || '',
+phone: user.phone || '',
+photoURL: user.photoURL || '',
+role: user.role || 'user'
+});
+}
+});
+
+// Renderizza coach
+const coachesListProfile = document.getElementById('coachesListProfile');
+if (coachesListProfile) {
+coachesListProfile.innerHTML = '';
+if (coaches.length === 0) {
+coachesListProfile.innerHTML = '<p class="empty-state-message">Nessun coach attivo</p>';
+} else {
+coaches.forEach(coach => {
+const coachCard = document.createElement('div');
+coachCard.className = 'coach-card';
+coachCard.innerHTML = `
+<div class="card-info-name">${coach.firstName} ${coach.lastName}</div>
+<div class="card-info-email">📧 ${coach.email}</div>
+<div class="card-info-phone">📱 ${coach.phone || 'N/D'}</div>
+`;
+coachesListProfile.appendChild(coachCard);
+});
+}
+}
+
+// Renderizza assistenti
+const assistantsListProfile = document.getElementById('assistantsListProfile');
+if (assistantsListProfile) {
+assistantsListProfile.innerHTML = '';
+if (assistants.length === 0) {
+assistantsListProfile.innerHTML = '<p class="empty-state-message">Nessun assistente attivo</p>';
+} else {
+assistants.forEach(assistant => {
+const assistantCard = document.createElement('div');
+assistantCard.className = 'assistant-card';
+assistantCard.innerHTML = `
+<div class="card-info-name">${assistant.firstName} ${assistant.lastName}</div>
+<div class="card-info-email">📧 ${assistant.email}</div>
+<div class="card-info-phone">📱 ${assistant.phone || 'N/D'}</div>
+`;
+assistantsListProfile.appendChild(assistantCard);
+});
+}
+}
+
+// Renderizza challengers
+const challengersListProfile = document.getElementById('challengersListProfile');
+if (challengersListProfile) {
+challengersListProfile.innerHTML = '';
+if (challengers.length === 0) {
+challengersListProfile.innerHTML = '<p class="empty-state-message">Nessun challenger attivo</p>';
+} else {
+challengers.forEach(challenger => {
+const challengerCard = document.createElement('div');
+challengerCard.className = 'challenger-card';
+challengerCard.innerHTML = `
+<div class="card-info-name">${challenger.firstName} ${challenger.lastName}</div>
+<div class="card-info-email">📧 ${challenger.email}</div>
+<div class="card-info-phone">📱 ${challenger.phone || 'N/D'}</div>
+`;
+challengersListProfile.appendChild(challengerCard);
+});
+}
+}
+
+console.log(`Caricati ${coaches.length} coach, ${assistants.length} assistenti e ${challengers.length} challengers negli accordion`);
+} catch (error) {
+console.error('Errore caricamento dati accordion:', error);
+}
+}
+
 // Funzioni initAdminSection, fetchAdminUsers e changeUserRole rimosse;
