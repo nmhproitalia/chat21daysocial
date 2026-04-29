@@ -562,6 +562,7 @@ window.openBIAModal = (uid) => {
 const modal = document.getElementById('biaModal');
 if (modal) {
 modal.style.display = 'flex';
+modal.style.flexDirection = 'column';
 modal.dataset.uid = uid;
 }
 // Chiudi menu
