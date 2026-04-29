@@ -737,6 +737,9 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - ALLINEATO COLORE PHYSIQUE RATING CON VAR(--PRIMARY-COLOR)
    - Tanita usa var(--primary-color), profilo usava #266431 fisso
    - Sostituito colore fisso con var(--primary-color) per coerenza
+   - RIMOSSE DEFINIZIONI CSS DUPLICATE DA UTILITIES.CSS
+   - tanita.css già importato in profile.html → definizioni duplicate inutili
+   - Rimossi 2 set di definizioni duplicate per Physique Rating
    - Deploy completato - FIX COMPLETATO
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
