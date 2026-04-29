@@ -159,6 +159,63 @@ margin-right: 8px;
 
 /* ############################################################ */
 /* #                                                          # */
+/* #           STILI CARD ACCORDION (COACH/ASSISTANT/CHALLENGER) # */
+/* #                                                          # */
+/* ############################################################ */
+
+.coach-card {
+background: rgba(255,255,255,0.8);
+padding: 12px;
+border-radius: 8px;
+border-left: 3px solid #b1933a;
+min-width: 200px;
+flex: 0 0 auto;
+text-align: left;
+margin-bottom: 10px;
+}
+
+.assistant-card {
+background: rgba(255,255,255,0.8);
+padding: 12px;
+border-radius: 8px;
+border-left: 3px solid #6B3E26;
+min-width: 200px;
+flex: 0 0 auto;
+text-align: left;
+margin-bottom: 10px;
+}
+
+.challenger-card {
+background: rgba(255,255,255,0.8);
+padding: 12px;
+border-radius: 8px;
+border-left: 3px solid #C0C0C0;
+min-width: 200px;
+flex: 0 0 auto;
+text-align: left;
+margin-bottom: 10px;
+}
+
+.card-info-name {
+font-weight: 600;
+margin-bottom: 4px;
+color: #333;
+}
+
+.card-info-email {
+font-size: 0.9rem;
+color: #666;
+margin-bottom: 2px;
+}
+
+.card-info-phone {
+font-size: 0.9rem;
+color: #666;
+}
+
+
+/* ############################################################ */
+/* #                                                          # */
 /* #           ACCORDION PROFILE SYSTEM                        # */
 /* #                                                          # */
 /* ############################################################ */
