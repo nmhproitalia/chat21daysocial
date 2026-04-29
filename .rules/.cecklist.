@@ -648,6 +648,13 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Aggiunti: profile-manager.js, plan-generator.js, profile.html, tanita.html
    - Incrementato cache a v5 per forzare ricaricamento
    - Deploy completato
+
+97. RIATTIVAZIONE SUGGERIMENTI BENESSERE PROFILO
+   - Ricreato file wellness-test-questions.js con 13 domande e suggerimenti
+   - Aggiunto import in profile.html
+   - Riattivato funzionalità suggerimenti decommentando codice
+   - Suggerimenti ora mostrati correttamente in profilo
+   - Deploy completato
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults
