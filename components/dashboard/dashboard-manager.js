@@ -405,6 +405,12 @@ bmr = user.latest_bia.bmr + ' kcal';
 bmr = user.bmr + ' kcal';
 }
 
+// Physique Rating da latest_bia
+let physiqueRating = 'N/D';
+if (user.latest_bia?.physiqueRating) {
+physiqueRating = user.latest_bia.phiqueRating;
+}
+
 // Calcola scenario Progresso Ricomposizione Corporea
 let scenario = 'Dati insufficienti';
 let scenarioColor = '#6c757d';
@@ -507,6 +513,10 @@ ${avatarHTML}
 <div class="user-info-item">
 <span class="user-info-icon bmr-icon"><i class="fas fa-fire"></i></span>
 <span class="user-info-value">${bmr}</span>
+</div>
+<div class="user-info-item">
+<span class="user-info-icon rating-icon"><i class="fas fa-star"></i></span>
+<span class="user-info-value">${physiqueRating}</span>
 </div>
 </div>
 <div class="recomposition-scenario-dashboard" style="text-align: center; margin-top: 15px; padding: 10px; background: rgba(255, 255, 255, 0.8); border-radius: 8px;">

@@ -49,9 +49,20 @@ protein: parseInt(proteinNeeds)
 // --- FUNZIONE CONDIVESA SALVATAGGIO DATI BIA ---
 export async function saveBIAData(uid, biaData) {
 const calculator = new BIACalculator();
-const { weight, height, age, gender, leanMass } = biaData;
+const { weight, height, age, gender, leanMass, bodyFat } = biaData;
 const bmi = calculator.calculateBMI(weight, height);
 const needs = calculator.calculateNeeds(weight, height, age, gender, leanMass, 'maintenance');
+
+// Calcolo Physique Rating (semplice basato su bodyFat e leanMass)
+let physiqueRating = 'N/D';
+if (bodyFat && leanMass) {
+const bodyFatNum = parseFloat(bodyFat);
+if (bodyFatNum < 10) physiqueRating = 'Elite';
+else if (bodyFatNum < 15) physiqueRating = 'Eccellente';
+else if (bodyFatNum < 20) physiqueRating = 'Buono';
+else if (bodyFatNum < 25) physiqueRating = 'Medio';
+else physiqueRating = 'Da migliorare';
+}
 
 const fullBiaData = {
 ...biaData,
@@ -59,6 +70,7 @@ bmi: bmi,
 bmr: needs.bmr,
 waterNeeds: needs.water,
 proteinNeeds: needs.protein,
+physiqueRating: physiqueRating,
 timestamp: new Date().toISOString()
 };
 
