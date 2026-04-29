@@ -966,29 +966,18 @@ scenarioEl.style.color = color;
 }
 
 export function updatePhysiqueRatingBar(rating) {
-console.log('[DEBUG] updatePhysiqueRatingBar called with rating:', rating);
-if (!rating) {
-console.log('[DEBUG] rating is null/undefined');
-return;
-}
+if (!rating) return;
 
 const indicator = document.getElementById('physiqueRatingIndicator');
 const textEl = document.getElementById('physiqueRatingText');
 
-console.log('[DEBUG] indicator element:', indicator);
-console.log('[DEBUG] textEl element:', textEl);
-
 if (indicator && textEl) {
 const position = ((rating.id - 1) / 8) * 100;
 const centeredPosition = Math.max(0, Math.min(100, position - 3));
-console.log('[DEBUG] rating.id:', rating.id, 'position:', position, 'centeredPosition:', centeredPosition);
 indicator.style.left = `${centeredPosition}%`;
 indicator.style.background = '#fff';
 indicator.style.border = '2px solid #000';
 textEl.textContent = rating.name;
-console.log('[DEBUG] indicator updated');
-} else {
-console.log('[DEBUG] indicator or textEl not found in DOM');
 }
 }
 
