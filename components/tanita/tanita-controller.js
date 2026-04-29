@@ -415,26 +415,8 @@ console.log('[DEBUG] dot color set:', color);
 }
 
 // Aggiorna barra Physique Rating assoluto
-this.updatePhysiqueRatingBar(rating);
+updatePhysiqueRatingBar(rating);
 console.log('[DEBUG] displayPhysiqueRating completed');
-}
-
-// --- FUNZIONE AGGIORNAMENTO BARRA PHYSIQUE RATING ASSOLUTO ---
-updatePhysiqueRatingBar(rating) {
-console.log('[DEBUG] updatePhysiqueRatingBar called with:', rating);
-if (!rating) return;
-
-const indicator = document.getElementById('physiqueRatingIndicator');
-const textEl = document.getElementById('physiqueRatingText');
-
-if (indicator && textEl) {
-const position = ((rating.id - 1) / 8) * 100;
-indicator.style.left = `${Math.min(100, Math.max(0, position))}%`;
-textEl.textContent = rating.name;
-console.log('[DEBUG] updatePhysiqueRatingBar position:', position, 'text:', rating.name);
-} else {
-console.log('[DEBUG] updatePhysiqueRatingBar elements not found');
-}
 }
 
 // --- FUNZIONE AGGIORNAMENTO PROGRESSO RICOMPOSIZIONE CORPOREA ---

@@ -965,6 +965,19 @@ scenarioEl.style.color = color;
 }
 }
 
+export function updatePhysiqueRatingBar(rating) {
+if (!rating) return;
+
+const indicator = document.getElementById('physiqueRatingIndicator');
+const textEl = document.getElementById('physiqueRatingText');
+
+if (indicator && textEl) {
+const position = ((rating.id - 1) / 8) * 100;
+indicator.style.left = `${Math.min(100, Math.max(0, position))}%`;
+textEl.textContent = rating.name;
+}
+}
+
 
 /* ############################################################ */
 /* #                                                          # */

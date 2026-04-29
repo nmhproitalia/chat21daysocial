@@ -711,7 +711,7 @@ import "./components/general/app.js?v=1.0";
 import { loadUserData as loadUserDataFromManager, formatDisplayName, getPhotoURL, getUserDataForUI, renderUserHTML, getRoleStyles, initUserListener, updateUI, getRankClass } from "./components/general/user-manager.js?v=10.0";
 import { initHeader } from "./components/general/header/header.js?v=6.0";
 import { initFooter } from "./components/general/footer/footer-brand.js?v=5.0";
-import { setupProfiloActions, loadPianiAutomatici, displayNeedsResults, calculatePhysiqueRating, updateDots, updateRecompositionProgress } from "./components/profile/profile-manager.js?v=14.2";
+import { setupProfiloActions, loadPianiAutomatici, displayNeedsResults, calculatePhysiqueRating, updateDots, updateRecompositionProgress, updatePhysiqueRatingBar } from "./components/profile/profile-manager.js?v=14.3";
 import { initGlobalEyes } from "./components/general/ui-helper.js?v=4.0";
 import { auth, db } from "./js/firebase.js";
 import { doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
@@ -836,30 +836,6 @@ console.error('Errore caricamento fabbisogni:', error);
 }
 }
 
-// Funzione per aggiornare Barra Physique Rating Assoluto
-function updatePhysiqueRatingBar(rating) {
-console.log('[DEBUG PROFILE] updatePhysiqueRatingBar chiamata con:', rating);
-if (!rating) {
-console.log('[DEBUG PROFILE] rating non definito, return');
-return;
-}
-
-const indicator = document.getElementById('physiqueRatingIndicator');
-const textEl = document.getElementById('physiqueRatingText');
-
-console.log('[DEBUG PROFILE] indicator trovato:', !!indicator, 'textEl trovato:', !!textEl);
-
-if (indicator && textEl) {
-const position = ((rating.id - 1) / 8) * 100;
-indicator.style.left = `${Math.min(100, Math.max(0, position))}%`;
-textEl.textContent = rating.name;
-console.log('[DEBUG PROFILE] Barra aggiornata - position:', position, 'text:', rating.name);
-} else {
-console.log('[DEBUG PROFILE] Elementi non trovati');
-}
-}
-
-// Funzione per caricare Risultati e Parametri BIA
 async function loadBIAResults(userId) {
 console.log('loadBIAResults chiamata per userId:', userId);
 try {
