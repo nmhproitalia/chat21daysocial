@@ -720,6 +720,13 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Sostituita classe bia-result-dot con tanita-dot per allineare con HTML
    - Rimosso riferimento a recompositionScenarioValue che non esiste nell'HTML
    - Deploy completato
+
+109. FIX PALLINI NON ATTIVI E PHYSIQUE RATING NON CALCOLA
+   - Aggiunte classi CSS per pallini colorati (bia-dot-good, bia-dot-warning, bia-dot-bad)
+   - Corretto errore CSS da f39cular a #f39c12
+   - Aggiunti console.log debug calculatePhysiqueRating per verificare parametri
+   - Deploy completato
+   - In attesa verifica console per identificare problema Physique Rating
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults

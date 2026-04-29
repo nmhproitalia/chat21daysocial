@@ -843,6 +843,7 @@ return result;
 }
 
 export function updateDots(data, gender, userData) {
+console.log('[DEBUG updateDots] Input:', { data, gender, userData });
 if (!data) return;
 
 const metrics = [
@@ -857,8 +858,10 @@ const metrics = [
 
 metrics.forEach(metric => {
 const dot = document.getElementById(`${metric.id}Dot`);
+console.log(`[DEBUG updateDots] Metric ${metric.id}: value=${metric.value}, dot found=${!!dot}`);
 if (dot && metric.value !== undefined) {
 const value = parseFloat(metric.value);
+console.log(`[DEBUG updateDots] Metric ${metric.id}: parsed=${value}`);
 dot.className = 'tanita-dot';
 if (value !== null && !isNaN(value)) {
 if (metric.higherIsWorse) {
@@ -870,6 +873,7 @@ if (value < metric.thresholds[0]) dot.classList.add('bia-dot-bad');
 else if (value < metric.thresholds[1]) dot.classList.add('bia-dot-warning');
 else dot.classList.add('bia-dot-good');
 }
+console.log(`[DEBUG updateDots] Metric ${metric.id}: classes=${dot.className}`);
 }
 }
 });
