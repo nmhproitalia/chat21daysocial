@@ -1,7 +1,7 @@
 import { auth, db } from "../../js/firebase.js";
 import { doc, getDoc, updateDoc, serverTimestamp, setDoc, collection } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import { showServiceMessage } from "../general/ui-helper.js";
-import { calculateBMI, calculateAge, calculateNeeds, displayNeedsResults } from "../profile/profile-manager.js";
+import { calculateBMI, calculateAge, calculateNeeds, displayNeedsResults, updatePhysiqueRatingBar } from "../profile/profile-manager.js";
 
 export class BIAInputController {
 constructor() {
