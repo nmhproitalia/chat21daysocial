@@ -642,6 +642,12 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Piano ora si aggiorna quando l'utente cambia obiettivo
    - Chiamata loadPianiAutomatici dopo salvataggio obiettivi in saveObiettivi()
    - Deploy completato
+
+96. AGGIORNAMENTO PWA COMPLETO PER TUTTE LE MODIFICHE
+   - Aggiornato service worker con tutti i file modificati oggi
+   - Aggiunti: profile-manager.js, plan-generator.js, profile.html, tanita.html
+   - Incrementato cache a v5 per forzare ricaricamento
+   - Deploy completato
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults

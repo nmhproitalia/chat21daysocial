@@ -232,6 +232,7 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 transition: background 0.2s;
+margin-top: 15px !important;
 }
 
 .profile-accordion-header:hover {
