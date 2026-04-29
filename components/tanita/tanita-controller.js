@@ -368,14 +368,14 @@ console.log('[DEBUG] muscleLevel:', muscleLevel);
 
 // 4. Matrice Physique Rating Tanita ufficiale
 const ratingMatrix = {
-'high-low': { id: 3, name: 'Robusto (Solidly-built)', description: `Significa che si ha un'alta percentuale di grasso, ma anche un livello elevato di massa muscolare.<br>Nonostante l'aspetto imponente, sotto lo strato di adipe è presente una muscolatura sviluppata.` },
-'high-medium': { id: 6, name: 'Standard Muscoloso (Standard Muscular)', description: `Indica una percentuale di grasso media e un alto livello di massa muscolare.<br>È una condizione fisica salutare di cui andare fieri, tipica di molti atleti.` },
-'high-high': { id: 9, name: 'Molto Muscoloso (Very Muscular)', description: `Le persone molto muscolose presentano una bassa percentuale di grasso corporeo e un livello di massa muscolare molto elevato.` },
-'medium-low': { id: 2, name: 'Obeso (Obese)', description: `Indica un'alta percentuale di grasso corporeo e un livello di massa muscolare standard.<br>Chi rientra in questa categoria deve prestare attenzione, poiché l'obesità può causare gravi problemi di salute.` },
+'high-low': { id: 1, name: 'Obeso Falso Magro (Hidden Obese)', description: `Questa categoria indica un'alta percentuale di grasso corporeo a fronte di una massa muscolare ridotta.<br>Anche se l'aspetto esteriore può sembrare normale, i livelli di grasso sono eccessivi.<br>Questa condizione può evolvere in obesità con conseguenti rischi per la salute.` },
+'high-medium': { id: 2, name: 'Obeso (Obese)', description: `Indica un'alta percentuale di grasso corporeo e un livello di massa muscolare standard.<br>Chi rientra in questa categoria deve prestare attenzione, poiché l'obesità può causare gravi problemi di salute.` },
+'high-high': { id: 3, name: 'Robusto (Solidly-built)', description: `Significa che si ha un'alta percentuale di grasso, ma anche un livello elevato di massa muscolare.<br>Nonostante l'aspetto imponente, sotto lo strato di adipe è presente una muscolatura sviluppata.` },
+'medium-low': { id: 4, name: 'Poco Allenato (Under exercised)', description: `Indica una percentuale di grasso media associata a una massa muscolare scarsa.<br>Per migliorare questa condizione, è consigliabile iniziare un programma di allenamento regolare.` },
 'medium-medium': { id: 5, name: 'Standard', description: `Un fisico standard presenta livelli medi sia di grasso corporeo che di massa muscolare.<br>Chi ha questa costituzione può ottenere ottimi progressi con l'allenamento.` },
-'medium-high': { id: 8, name: 'Magro e Muscoloso (Thin and Muscular)', description: `Questa categoria indica una bassa percentuale di grasso corporeo unita a un livello standard di massa muscolare.` },
-'low-low': { id: 1, name: 'Obeso Falso Magro (Hidden Obese)', description: `Questa categoria indica un'alta percentuale di grasso corporeo a fronte di una massa muscolare ridotta.<br>Anche se l'aspetto esteriore può sembrare normale, i livelli di grasso sono eccessivi.<br>Questa condizione può evolvere in obesità con conseguenti rischi per la salute.` },
-'low-medium': { id: 4, name: 'Poco Allenato (Under exercised)', description: `Indica una percentuale di grasso media associata a una massa muscolare scarsa.<br>Per migliorare questa condizione, è consigliabile iniziare un programma di allenamento regolare.` },
+'medium-high': { id: 6, name: 'Standard Muscoloso (Standard Muscular)', description: `Indica una percentuale di grasso media e un alto livello di massa muscolare.<br>È una condizione fisica salutare di cui andare fieri, tipica di molti atleti.` },
+'low-low': { id: 7, name: 'Magro (Thin)', description: `Significa che si hanno livelli bassi sia di grasso che di muscoli. Mentre un'eccessiva magrezza può essere rischiosa, essere leggermente sottopeso è accettabile.` },
+'low-medium': { id: 8, name: 'Magro e Muscoloso (Thin and Muscular)', description: `Questa categoria indica una bassa percentuale di grasso corporeo unita a un livello standard di massa muscolare.` },
 'low-high': { id: 9, name: 'Molto Muscoloso (Very Muscular)', description: `Le persone molto muscolose presentano una bassa percentuale di grasso corporeo e un livello di massa muscolare molto elevato.` }
 };
 
