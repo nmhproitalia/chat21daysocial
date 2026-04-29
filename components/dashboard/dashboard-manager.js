@@ -406,7 +406,7 @@ const userCard = document.createElement('div');
 userCard.className = 'card user-card';
 
 const avatarHTML = photoURL
-? `<img src="${photoURL}" class="user-avatar ${roleMeta.className}">`
+? `<div class="user-avatar ${roleMeta.className}"><img src="${photoURL}" class="profile-img-full"></div>`
 : `<div class="user-avatar placeholder ${roleMeta.className}"><i class="fas fa-user"></i></div>`;
 
 const gearIcon = `<a href="javascript:toggleUserMenu('${d.id}')" style="position:absolute; top:10px; right:10px; text-decoration:none; cursor:pointer; color:#666; font-size:1.2rem; z-index:1000; padding:5px; display:inline-block;"><i class="fas fa-cog"></i></a>`;
