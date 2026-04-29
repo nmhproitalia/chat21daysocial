@@ -53,6 +53,7 @@ showQuestion(index) {
 const question = WELLNESS_QUESTIONS[index];
 const questionText = document.getElementById('wellnessQuestionText');
 const questionCounter = document.getElementById('wellnessQuestionCounter');
+const question12Description = document.getElementById('wellnessQuestion12Description');
 
 if (questionText) {
 questionText.textContent = question.text;
@@ -60,6 +61,15 @@ questionText.textContent = question.text;
 
 if (questionCounter) {
 questionCounter.textContent = `Domanda ${index + 1} di ${WELLNESS_QUESTIONS.length}`;
+}
+
+if (question12Description) {
+if (question.id === 12 && question.description) {
+question12Description.textContent = question.description;
+question12Description.style.display = 'block';
+} else {
+question12Description.style.display = 'none';
+}
 }
 }
 
@@ -191,11 +201,12 @@ const wellnessSummary = document.getElementById('wellnessSummary');
 const wellnessScoreDisplay = document.getElementById('wellnessScoreDisplay');
 const wellnessQuestionCounter = document.getElementById('wellnessQuestionCounter');
 const wellnessQuestionText = document.getElementById('wellnessQuestionText');
+const wellnessQuestion12Description = document.getElementById('wellnessQuestion12Description');
 const wellnessYesBtn = document.getElementById('wellnessYesBtn');
 const wellnessNoBtn = document.getElementById('wellnessNoBtn');
 
 if (wellnessSummary) {
-wellnessSummary.style.display = 'none';
+wellnessSummary.style.display = 'block';
 }
 
 if (wellnessScoreDisplay) {
@@ -208,6 +219,10 @@ wellnessQuestionCounter.style.display = 'block';
 
 if (wellnessQuestionText) {
 wellnessQuestionText.style.display = 'block';
+}
+
+if (wellnessQuestion12Description) {
+wellnessQuestion12Description.style.display = 'none';
 }
 
 if (wellnessYesBtn) {

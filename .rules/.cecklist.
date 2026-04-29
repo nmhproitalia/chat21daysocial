@@ -672,6 +672,12 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Rimosso elemento wellnessQuestion12Description che appariva in alto
    - Corretto showResults() per evitare blocco finale del test
    - Deploy completato
+
+101. FIX VALUTAZIONE BENESSERE TANITA - RIFAI VALUTAZIONE
+   - Riaggiunto wellnessQuestion12Description per descrizione domanda 12
+   - Gestito visualizzazione descrizione solo per domanda 12
+   - Corretto retakeTest per mostrare wellnessSummary (bottoni ora visibili)
+   - Deploy completato
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults
