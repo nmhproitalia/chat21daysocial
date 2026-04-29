@@ -1237,8 +1237,40 @@ targetLeanMass = initialLean * 1.05;
 }
 progress = (latest.leanMass - initial.leanMass) / (targetLeanMass - initial.leanMass);
 } else if (goal === 'toning') {
-const fatProgress = (initial.bodyFat - latest.bodyFat) / (initial.bodyFat * 0.2);
-const muscleProgress = (latest.leanMass - initial.leanMass) / (initial.leanMass * 0.1);
+let targetBodyFat;
+if (userData.targetBodyFat) {
+targetBodyFat = userData.targetBodyFat;
+} else {
+const initialFat = initial.bodyFat;
+if (initialFat > 30) {
+targetBodyFat = initialFat * 0.7;
+} else if (initialFat > 25) {
+targetBodyFat = initialFat * 0.75;
+} else if (initialFat > 20) {
+targetBodyFat = initialFat * 0.8;
+} else if (initialFat > 15) {
+targetBodyFat = initialFat * 0.85;
+} else {
+targetBodyFat = initialFat * 0.9;
+}
+}
+
+let targetLeanMass;
+if (userData.targetLeanMass) {
+targetLeanMass = userData.targetLeanMass;
+} else {
+const initialLean = initial.leanMass;
+if (initialLean < 50) {
+targetLeanMass = initialLean * 1.15;
+} else if (initialLean < 65) {
+targetLeanMass = initialLean * 1.1;
+} else {
+targetLeanMass = initialLean * 1.05;
+}
+}
+
+const fatProgress = (initial.bodyFat - latest.bodyFat) / (initial.bodyFat - targetBodyFat);
+const muscleProgress = (latest.leanMass - initial.leanMass) / (targetLeanMass - initial.leanMass);
 progress = (fatProgress + muscleProgress) / 2;
 } else if (goal === 'maintenance') {
 const fatVariation = Math.abs(latest.bodyFat - initial.bodyFat) / initial.bodyFat;
