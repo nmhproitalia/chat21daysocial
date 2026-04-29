@@ -428,7 +428,7 @@ const userMenu = `
 `;
 
 userCard.innerHTML = `
-<div class="contenuto" style="position:relative;">
+<div class="contenuto dashboard-card-content">
 ${gearIcon}
 ${userMenu}
 <div class="profile-header-main">
@@ -437,7 +437,7 @@ ${avatarHTML}
 <h2 id="userNameDisplay-${d.id}" class="user-name-display">${formattedName}</h2>
 <p id="userRoleDisplay-${d.id}"><i class="fas ${roleMeta.icon} role-display-icon" style="color: ${roleMeta.color};"></i> ${roleMeta.label}</p>
 </div>
-<div class="user-info-grid user-info-grid-dashboard" style="width:100%; margin-top:15px;">
+<div class="user-info-grid user-info-grid-dashboard">
 <div class="user-info-item">
 <span class="user-info-icon">🎯</span>
 <span class="user-info-label">Obiettivo:</span>

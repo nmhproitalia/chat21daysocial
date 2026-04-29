@@ -265,3 +265,12 @@ padding: 0 10px;
 .card.user-card .user-info-item {
 padding: 8px 0;
 }
+
+.dashboard-card-content {
+position: relative;
+}
+
+.user-info-grid-dashboard {
+width: 100%;
+margin-top: 15px;
+}
