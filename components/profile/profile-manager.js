@@ -980,8 +980,9 @@ console.log('[DEBUG] textEl element:', textEl);
 
 if (indicator && textEl) {
 const position = ((rating.id - 1) / 8) * 100;
-console.log('[DEBUG] rating.id:', rating.id, 'position:', position);
-indicator.style.left = `${Math.min(100, Math.max(0, position))}%`;
+const centeredPosition = Math.max(0, Math.min(100, position - 3));
+console.log('[DEBUG] rating.id:', rating.id, 'position:', position, 'centeredPosition:', centeredPosition);
+indicator.style.left = `${centeredPosition}%`;
 indicator.style.background = '#fff';
 indicator.style.border = '2px solid #000';
 textEl.textContent = rating.name;
