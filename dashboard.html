@@ -187,46 +187,76 @@
 <div class="form-grid">
 <div class="input_container">
 <label for="modalHeight" class="input_label">Altezza (cm)</label>
-<input type="number" id="modalHeight" step="0.1" required placeholder="Es. 175">
+<div class="icon_container">
+<i class="fas fa-ruler-vertical icon"></i>
+<input type="number" id="modalHeight" step="0.1" min="50" max="300" required placeholder="Es. 175" class="input_field">
+</div>
 </div>
 <div class="input_container">
 <label for="modalAge" class="input_label">Età</label>
-<input type="number" id="modalAge" step="1" required placeholder="Es. 35">
+<div class="icon_container">
+<i class="fas fa-calendar-alt icon"></i>
+<input type="number" id="modalAge" step="1" min="5" max="120" required placeholder="Es. 35" class="input_field">
+</div>
 </div>
 <div class="input_container">
 <label for="modalGender" class="input_label">Sesso</label>
-<select id="modalGender" required>
+<div class="icon_container">
+<i class="fas fa-venus-mars icon"></i>
+<select id="modalGender" class="input_field">
 <option value="male">Maschio</option>
 <option value="female">Femmina</option>
 </select>
 </div>
+</div>
 <div class="input_container">
 <label for="modalWeight" class="input_label">Peso (kg)</label>
-<input type="number" id="modalWeight" step="0.1" required placeholder="Es. 75.0">
+<div class="icon_container">
+<i class="fas fa-weight icon"></i>
+<input type="number" id="modalWeight" step="0.1" min="10" max="300" required placeholder="Es. 75.0" class="input_field">
+</div>
 </div>
 <div class="input_container">
 <label for="modalBodyFat" class="input_label">Massa Grassa (%)</label>
-<input type="text" id="modalBodyFat" step="0.1" required placeholder="Es. 20.5">
+<div class="icon_container">
+<i class="fas fa-percentage icon"></i>
+<input type="number" id="modalBodyFat" step="0.1" min="2" max="70" required placeholder="Es. 20.5" class="input_field">
+</div>
 </div>
 <div class="input_container">
 <label for="modalHydration" class="input_label">Idratazione (%)</label>
-<input type="text" id="modalHydration" step="0.1" required placeholder="Es. 55.0">
+<div class="icon_container">
+<i class="fas fa-tint icon"></i>
+<input type="number" id="modalHydration" step="0.1" min="30" max="75" required placeholder="Es. 55.0" class="input_field">
+</div>
 </div>
 <div class="input_container">
 <label for="modalVisceralFat" class="input_label">Grasso Viscerale</label>
-<input type="text" id="modalVisceralFat" step="1" required placeholder="Es. 8">
+<div class="icon_container">
+<i class="fas fa-heart icon"></i>
+<input type="number" id="modalVisceralFat" step="1" min="1" max="40" required placeholder="Es. 8" class="input_field">
+</div>
 </div>
 <div class="input_container">
 <label for="modalLeanMass" class="input_label">Massa Magra (kg)</label>
-<input type="text" id="modalLeanMass" step="0.1" required placeholder="Es. 55.0">
+<div class="icon_container">
+<i class="fas fa-dumbbell icon"></i>
+<input type="number" id="modalLeanMass" step="0.1" min="10" max="200" required placeholder="Es. 55.0" class="input_field">
+</div>
 </div>
 <div class="input_container">
 <label for="modalBoneMass" class="input_label">Massa Ossea (kg)</label>
-<input type="text" id="modalBoneMass" step="0.1" required placeholder="Es. 2.5">
+<div class="icon_container">
+<i class="fas fa-bone icon"></i>
+<input type="number" id="modalBoneMass" step="0.1" min="0.5" max="15" required placeholder="Es. 2.5" class="input_field">
+</div>
 </div>
 <div class="input_container">
 <label for="modalMetabolicAge" class="input_label">Età Metabolica</label>
-<input type="text" id="modalMetabolicAge" step="1" required placeholder="Es. 30">
+<div class="icon_container">
+<i class="fas fa-clock icon"></i>
+<input type="number" id="modalMetabolicAge" step="1" min="5" max="120" required placeholder="Es. 30" class="input_field">
+</div>
 </div>
 </div>
 <div class="input_container full-width" style="margin-top:20px;">
