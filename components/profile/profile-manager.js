@@ -1191,105 +1191,54 @@ console.error('Errore caricamento dati BIA:', error);
 export function updateBadgeStatus(userData) {
 const badgeEl = document.getElementById('badgeStatus');
 if (!badgeEl) return;
-if (!userData || !userData.mainGoal || !userData.latest_bia) {
+
+if (!userData || !userData.latest_bia || !userData.initial_bia) {
 badgeEl.innerHTML = '<i class="fas fa-rocket"></i>';
 badgeEl.className = 'badge-status level-0';
 return;
 }
-const goal = userData.mainGoal;
+
 const latest = userData.latest_bia;
-const initial = userData.initial_bia || latest;
+const initial = userData.initial_bia;
+
+// Calcola delta ricomposizione corporea
+const initialBodyFat = parseFloat(initial.bodyFat?.toString().replace(',', '.') || initial.bodyfat?.toString().replace(',', '.') || 0);
+const latestBodyFat = parseFloat(latest.bodyFat?.toString().replace(',', '.') || latest.bodyfat?.toString().replace(',', '.') || 0);
+const initialLeanKg = parseFloat(initial.leanMass || initial.leanmass || 0);
+const latestLeanKg = parseFloat(latest.leanMass || latest.leanmass || 0);
+
+const initialFatKg = (initial.weight * initialBodyFat) / 100;
+const latestFatKg = (latest.weight * latestBodyFat) / 100;
+
+const fatDeltaKg = latestFatKg - initialFatKg;
+const leanDeltaKg = latestLeanKg - initialLeanKg;
+const weightDelta = latest.weight - initial.weight;
+
+// Determina livello badge in base allo scenario di ricomposizione
 let level = 0;
 let icon = 'fa-rocket';
-let progress = 0;
-if (goal === 'weight_loss') {
-let targetBodyFat;
-if (userData.targetBodyFat) {
-targetBodyFat = userData.targetBodyFat;
-} else {
-const initialFat = initial.bodyFat;
-if (initialFat > 30) {
-targetBodyFat = initialFat * 0.7;
-} else if (initialFat > 25) {
-targetBodyFat = initialFat * 0.75;
-} else if (initialFat > 20) {
-targetBodyFat = initialFat * 0.8;
-} else if (initialFat > 15) {
-targetBodyFat = initialFat * 0.85;
-} else {
-targetBodyFat = initialFat * 0.9;
-}
-}
-progress = (initial.bodyFat - latest.bodyFat) / (initial.bodyFat - targetBodyFat);
-} else if (goal === 'muscle_gain') {
-let targetLeanMass;
-if (userData.targetLeanMass) {
-targetLeanMass = userData.targetLeanMass;
-} else {
-const initialLean = initial.leanMass;
-if (initialLean < 50) {
-targetLeanMass = initialLean * 1.15;
-} else if (initialLean < 65) {
-targetLeanMass = initialLean * 1.1;
-} else {
-targetLeanMass = initialLean * 1.05;
-}
-}
-progress = (latest.leanMass - initial.leanMass) / (targetLeanMass - initial.leanMass);
-} else if (goal === 'toning') {
-let targetBodyFat;
-if (userData.targetBodyFat) {
-targetBodyFat = userData.targetBodyFat;
-} else {
-const initialFat = initial.bodyFat;
-if (initialFat > 30) {
-targetBodyFat = initialFat * 0.7;
-} else if (initialFat > 25) {
-targetBodyFat = initialFat * 0.75;
-} else if (initialFat > 20) {
-targetBodyFat = initialFat * 0.8;
-} else if (initialFat > 15) {
-targetBodyFat = initialFat * 0.85;
-} else {
-targetBodyFat = initialFat * 0.9;
-}
-}
 
-let targetLeanMass;
-if (userData.targetLeanMass) {
-targetLeanMass = userData.targetLeanMass;
-} else {
-const initialLean = initial.leanMass;
-if (initialLean < 50) {
-targetLeanMass = initialLean * 1.15;
-} else if (initialLean < 65) {
-targetLeanMass = initialLean * 1.1;
-} else {
-targetLeanMass = initialLean * 1.05;
-}
-}
-
-const fatProgress = (initial.bodyFat - latest.bodyFat) / (initial.bodyFat - targetBodyFat);
-const muscleProgress = (latest.leanMass - initial.leanMass) / (targetLeanMass - initial.leanMass);
-progress = (fatProgress + muscleProgress) / 2;
-} else if (goal === 'maintenance') {
-const fatVariation = Math.abs(latest.bodyFat - initial.bodyFat) / initial.bodyFat;
-const weightVariation = Math.abs(latest.weight - initial.weight) / initial.weight;
-progress = 1 - ((fatVariation + weightVariation) / 2);
-if (progress < 0) progress = 0;
-}
-if (progress >= 1) {
+if (fatDeltaKg < 0 && leanDeltaKg > 0) {
+// Ricomposizione Perfetta
 level = 3;
 icon = 'fa-trophy';
-} else if (progress >= 0.75) {
+} else if (weightDelta <= -0.5 && fatDeltaKg <= -0.5) {
+// Dimagrimento Eccellente
 level = 2;
 icon = 'fa-flag-checkered';
-} else if (progress >= 0.25) {
+} else if (weightDelta >= 0.5 && leanDeltaKg >= 0.5) {
+// Lean Bulk
 level = 1;
 icon = 'fa-chart-line';
+} else {
+// Maintenance
+level = 0;
+icon = 'fa-rocket';
 }
+
 badgeEl.innerHTML = `<i class="fas ${icon}"></i>`;
 badgeEl.className = 'badge-status level-' + level;
+
 const avgStars = userData.averageRating || 0;
 if (avgStars > 4.5) {
 badgeEl.classList.add('gold');
