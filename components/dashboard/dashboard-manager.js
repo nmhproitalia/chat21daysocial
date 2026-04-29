@@ -380,8 +380,22 @@ const roleLabel = isCoach ? 'Coach' : 'Challenger';
 const roleClass = isCoach ? 'role-coach' : 'role-challenger';
 
 const goal = user.mainGoal ? formatGoal(user.mainGoal) : 'N/D';
-const water = user.latest_bia?.waterNeeds ? user.latest_bia.waterNeeds + ' L' : 'N/D';
-const protein = user.latest_bia?.proteinNeeds ? user.latest_bia.proteinNeeds + ' g' : 'N/D';
+
+// Fallback water: se non in latest_bia, calcola da user.waterNeeds o N/D
+let water = 'N/D';
+if (user.latest_bia?.waterNeeds) {
+water = user.latest_bia.waterNeeds + ' L';
+} else if (user.waterNeeds) {
+water = user.waterNeeds + ' L';
+}
+
+// Fallback protein: se non in latest_bia, calcola da user.proteinNeeds o N/D
+let protein = 'N/D';
+if (user.latest_bia?.proteinNeeds) {
+protein = user.latest_bia.proteinNeeds + ' g';
+} else if (user.proteinNeeds) {
+protein = user.proteinNeeds + ' g';
+}
 
 // Fallback BMR: se non in latest_bia, calcola da user.bmr o N/D
 let bmr = 'N/D';
