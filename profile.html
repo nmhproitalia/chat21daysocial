@@ -744,45 +744,13 @@ import { doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.1
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 import { calculateBMI, calculateAge, calculateNeeds } from "./components/profile/profile-manager.js";
 import { getPlanByObjective } from "./components/profile/plan-generator.js?v=1.0";
-import { initWellnessTest } from "./components/tanita/wellness-test-controller.js?v=1.0";
+import { initProfile } from "./components/profile/profile-init.js?v=1.0";
 
 document.addEventListener('DOMContentLoaded', () => {
 initHeader();
 initFooter();
 initGlobalEyes();
-
-onAuthStateChanged(auth, async (user) => {
-if (user) {
-setupProfiloActions(user.uid);
-loadNeedsResultsUnified(user.uid);
-loadBIAResults(user.uid);
-loadObiettiviData(user.uid);
-initWellnessTest();
-
-// Aggiungi event listeners per aggiornare calcoli BIA in tempo reale
-setupBIAInputListeners();
-
-// Carica piano automatico
-const userDoc = await getDoc(doc(db, "users", user.uid));
-if (userDoc.exists()) {
-const userData = userDoc.data();
-loadPianiAutomatici(userData);
-updateBadgeStatus(userData);
-}
-}
-});
-
-// Date picker icon click
-const birthDateIcon = document.getElementById('birthDateIcon');
-if (birthDateIcon) {
-birthDateIcon.addEventListener('click', () => {
-const birthDateInput = document.getElementById('birthDate');
-if (birthDateInput) {
-birthDateInput.focus();
-birthDateInput.showPicker();
-}
-});
-}
+initProfile();
 }); // Chiusura DOMContentLoaded
 </script>
 
