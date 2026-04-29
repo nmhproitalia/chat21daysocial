@@ -424,7 +424,13 @@ transform: rotate(180deg);
 max-height: 0;
 overflow: hidden;
 transition: max-height 0.3s ease-out;
+margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+.profile-accordion-content {
 margin-bottom: 60px;
+}
 }
 
 .profile-accordion-content.expanded {
