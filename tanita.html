@@ -47,15 +47,6 @@
 <div id="badgeStatus" class="badge-status">?</div>
 <h2 id="userNameDisplay">Caricamento...</h2>
 <p id="userRoleDisplay"><i class="fas fa-user"></i> Challenger</p>
-<div class="user-ranking-bar-container">
-<div class="user-ranking-bar" id="rankingBar"></div>
-</div>
-<input type="file" id="photoInput" accept="image/*" class="photo-input-hidden">
-<div class="user-action-menu">
-<a href="welcome.html" class="action-btn-mini btn-challenge"><i class="fas fa-rocket"></i><span>Info Challenge</span></a>
-<a href="https://www.herbalife.it/iscriviti-come-cliente-privilegiato/" target="_blank" class="action-btn-mini btn-privilege"><i class="fas fa-gem"></i><span>Cliente Privilegiato</span></a>
-<a href="https://www.herbalife.it/iscriviti-come-incaricato-alle-vendite/" target="_blank" class="action-btn-mini btn-become-coach"><i class="fas fa-user-tie"></i><span>Diventa Coach</span></a>
-</div>
 </div>
 </div>
 </section>
@@ -400,10 +391,11 @@ Il Physique Rating assoluto mostra il tuo livello attuale di forma fisica basato
 import { initHeader } from "./components/general/header/header.js?v=6.0";
 import { initFooter } from "./components/general/footer/footer-brand.js?v=5.0";
 import { BIAInputController } from "./components/tanita/tanita-controller.js?v=1.1";
-import { updatePhysiqueRatingBar } from "./components/profile/profile-manager.js?v=14.3";
+import { updatePhysiqueRatingBar, updateProfileHeader } from "./components/profile/profile-manager.js?v=14.3";
 import { initWellnessTest } from "./components/tanita/wellness-test-controller.js?v=1.0";
 import { setupProfiloActions } from "./components/profile/profile-manager.js?v=14.3";
-import { auth } from "./js/firebase.js";
+import { auth, db } from "./js/firebase.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -412,10 +404,18 @@ initFooter();
 window.biaController = new BIAInputController();
 initWellnessTest();
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
 if (user) {
-setupProfiloActions(user.uid);
+const userId = user.uid;
+setupProfiloActions(userId);
 initWellnessTest();
+
+// Carica dati utente per card identità
+const userDoc = await getDoc(doc(db, "users", userId));
+if (userDoc.exists()) {
+const userData = userDoc.data();
+updateProfileHeader(userData);
+}
 }
 });
 });

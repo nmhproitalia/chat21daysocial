@@ -57,7 +57,7 @@ const FIELDS = [
 /* #           3. FUNZIONI CALCOLO TANITA E DISPLAY UI       # */
 /* #                                                          # */
 /* ############################################################ */
-function updateProfileHeader(data) {
+export function updateProfileHeader(data) {
 const profileImg = document.getElementById('profileImg');
 const userNameDisplay = document.getElementById('userNameDisplay');
 const userRoleDisplay = document.getElementById('userRoleDisplay');
