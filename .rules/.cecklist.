@@ -734,6 +734,9 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Aggiunto muscleLevel con soglie diverse per maschio (8.2/10.0) e femmina (6.3/8.0)
    - Copiata matrice ratingMatrix completa da Tanita
    - Verificato: HTML usa stesse classi tanita-dot su Tanita e profilo
+   - ALLINEATO COLORE PHYSIQUE RATING CON VAR(--PRIMARY-COLOR)
+   - Tanita usa var(--primary-color), profilo usava #266431 fisso
+   - Sostituito colore fisso con var(--primary-color) per coerenza
    - Deploy completato - FIX COMPLETATO
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero

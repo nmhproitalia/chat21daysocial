@@ -96,35 +96,6 @@ word-wrap: break-word;
 word-break: break-word;
 }
 
-.physique-rating-container {
-overflow-wrap: break-word;
-word-wrap: break-word;
-word-break: break-word;
-margin-top: 1rem;
-}
-
-.physique-rating-label {
-font-size: 0.875rem;
-font-weight: 600;
-color: #333;
-display: block;
-margin-bottom: 0.5rem;
-}
-
-.physique-rating-value {
-font-size: 1.125rem;
-font-weight: 700;
-color: var(--primary-color);
-margin-bottom: 0.5rem;
-}
-
-.physique-rating-description {
-font-size: 0.875rem;
-color: #666;
-line-height: 1.5;
-margin-bottom: 1.5rem;
-}
-
 /* PROGRESSO RICOMPOSIZIONE CORPOREA */
 .recomposition-stats {
 display: grid;
@@ -307,26 +278,6 @@ margin-bottom: 20px;
 display: flex;
 justify-content: center;
 gap: 20px;
-}
-
-/* PHYSIQUE RATING - SHARED ACROSS PAGES */
-.physique-rating-container {
-text-align: center;
-margin-top: 20px;
-padding-top: 20px;
-border-top: 1px solid #ddd;
-}
-
-.physique-rating-label {
-font-weight: bold;
-display: block;
-margin-bottom: 10px;
-}
-
-.physique-rating-value {
-font-size: 1.2rem;
-font-weight: bold;
-color: var(--primary-color);
 }
 
 /* RANKING TEXT - SHARED ACROSS PAGES */
