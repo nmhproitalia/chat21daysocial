@@ -141,7 +141,7 @@ photoURL = '';
 }
 }
 
-const formattedName = (user.firstName + ' ' + user.lastName).toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+const formattedName = user.firstName + ' ' + user.lastName;
 
 const avatarHTML = photoURL
 ? `<img src="${photoURL}" class="user-avatar ${roleMeta.className}" style="width: 80px; height: 80px;">`
@@ -399,7 +399,7 @@ photoURL = '';
 }
 }
 
-const formattedName = (user.firstName + ' ' + user.lastName).toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+const formattedName = user.firstName + ' ' + user.lastName;
 
 cardPromises.push(() => {
 const userCard = document.createElement('div');
