@@ -10,7 +10,34 @@ import { showServiceMessage, updatePasswordUI, initGlobalEyes, validatePhoneNumb
 import { validateTanitaValue, applyTanitaConstraints } from "../tanita/tanita-form-validator.js";
 import { getRoleMetadata } from "../../components/general/auth-core.js";
 import { loadUserData as loadUserDataFromManager, formatDisplayName, getPhotoURL, getRoleStyles, initUserListener, updateUI, getRankClass } from "../../components/general/user-manager.js";
+import { getPlanByObjective, generatePlanHTML } from "./plan-generator.js?v=1.0";
 
+export async function loadPianiAutomatici(userData) {
+const planDisplay = document.getElementById('planDataDisplay');
+const planContainer = document.getElementById('planResultsContainer');
+if (!planDisplay || !planContainer) {
+return;
+}
+
+if (!userData.mainGoal) {
+planDisplay.style.display = 'block';
+planDisplay.innerHTML = '<p class="text-center-gray">Seleziona un obiettivo principale per generare il piano personalizzato.</p>';
+planContainer.style.display = 'none';
+return;
+}
+
+const plan = getPlanByObjective(userData.mainGoal);
+if (!plan) {
+planDisplay.style.display = 'block';
+planDisplay.innerHTML = '<p class="text-center-gray">Nessun piano disponibile per questo obiettivo.</p>';
+planContainer.style.display = 'none';
+return;
+}
+
+planDisplay.style.display = 'none';
+planContainer.style.display = 'block';
+planContainer.innerHTML = generatePlanHTML(plan);
+}
 
 /* ############################################################ */
 /* #                                                          # */
@@ -388,6 +415,13 @@ targetWeight: targetWeight ? parseFloat(targetWeight) : null
 const userRef = doc(db, "users", uid);
 await updateDoc(userRef, data);
 showServiceMessage("Obiettivi salvati con successo!", "success", btn);
+
+// Aggiorna piano automatico dopo salvataggio
+const userSnap = await getDoc(userRef);
+if (userSnap.exists()) {
+const userData = userSnap.data();
+loadPianiAutomatici(userData);
+}
 } catch (error) {
 console.error(error);
 showServiceMessage("Errore durante il salvataggio: " + error.message, "error", btn);

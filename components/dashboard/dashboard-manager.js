@@ -375,7 +375,7 @@ function formatGoal(goalKey) {
     const goals = {
         'fat_loss': 'Riduzione massa grassa',
         'muscle_gain': 'Aumento massa magra',
-        'toning': 'Tonificazione',
+        'toning': 'Definizione',
         'maintenance': 'Mantenimento'
     };
     return goals[goalKey] || goalKey;

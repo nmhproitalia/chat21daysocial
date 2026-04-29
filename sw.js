@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fit21-cache-v3';
+const CACHE_NAME = 'fit21-cache-v4';
 const ASSETS = [
   'index.html',
   'css/style-variables.css',
@@ -11,7 +11,9 @@ const ASSETS = [
   'components/general/ui-helper.js',
   'components/general/header/header.css',
   'components/general/footer/footer.css',
-  'components/index/index.css'
+  'components/index/index.css',
+  'components/profile/profile-manager.css',
+  'components/profile/profile.css'
 ];
 
 self.addEventListener('install', (event) => {

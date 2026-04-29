@@ -200,7 +200,7 @@ appearance: textfield;
 <select id="mainGoal" class="input_field">
 <option value="fat_loss">Diminuzione della massa grassa</option>
 <option value="muscle_gain">Aumento della massa magra</option>
-<option value="toning">Tonificazione</option>
+<option value="toning">Definizione</option>
 <option value="maintenance">Mantenimento</option>
 </select>
 </div>
@@ -231,6 +231,12 @@ appearance: textfield;
 
 <!-- SEZIONE BIA INIZIALE -->
 <h3 class="card-section-title"><i class="fas fa-heartbeat"></i> Misurazione BIA Iniziale</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('initialBia')">
+<span class="profile-accordion-label">Imposta la tua prima BIA</span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-initialBia"></i>
+</div>
+<div class="profile-accordion-content" id="content-initialBia">
 <section class="card">
 <div class="card-body">
 <form id="initialBiaForm">
@@ -263,49 +269,49 @@ appearance: textfield;
 <label class="input_label" for="initialWeight">Peso (kg)</label>
 <div class="icon_container">
 <i class="fas fa-weight icon"></i>
-<input type="number" id="initialWeight" step="0.1" min="10" max="300" placeholder="Es. 75.0" class="input_field">
+<input type="number" id="initialWeight" step="0.1" min="20" max="300" placeholder="Es. 75" class="input_field">
 </div>
 </div>
 <div class="input_container">
-<label class="input_label" for="initialBodyFat">Massa Grassa (%)</label>
+<label class="input_label" for="initialBodyFat">% Massa Grassa</label>
 <div class="icon_container">
 <i class="fas fa-percentage icon"></i>
-<input type="number" id="initialBodyFat" step="0.1" min="2" max="70" placeholder="Es. 20.5" class="input_field">
+<input type="number" id="initialBodyFat" step="0.1" min="1" max="60" placeholder="Es. 20" class="input_field">
 </div>
 </div>
 <div class="input_container">
-<label class="input_label" for="initialHydration">Idratazione (%)</label>
+<label class="input_label" for="initialHydration">% Idratazione</label>
 <div class="icon_container">
 <i class="fas fa-tint icon"></i>
-<input type="number" id="initialHydration" step="0.1" min="30" max="75" placeholder="Es. 55.0" class="input_field">
+<input type="number" id="initialHydration" step="0.1" min="30" max="80" placeholder="Es. 55" class="input_field">
 </div>
 </div>
 <div class="input_container">
 <label class="input_label" for="initialVisceralFat">Grasso Viscerale</label>
 <div class="icon_container">
 <i class="fas fa-heart icon"></i>
-<input type="number" id="initialVisceralFat" step="1" min="1" max="40" placeholder="Es. 10" class="input_field">
+<input type="number" id="initialVisceralFat" step="1" min="1" max="30" placeholder="Es. 8" class="input_field">
 </div>
 </div>
 <div class="input_container">
 <label class="input_label" for="initialLeanMass">Massa Magra (kg)</label>
 <div class="icon_container">
 <i class="fas fa-dumbbell icon"></i>
-<input type="number" id="initialLeanMass" step="0.1" min="10" max="200" placeholder="Es. 60.0" class="input_field">
+<input type="number" id="initialLeanMass" step="0.1" min="20" max="150" placeholder="Es. 60" class="input_field">
 </div>
 </div>
 <div class="input_container">
 <label class="input_label" for="initialBoneMass">Massa Ossea (kg)</label>
 <div class="icon_container">
 <i class="fas fa-bone icon"></i>
-<input type="number" id="initialBoneMass" step="0.1" min="0.5" max="15" placeholder="Es. 3.0" class="input_field">
+<input type="number" id="initialBoneMass" step="0.1" min="1" max="10" placeholder="Es. 3" class="input_field">
 </div>
 </div>
 <div class="input_container">
 <label class="input_label" for="initialMetabolicAge">Età Metabolica</label>
 <div class="icon_container">
 <i class="fas fa-clock icon"></i>
-<input type="number" id="initialMetabolicAge" step="1" min="5" max="120" placeholder="Es. 35" class="input_field">
+<input type="number" id="initialMetabolicAge" step="1" min="10" max="100" placeholder="Es. 35" class="input_field">
 </div>
 </div>
 </div>
@@ -325,11 +331,19 @@ appearance: textfield;
 </form>
 </div>
 </section>
+</div>
+</div>
 
 
 
 <!-- SEZIONE VALUTAZIONE BENESSERE -->
 <h3 class="card-section-title"><i class="fas fa-heartbeat"></i> Valutazione Benessere</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('wellness')">
+<span class="profile-accordion-label">Mostra dettagli</span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-wellness"></i>
+</div>
+<div class="profile-accordion-content" id="content-wellness">
 <section class="card">
 <div class="contenuto">
 <div class="wellness-intro-text">
@@ -360,11 +374,18 @@ Il benessere dell'apparato cardiocircolatorio dipende da una combinazione di fat
 </div>
 </div>
 </section>
+</div>
+</div>
 
 
 
 <!-- SEZIONE FABBISOGNI CALCOLATI -->
-<h3 class="card-section-title"><i class="fas fa-chart-line"></i> Fabbisogni Calcolati</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('needs')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-chart-line"></i> Fabbisogni Calcolati</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-needs"></i>
+</div>
+<div class="profile-accordion-content" id="content-needs">
 <section class="card">
 <div class="contenuto">
 <div id="needsDataDisplay">
@@ -387,12 +408,19 @@ Il benessere dell'apparato cardiocircolatorio dipende da una combinazione di fat
 </div>
 </div>
 </div>
+</div>
 </section>
+</div>
 
 
 
 <!-- SEZIONE RISULTATI E PARAMETRI BIA -->
-<h3 class="card-section-title"><i class="fas fa-calculator"></i> Risultati e Parametri BIA</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('bia')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-calculator"></i> Risultati e Parametri BIA</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-bia"></i>
+</div>
+<div class="profile-accordion-content" id="content-bia">
 <section class="card">
 <div class="contenuto">
 <div class="bia-results-row">
@@ -441,10 +469,17 @@ Il benessere dell'apparato cardiocircolatorio dipende da una combinazione di fat
 <div id="physiqueRatingDescription" class="physique-rating-description"></div>
 </div>
 </div>
+</div>
 </section>
+</div>
 
 <!-- PROGRESSO RICOMPOSIZIONE CORPOREA -->
-<h3 class="card-section-title"><i class="fas fa-chart-line"></i>Progresso Ricomposizione Corporea</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('recomposition')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-chart-line"></i>Progresso Ricomposizione Corporea</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-recomposition"></i>
+</div>
+<div class="profile-accordion-content" id="content-recomposition">
 <section class="card">
 <div class="contenuto">
 <div class="wellness-intro-text">
@@ -493,10 +528,17 @@ Confrontiamo la tua composizione corporea attuale con quella iniziale per valuta
 <div id="recompositionScenario" class="scenario-value">--</div>
 </div>
 </div>
+</div>
 </section>
+</div>
 
 <!-- BARRA PHYSIQUE RATING ASSOLUTO -->
-<h3 class="card-section-title"><i class="fas fa-chart-line"></i>Classificazione Fisica Tanita (Physique Rating Assoluto)</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('physique')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-chart-line"></i>Classificazione Fisica Tanita (Physique Rating Assoluto)</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-physique"></i>
+</div>
+<div class="profile-accordion-content" id="content-physique">
 <section class="card">
 <div class="contenuto">
 <div class="wellness-intro-text">
@@ -515,15 +557,21 @@ Il Physique Rating assoluto mostra il tuo livello attuale di forma fisica basato
 <label class="ranking-label-full">Physique Rating Assoluto</label>
 <div id="physiqueRatingText" class="ranking-text-value">--</div>
 </div>
-</div>
 </section>
+</div>
+</div>
 
 <!-- SEZIONE PIANI AUTOMATICI -->
-<h3 class="card-section-title"><i class="fas fa-clipboard-list"></i> Il tuo programma personalizzato</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('plan')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-clipboard-list"></i> Il tuo programma personalizzato</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-plan"></i>
+</div>
+<div class="profile-accordion-content" id="content-plan">
 <section class="card">
 <div class="contenuto">
 <div id="planDataDisplay">
-<p class="text-center-gray">Nessun piano automatico disponibile. Completa i dati BIA per generare il piano.</p>
+<p class="text-center-gray">Imposta il tuo obiettivo per generare il tuo piano personalizzato.</p>
 </div>
 <div id="planResultsContainer" class="results-container-hidden">
 <div class="plan-module">
@@ -543,8 +591,77 @@ Il Physique Rating assoluto mostra il tuo livello attuale di forma fisica basato
 </div>
 </div>
 </section>
+</div>
+</div>
 
+<!-- SEZIONE LISTA SPESA STRATEGICA -->
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('spesa')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-shopping-cart"></i> Lista della Spesa Strategica</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-spesa"></i>
+</div>
+<div class="profile-accordion-content" id="content-spesa">
+<section class="card">
+<div class="contenuto">
+<p class="plan-logic">Per far funzionare i programmi, la dispensa deve essere "pulita"</p>
 
+<div class="plan-section">
+<h4 class="plan-section-title">PROTEINE MAGRE</h4>
+<ul class="plan-items">
+<li>Petto di pollo o tacchino</li>
+<li>Filetti di pesce (merluzzo, orata, branzino, salmone)</li>
+<li>Uova</li>
+<li>Tofu o tempeh</li>
+<li>Bresaola o fesa di tacchino</li>
+</ul>
+</div>
+
+<div class="plan-section">
+<h4 class="plan-section-title">VERDURE (A VOLONTÀ)</h4>
+<ul class="plan-items">
+<li>Broccoli</li>
+<li>Spinaci</li>
+<li>Zucchine</li>
+<li>Asparagi</li>
+<li>Fagiolini</li>
+<li>Insalata verde</li>
+<li>Finocchi</li>
+</ul>
+</div>
+
+<div class="plan-section">
+<h4 class="plan-section-title">CARBOIDRATI COMPLESSI</h4>
+<ul class="plan-items">
+<li>Riso integrale</li>
+<li>Quinoa</li>
+<li>Farro</li>
+<li>Patate dolci</li>
+<li>Pane di segale o avena</li>
+</ul>
+</div>
+
+<div class="plan-section">
+<h4 class="plan-section-title">GRASSI SANI</h4>
+<ul class="plan-items">
+<li>Avocado</li>
+<li>Olio extravergine d'oliva (da usare a crudo)</li>
+<li>Noci e mandorle (senza esagerare)</li>
+</ul>
+</div>
+
+<div class="plan-section">
+<h4 class="plan-section-title">NOTE GENERALI</h4>
+<ul class="plan-items">
+<li>Tutti i prodotti sono certificati Herbalife</li>
+<li>Dosaggi indicativi, consultare etichetta ufficiale</li>
+<li>Per informazioni complete: consultare il Coach Distributore Herbalife</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
 
 <!-- SEZIONE SICUREZZA ACCOUNT -->
 <h3 class="card-section-title"><i class="fas fa-shield-alt"></i> Sicurezza Account</h3>
@@ -587,18 +704,11 @@ Il Physique Rating assoluto mostra il tuo livello attuale di forma fisica basato
 
 </div>
 </div>
-</div>
-</div>
 </main>
 </div>
 
-
-
 <!-- SEZIONE FOOTER -->
 <div id="unified-footer"></div>
-</div>
-
-
 
 <!-- SEZIONE SCRIPT -->
 <script type="module">
@@ -606,13 +716,13 @@ import "./components/general/app.js?v=1.0";
 import { loadUserData as loadUserDataFromManager, formatDisplayName, getPhotoURL, getUserDataForUI, renderUserHTML, getRoleStyles, initUserListener, updateUI, getRankClass } from "./components/general/user-manager.js?v=10.0";
 import { initHeader } from "./components/general/header/header.js?v=6.0";
 import { initFooter } from "./components/general/footer/footer-brand.js?v=5.0";
-import { setupProfiloActions } from "./components/profile/profile-manager.js?v=14.0";
+import { setupProfiloActions, loadPianiAutomatici } from "./components/profile/profile-manager.js?v=14.2";
 import { initGlobalEyes } from "./components/general/ui-helper.js?v=4.0";
 import { auth, db } from "./js/firebase.js";
 import { doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 import { calculateBMI, calculateAge, calculateNeeds } from "./components/profile/profile-manager.js";
-import { WELLNESS_QUESTIONS } from "./wellness/wellness-test-questions.js?v=1.0";
+import { getPlanByObjective } from "./components/profile/plan-generator.js?v=1.0";
 
 document.addEventListener('DOMContentLoaded', () => {
 initHeader();
@@ -664,23 +774,24 @@ wellnessScoreLine.style.left = `${percentage}%`;
 }
 
 // Genera suggerimenti basati sulle risposte
-if (wellnessAnswers) {
+// NOTA: wellness-test-questions.js rimosso - funzionalità disabilitata
+if (false && wellnessAnswers) {
 const tipsContainer = document.querySelector('#wellnessTipsContainer .tips-grid');
 if (tipsContainer) {
 tipsContainer.innerHTML = '';
 
-WELLNESS_QUESTIONS.forEach((question, index) => {
-const answer = wellnessAnswers[index]; // Usa indice 0-based
-if (answer === 'no' || answer === false) {
-const tipItem = document.createElement('div');
-tipItem.className = 'tip-item';
-tipItem.innerHTML = `
-<i class="fas fa-lightbulb"></i>
-<span>${question.tip}</span>
-`;
-tipsContainer.appendChild(tipItem);
-}
-});
+// WELLNESS_QUESTIONS.forEach((question, index) => {
+// const answer = wellnessAnswers[index]; // Usa indice 0-based
+// if (answer === 'no' || answer === false) {
+// const tipItem = document.createElement('div');
+// tipItem.className = 'tip-item';
+// tipItem.innerHTML = `
+// <i class="fas fa-lightbulb"></i>
+// <span>${question.tip}</span>
+// `;
+// tipsContainer.appendChild(tipItem);
+// }
+// });
 }
 }
 } else {
@@ -958,6 +1069,9 @@ updateDots(latestBia, userData.gender, userData);
 if (userData.initial_bia && latestBia) {
 updateRecompositionProgress(userData.initial_bia, latestBia);
 }
+
+// Carica piano automatico Herbalife
+loadPianiAutomatici(latestBia, userData);
 }
 } else {
 console.log('latestBia non trovato');
@@ -982,7 +1096,7 @@ document.getElementById('biaResultsContainer').style.display = 'block';
 displayBIADResults(latestBia, userData);
 }
 loadWellnessResult(userData);
-// loadFabbisogni(latestBia, userData); // Rimuovuto per evitare conflitto con loadNeedsResults
+// loadFabbisogni(latestBia, userData); // Rimuovoto per evitare conflitto con loadNeedsResults
 loadPianiAutomatici(latestBia, userData);
 updateBadgeStatus(userData);
 }
@@ -1103,19 +1217,6 @@ if (gender === 'male') {
 return 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
 } else {
 return 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
-}
-}
-
-function loadPianiAutomatici(latestBia, userData) {
-if (!latestBia) return;
-const planDisplay = document.getElementById('planDataDisplay');
-const planContainer = document.getElementById('planResultsContainer');
-const phytoSection = document.getElementById('phytoSection');
-if (!planDisplay || !planContainer) return;
-planDisplay.style.display = 'none';
-planContainer.style.display = 'block';
-if (latestBia.visceralFat >= 10 && phytoSection) {
-phytoSection.style.display = 'block';
 }
 }
 
@@ -1291,6 +1392,20 @@ const rankingText = document.getElementById('rankingText');
 if (indicator) indicator.style.left = position + '%';
 if (rankingText) rankingText.textContent = level;
 }
+
+window.toggleAccordion = function(id) {
+const content = document.getElementById('content-' + id);
+const icon = document.getElementById('icon-' + id);
+if (content && icon) {
+if (content.classList.contains('expanded')) {
+content.classList.remove('expanded');
+icon.classList.remove('rotated');
+} else {
+content.classList.add('expanded');
+icon.classList.add('rotated');
+}
+}
+};
 </script>
 
 

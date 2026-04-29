@@ -613,6 +613,35 @@ SESSIONE 28 APRILE 2026 - PUNTI FERMI BLINDATI:
     - Deploy completato
 
 90. FIX ERRORE BMI.TOFIXED IN UPDATEBIARESULTS (28 APRILE 2026)
+
+SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
+
+91. RIMPIEGO ACCORDION SU SEZIONI PRINCIPALI PROFILO
+   - Riaggiunto 3 accordion: Il tuo programma personalizzato, Lista della Spesa Strategica, Classificazione Fisica Tanita
+   - Struttura corretta: h3 fuori accordion, card dentro accordion-content
+   - Deploy completato
+
+92. FIX ERRORE LOADPIANIAUTOMATICI NOT DEFINED
+   - Spostato loadPianiAutomatici in profile-manager.js
+   - Aggiunto import da profile-manager.js in profile.html
+   - Rimossa funzione duplicata da profile.html
+   - Deploy completato
+
+93. FIX USERDATA UNDEFINED IN LOADPIANIAUTOMATICI
+   - Aggiunto recupero dati Firebase dopo salvataggio obiettivi
+   - Chiamata loadPianiAutomatici(userData) con dati corretti
+   - Deploy completato
+
+94. FIX EXPORT GENERATEPLANHTML
+   - Aggiunto generatePlanHTML in plan-generator.js
+   - Esportato funzione per uso in profile-manager.js
+   - Rimossa funzione duplicata da profile.html
+   - Deploy completato
+
+95. AGGIORNAMENTO PIANO AUTOMATICO IN TEMPO REALE
+   - Piano ora si aggiorna quando l'utente cambia obiettivo
+   - Chiamata loadPianiAutomatici dopo salvataggio obiettivi in saveObiettivi()
+   - Deploy completato
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults
@@ -990,5 +1019,6 @@ PS:
 - Ad ogni fine sessione di lavoro: Creare memoria delle soluzioni di successo
 - Creiamo progetti extraordinari!
 - Perché usiamo un database?
+
 
 

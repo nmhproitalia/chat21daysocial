@@ -329,7 +329,6 @@ Il Physique Rating assoluto mostra il tuo livello attuale di forma fisica basato
 import { initHeader } from "./components/general/header/header.js?v=6.0";
 import { initFooter } from "./components/general/footer/footer-brand.js?v=5.0";
 import { BIAInputController } from "./components/tanita/tanita-controller.js?v=1.0";
-import { initWellnessTest } from "./wellness/wellness-test-controller.js?v=1.0";
 
 document.addEventListener('DOMContentLoaded', () => {
 console.log('DOMContentLoaded - tanita.html');
@@ -341,9 +340,6 @@ console.log('Header e footer inizializzati');
 console.log('BiaInputController istanziato');
 window.biaController = new BIAInputController();
 console.log('BiaInputController inizializzato');
-console.log('Wellness Test Controller inizializzato');
-initWellnessTest();
-console.log('Wellness Test Controller inizializzato');
 });
 </script>
 
