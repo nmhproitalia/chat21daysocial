@@ -661,6 +661,11 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Aggiunto import e chiamata initWellnessTest in tanita.html
    - Test benessere ora funzionante in Tanita
    - Deploy completato
+
+99. FIX PADDING CARD PWA
+   - Ridotto padding container per mobile (20px tablet, 15px mobile)
+   - Card ora non più attaccate ai margini in PWA
+   - Deploy completato
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults
