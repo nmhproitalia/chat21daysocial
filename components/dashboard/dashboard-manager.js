@@ -595,53 +595,23 @@ msgArea.innerHTML = '<p class="delete-message-error">Errore: ID utente mancante<
 return;
 }
 
-const height = parseFloat(document.getElementById('modalHeight').value);
-const weight = parseFloat(document.getElementById('modalWeight').value);
-const gender = document.getElementById('modalGender').value;
-const age = parseInt(document.getElementById('modalAge').value);
-const bodyFat = parseFloat(document.getElementById('modalBodyFat').value);
-
-// Calcolo BMI
-const bmi = weight / Math.pow(height / 100, 2);
-
-// Calcolo BMR (formula Mifflin-St Jeor)
-let bmr;
-if (gender === 'male') {
-bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
-} else {
-bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
-}
-
-// Calcolo waterNeeds (circa 30-35ml per kg)
-const waterNeeds = (weight * 0.033).toFixed(1);
-
-// Calcolo proteinNeeds (circa 1.6-2g per kg)
-const proteinNeeds = (weight * 1.8).toFixed(0);
-
 const biaData = {
-height: height,
-age: age,
-gender: gender,
-weight: weight,
-bodyFat: bodyFat,
+height: parseFloat(document.getElementById('modalHeight').value),
+age: parseInt(document.getElementById('modalAge').value),
+gender: document.getElementById('modalGender').value,
+weight: parseFloat(document.getElementById('modalWeight').value),
+bodyFat: parseFloat(document.getElementById('modalBodyFat').value),
 hydration: parseFloat(document.getElementById('modalHydration').value),
 visceralFat: parseInt(document.getElementById('modalVisceralFat').value),
 leanMass: parseFloat(document.getElementById('modalLeanMass').value),
 boneMass: parseFloat(document.getElementById('modalBoneMass').value),
-metabolicAge: parseInt(document.getElementById('modalMetabolicAge').value),
-bmi: bmi.toFixed(1),
-bmr: Math.round(bmr),
-waterNeeds: parseFloat(waterNeeds),
-proteinNeeds: parseInt(proteinNeeds),
-timestamp: new Date().toISOString()
+metabolicAge: parseInt(document.getElementById('modalMetabolicAge').value)
 };
 
 try {
 msgArea.innerHTML = '<p class="delete-message-error">Salvataggio in corso...</p>';
-await updateDoc(doc(db, "users", uid), {
-latest_bia: biaData,
-bia_history: arrayUnion(biaData)
-});
+const { saveBIAData } = await import('../tanita/tanita-calculations.js');
+await saveBIAData(uid, biaData);
 msgArea.innerHTML = '<p class="delete-message-success" style="color:green;">Dati BIA salvati con successo!</p>';
 setTimeout(() => {
 closeBIAModal();
