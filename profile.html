@@ -754,7 +754,7 @@ initHeader();
 initFooter();
 initGlobalEyes();
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
 if (user) {
 setupProfiloActions(user.uid);
 loadNeedsResultsUnified(user.uid);
@@ -764,6 +764,13 @@ initWellnessTest();
 
 // Aggiungi event listeners per aggiornare calcoli BIA in tempo reale
 setupBIAInputListeners();
+
+// Carica piano automatico
+const userDoc = await getDoc(doc(db, "users", user.uid));
+if (userDoc.exists()) {
+const userData = userDoc.data();
+loadPianiAutomatici(userData);
+}
 }
 });
 
