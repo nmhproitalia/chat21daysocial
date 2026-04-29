@@ -405,8 +405,6 @@ const fatDeltaKg = latestFatKg - initialFatKg;
 const leanDeltaKg = latestLeanKg - initialLeanKg;
 const weightDelta = user.latest_bia.weight - user.initial_bia.weight;
 
-console.log(`[DEBUG] ${d.id} Scenario: fatDelta=${fatDeltaKg.toFixed(2)}, leanDelta=${leanDeltaKg.toFixed(2)}, weightDelta=${weightDelta.toFixed(2)}`);
-
 if (fatDeltaKg < 0 && leanDeltaKg > 0) {
 scenario = 'Ricomposizione Perfetta';
 scenarioColor = '#28a745';
@@ -419,8 +417,6 @@ scenarioColor = '#ffc107';
 } else {
 scenario = 'Maintenance';
 }
-} else {
-console.log(`[DEBUG] ${d.id} Scenario: dati mancanti - initial_bia=${!!user.initial_bia}, latest_bia=${!!user.latest_bia}`);
 }
 
 // Pattern identico a challengers-manager.js
