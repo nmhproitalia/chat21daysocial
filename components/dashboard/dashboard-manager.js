@@ -616,7 +616,10 @@ latest_bia: biaData,
 bia_history: arrayUnion(biaData)
 });
 msgArea.innerHTML = '<p class="delete-message-success" style="color:green;">Dati BIA salvati con successo!</p>';
-setTimeout(() => closeBIAModal(), 1500);
+setTimeout(() => {
+closeBIAModal();
+location.reload();
+}, 1500);
 } catch (error) {
 console.error('Errore salvataggio BIA:', error);
 msgArea.innerHTML = '<p class="delete-message-error">Errore nel salvataggio: ' + error.message + '</p>';
