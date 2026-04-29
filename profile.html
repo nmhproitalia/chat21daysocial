@@ -64,21 +64,12 @@
 <div id="badgeStatus" class="badge-status">?</div>
 <h2 id="userNameDisplay">Caricamento...</h2>
 <p id="userRoleDisplay"><i class="fas fa-user"></i> Challenger</p>
-<div class="user-ranking-bar-container">
-<div class="user-ranking-bar" id="rankingBar"></div>
-</div>
 <input type="file" id="photoInput" accept="image/*" class="photo-input-hidden">
-<div class="user-action-menu">
-<a href="welcome.html" class="action-btn-mini btn-challenge"><i class="fas fa-rocket"></i><span>Info Challenge</span></a>
-<a href="https://www.herbalife.it/iscriviti-come-cliente-privilegiato/" target="_blank" class="action-btn-mini btn-privilege"><i class="fas fa-gem"></i><span>Cliente Privilegiato</span></a>
-<a href="https://www.herbalife.it/iscriviti-come-incaricato-alle-vendite/" target="_blank" class="action-btn-mini btn-become-coach"><i class="fas fa-user-tie"></i><span>Diventa Coach</span></a>
-</div>
 </div>
 </div>
 </section>
 
 <!-- LEGENDA BADGE STATUS -->
-<h3 class="card-section-title"><i class="fas fa-info-circle"></i> Legenda Badge</h3>
 <section class="card">
 <div class="contenuto">
 <div class="legenda-container">
@@ -102,11 +93,23 @@
 <div class="legenda-note">
 <span class="legenda-gold-star">★ Bordo dorato</span> = Media stelle Social Chat > 4.5
 </div>
+
+<div class="user-action-menu">
+<a href="welcome.html" class="action-btn-mini btn-challenge"><i class="fas fa-rocket"></i><span>Info Challenge</span></a>
+<a href="https://www.herbalife.it/iscriviti-come-cliente-privilegiato/" target="_blank" class="action-btn-mini btn-privilege"><i class="fas fa-gem"></i><span>Cliente Privilegiato</span></a>
+<a href="https://www.herbalife.it/iscriviti-come-incaricato-alle-vendite/" target="_blank" class="action-btn-mini btn-become-coach"><i class="fas fa-user-tie"></i><span>Diventa Coach</span></a>
+</div>
+
 </div>
 </section>
 
 <!-- SEZIONE COACH & ASSISTENTI -->
-<h3 class="card-section-title"><i class="fas fa-user-tie"></i> Coach & Assistenti di Riferimento</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('coach')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-user-tie"></i> Coach & Assistenti di Riferimento</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-coach"></i>
+</div>
+<div class="profile-accordion-content" id="content-coach">
 <section class="card">
 <div class="contenuto">
 <!-- Sezione Coach -->
@@ -129,11 +132,18 @@
 </div>
 </div>
 </section>
+</div>
+</div>
 
 
 
 <!-- SEZIONE INFORMAZIONI PERSONALI -->
-<h3 class="card-section-title"><i class="fas fa-id-card"></i> Informazioni Personali</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('personal')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-id-card"></i> Informazioni Personali</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-personal"></i>
+</div>
+<div class="profile-accordion-content" id="content-personal">
 <section class="card">
 <div class="card-body">
 <form id="anagraficiForm">
@@ -184,9 +194,16 @@ appearance: textfield;
 </form>
 </div>
 </section>
+</div>
+</div>
 
 <!-- SEZIONE OBIETTIVI -->
-<h3 class="card-section-title"><i class="fas fa-bullseye"></i> I Tuoi Obiettivi</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('goals')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-bullseye"></i> I Tuoi Obiettivi</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-goals"></i>
+</div>
+<div class="profile-accordion-content" id="content-goals">
 <section id="obiettiviCard" class="card">
 <div class="card-body">
 <form id="obiettiviForm">
@@ -226,6 +243,8 @@ appearance: textfield;
 </form>
 </div>
 </section>
+</div>
+</div>
 
 <!-- SEZIONE BIA INIZIALE -->
 <div class="profile-section-accordion">
@@ -659,7 +678,12 @@ Il Physique Rating assoluto mostra il tuo livello attuale di forma fisica basato
 </div>
 
 <!-- SEZIONE SICUREZZA ACCOUNT -->
-<h3 class="card-section-title"><i class="fas fa-shield-alt"></i> Sicurezza Account</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('security')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-shield-alt"></i> Sicurezza Account</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-security"></i>
+</div>
+<div class="profile-accordion-content" id="content-security">
 <section class="card">
 <div class="card-body">
 <form id="passwordForm">
@@ -694,6 +718,8 @@ Il Physique Rating assoluto mostra il tuo livello attuale di forma fisica basato
 </form>
 </div>
 </section>
+</div>
+</div>
 
 
 
