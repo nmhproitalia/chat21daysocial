@@ -162,6 +162,32 @@ margin-right: 8px;
 
 /* ############################################################ */
 /* #                                                          # */
+/* #           ACCORDION PROFILE SYSTEM                        # */
+/* #                                                          # */
+/* ############################################################ */
+
+.profile-accordion-content {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.3s ease-out;
+margin-bottom: 30px;
+}
+
+.profile-accordion-content.expanded {
+max-height: 2000px;
+}
+
+.profile-accordion-icon {
+transition: transform 0.3s;
+}
+
+.profile-accordion-icon.rotated {
+transform: rotate(180deg);
+}
+
+
+/* ############################################################ */
+/* #                                                          # */
 /* #           RIDIMENSIONAMENTO CARD DASHBOARD               # */
 /* #                                                          # */
 /* ############################################################ */

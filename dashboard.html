@@ -108,61 +108,56 @@
 
 <!-- Accordion Coach -->
 <div class="accordion-item">
-<button id="coachesAccordionBtn" class="accordion-btn accordion-btn-coach">
+<button onclick="toggleAccordion('coaches')" class="accordion-btn accordion-btn-coach">
 <span><i class="fas fa-crown icon-margin-right"></i>Coach</span>
-<i id="coachesAccordionIcon" class="fas fa-chevron-down"></i>
+<i id="icon-coachesAccordion" class="fas fa-chevron-down"></i>
 </button>
+<div id="content-coaches" class="accordion-content profile-accordion-content">
 <section class="card">
 <div class="contenuto">
 <!-- Sezione Coach -->
 <div class="coach-section">
-<h4 class="section-title section-title-coach">
-<i class="fas fa-crown"></i> Coach
-</h4>
 <div id="coachesListProfile" class="profile-list"></div>
 </div>
 </div>
 </section>
 </div>
+</div>
 
 <!-- Accordion Assistenti -->
 <div class="accordion-item">
-<button id="assistantsAccordionBtn" class="accordion-btn accordion-btn-assistant">
+<button onclick="toggleAccordion('assistants')" class="accordion-btn accordion-btn-assistant">
 <span><i class="fas fa-user-shield icon-margin-right"></i>Assistenti</span>
-<i id="assistantsAccordionIcon" class="fas fa-chevron-down"></i>
+<i id="icon-assistantsAccordion" class="fas fa-chevron-down"></i>
 </button>
-</div>
+<div id="content-assistants" class="accordion-content profile-accordion-content">
 <section class="card">
 <div class="contenuto">
 <!-- Sezione Assistenti -->
 <div>
-<h4 class="section-title section-title-assistant">
-<i class="fas fa-user-shield"></i> Assistenti
-</h4>
 <div id="assistantsListProfile" class="profile-list"></div>
 </div>
 </div>
 </section>
 </div>
+</div>
 
 <!-- Accordion Challengers -->
 <div class="accordion-item">
-<button id="challengersAccordionBtn" class="accordion-btn accordion-btn-challenger">
+<button onclick="toggleAccordion('challengers')" class="accordion-btn accordion-btn-challenger">
 <span><i class="fas fa-medal icon-margin-right"></i>Challengers</span>
-<i id="challengersAccordionIcon" class="fas fa-chevron-down"></i>
+<i id="icon-challengersAccordion" class="fas fa-chevron-down"></i>
 </button>
-</div>
+<div id="content-challengers" class="accordion-content profile-accordion-content">
 <section class="card">
 <div class="contenuto">
 <!-- Sezione Challengers -->
 <div>
-<h4 class="section-title section-title-assistant">
-<i class="fas fa-user-shield"></i> Challengers
-</h4>
 <div id="challengersListProfile" class="profile-list"></div>
 </div>
 </div>
 </section>
+</div>
 </div>
 
 
@@ -190,7 +185,6 @@
 <button onclick="closeBIAModal()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:#666;">&times;</button>
 </div>
 <form id="biaModalForm">
-<div class="form-grid">
 <div class="form-group">
 <label for="modalHeight">Altezza (cm)</label>
 <input type="number" id="modalHeight" step="0.1" required placeholder="Es. 175">

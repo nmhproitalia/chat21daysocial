@@ -30,54 +30,7 @@ currentUserRole = role === 'admin' || role === 'coach' ? 'Coach' : role === 'ass
 }
 };
 
-// Funzione per setup accordion listeners
-function setupAccordionListeners() {
-const coachesBtn = document.getElementById('coachesAccordionBtn');
-const assistantsBtn = document.getElementById('assistantsAccordionBtn');
-const challengersBtn = document.getElementById('challengersAccordionBtn');
-
-if (coachesBtn) {
-coachesBtn.addEventListener('click', (e) => {
-e.preventDefault();
-e.stopPropagation();
-const accordion = document.getElementById('coachesAccordion');
-const icon = document.getElementById('coachesAccordionIcon');
-if (accordion) {
-const isHidden = accordion.style.display === 'none';
-accordion.style.display = isHidden ? 'block' : 'none';
-if (icon) icon.className = isHidden ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
-}
-});
-}
-
-if (assistantsBtn) {
-assistantsBtn.addEventListener('click', (e) => {
-e.preventDefault();
-e.stopPropagation();
-const accordion = document.getElementById('assistantsAccordion');
-const icon = document.getElementById('assistantsAccordionIcon');
-if (accordion) {
-const isHidden = accordion.style.display === 'none';
-accordion.style.display = isHidden ? 'block' : 'none';
-if (icon) icon.className = isHidden ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
-}
-});
-}
-
-if (challengersBtn) {
-challengersBtn.addEventListener('click', (e) => {
-e.preventDefault();
-e.stopPropagation();
-const accordion = document.getElementById('challengersAccordion');
-const icon = document.getElementById('challengersAccordionIcon');
-if (accordion) {
-const isHidden = accordion.style.display === 'none';
-accordion.style.display = isHidden ? 'block' : 'none';
-if (icon) icon.className = isHidden ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
-}
-});
-}
-}
+// Vecchia logica setupAccordionListeners rimosso - ora usa sistema profile toggleAccordion
 
 /* ############################################################ */
 /* #                                                          # */
@@ -97,8 +50,7 @@ await loadGlobalSettings();
 await fetchUsers();
 await countRoles();
 setupChallengeSettingsForm();
-setupAccordionListeners();
-console.log("Irina: Accordion listeners impostati");
+// Vecchio sistema accordion listeners rimosso - ora usa toggleAccordion (sistema profile)
 // initAdminSection rimosso - sostituito da pannello inline in Challengers
 }
 
@@ -697,4 +649,30 @@ showServiceMessage('Errore nell\'aggiornamento del ruolo: ' + error.message, "er
 /* #                                                          # */
 /* ############################################################ */
 // Vecchio sistema rimosso - sostituito da pannello inline in Challengers
+
+
+/* ############################################################ */
+/* #                                                          # */
+/* #           6. FUNZIONI ACCORDION (SISTEMA PROFILE)        # */
+/* #                                                          # */
+/* ############################################################ */
+
+export function toggleAccordion(id) {
+const content = document.getElementById('content-' + id);
+const icon = document.getElementById('icon-' + id);
+if (content && icon) {
+if (content.classList.contains('expanded')) {
+content.classList.remove('expanded');
+icon.classList.remove('rotated');
+} else {
+content.classList.add('expanded');
+icon.classList.add('rotated');
+}
+}
+}
+
+// Esporta come funzione globale per compatibilità con onclick inline
+if (typeof window !== 'undefined') {
+window.toggleAccordion = toggleAccordion;
+}
 // Funzioni initAdminSection, fetchAdminUsers e changeUserRole rimosse;
