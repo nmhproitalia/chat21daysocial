@@ -182,14 +182,10 @@ e.preventDefault();
 this.handleFormSubmit();
 });
 }
-const inputs = ['weight', 'bodyFat', 'hydration', 'visceralFat', 'leanMass', 'boneMass', 'metabolicAge', 'height', 'age'];
+const inputs = ['weight', 'bodyFat', 'hydration', 'visceralFat', 'leanMass', 'boneMass', 'metabolicAge', 'height', 'age', 'gender'];
 inputs.forEach(id => {
 const el = document.getElementById(id);
 if (el) el.addEventListener('input', () => this.updateCalculations());
-});
-const genderInputs = document.querySelectorAll('input[name="gender"]');
-genderInputs.forEach(input => {
-input.addEventListener('change', () => this.updateCalculations());
 });
 }
 
