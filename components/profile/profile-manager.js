@@ -1203,7 +1203,23 @@ let level = 0;
 let icon = 'fa-rocket';
 let progress = 0;
 if (goal === 'weight_loss') {
-const targetBodyFat = userData.targetBodyFat || (initial.bodyFat * 0.8);
+let targetBodyFat;
+if (userData.targetBodyFat) {
+targetBodyFat = userData.targetBodyFat;
+} else {
+const initialFat = initial.bodyFat;
+if (initialFat > 30) {
+targetBodyFat = initialFat * 0.7;
+} else if (initialFat > 25) {
+targetBodyFat = initialFat * 0.75;
+} else if (initialFat > 20) {
+targetBodyFat = initialFat * 0.8;
+} else if (initialFat > 15) {
+targetBodyFat = initialFat * 0.85;
+} else {
+targetBodyFat = initialFat * 0.9;
+}
+}
 progress = (initial.bodyFat - latest.bodyFat) / (initial.bodyFat - targetBodyFat);
 } else if (goal === 'muscle_gain') {
 const targetLeanMass = userData.targetLeanMass || (initial.leanMass * 1.1);
