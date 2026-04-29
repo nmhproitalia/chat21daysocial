@@ -713,6 +713,13 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Rimosse funzioni inline calculatePhysiqueRating, updateRecompositionProgress, updateDots da profile.html
    - Entrambe ora usano le stesse funzioni per Physique Rating e Progresso Ricomposizione
    - Deploy completato
+
+108. FIX ID ELEMENTI DOM FUNZIONI BIA
+   - Corretto ID pallini da dot-bmi a bmiDot per allineare con HTML profile.html
+   - Corretto ID progresso ricomposizione da initialWeight/currentWeight a weightInitial/weightLatest
+   - Sostituita classe bia-result-dot con tanita-dot per allineare con HTML
+   - Rimosso riferimento a recompositionScenarioValue che non esiste nell'HTML
+   - Deploy completato
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults

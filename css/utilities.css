@@ -76,6 +76,18 @@ background: #333333;
 transition: background 0.3s ease;
 }
 
+.tanita-dot.bia-dot-good {
+background: #266431;
+}
+
+.tanita-dot.bia-dot-warning {
+background: #f39c12;
+}
+
+.tanita-dot.bia-dot-bad {
+background: #e74c3c;
+}
+
 /* Fix overflow testo su mobile per Risultati BIA */
 .bia-results-row,
 .bia-results-row-simple {
