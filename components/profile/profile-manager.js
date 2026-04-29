@@ -808,11 +808,11 @@ const bf = parseFloat(bodyFat);
 const lm = parseFloat(leanMass);
 const heightM = parseFloat(height) / 100;
 
-console.log('[DEBUG calculatePhysiqueRating] Parsed:', { bf, lm, heightM });
-
+// 1. Calcolo SMI (Skeletal Muscle Index)
 const smi = heightM > 0 ? lm / (heightM * heightM) : 0;
-console.log('[DEBUG calculatePhysiqueRating] SMI:', smi);
+console.log('[DEBUG calculatePhysiqueRating] SMI calculated:', smi);
 
+// 2. Logica dei Livelli di Grasso (Soglie Tanita ufficiali)
 let fatLevel = 'medium';
 if (gender === 'male') {
 if (bf < 13) fatLevel = 'low';
@@ -823,22 +823,33 @@ else if (bf >= 34) fatLevel = 'high';
 }
 console.log('[DEBUG calculatePhysiqueRating] fatLevel:', fatLevel);
 
+// 3. Logica dei Livelli Muscolari (Soglie Tanita ufficiali SMI)
+let muscleLevel = 'medium';
+if (gender === 'male') {
+if (smi < 8.2) muscleLevel = 'low';
+else if (smi >= 10.0) muscleLevel = 'high';
+} else {
+if (smi < 6.3) muscleLevel = 'low';
+else if (smi >= 8.0) muscleLevel = 'high';
+}
+console.log('[DEBUG calculatePhysiqueRating] muscleLevel:', muscleLevel);
+
+// 4. Matrice Physique Rating Tanita ufficiale
 const ratingMatrix = {
-'low-low': { id: 1, name: 'Normal', description: 'Composizione corporea bilanciata' },
-'low-medium': { id: 4, name: 'Standard', description: 'Composizione corporea nella norma' },
-'low-high': { id: 7, name: 'Sottopeso', description: 'Aumento massa grassa raccomandato' },
-'medium-low': { id: 2, name: 'Standard', description: 'Composizione corporea nella norma' },
-'medium-medium': { id: 5, name: 'Normal', description: 'Composizione corporea bilanciata' },
-'medium-high': { id: 8, name: 'Sovrappeso', description: 'Riduzione massa grassa raccomandata' },
-'high-low': { id: 3, name: 'Muscolare', description: 'Alta percentuale muscolare' },
-'high-medium': { id: 6, name: 'Fortemente Muscolare', description: 'Eccellente composizione muscolare' },
-'high-high': { id: 9, name: 'Obeso', description: 'Intervento raccomandato' }
+'high-low': { id: 3, name: 'Robusto (Solidly-built)', description: `Significa che si ha un'alta percentuale di grasso, ma anche un livello elevato di massa muscolare.<br>Nonostante l'aspetto imponente, sotto lo strato di adipe è presente una muscolatura sviluppata.` },
+'high-medium': { id: 6, name: 'Standard Muscoloso (Standard Muscular)', description: `Indica una percentuale di grasso media e un alto livello di massa muscolare.<br>È una condizione fisica salutare di cui andare fieri, tipica di molti atleti.` },
+'high-high': { id: 9, name: 'Molto Muscoloso (Very Muscular)', description: `Le persone molto muscolose presentano una bassa percentuale di grasso corporeo e un livello di massa muscolare molto elevato.` },
+'medium-low': { id: 2, name: 'Obeso (Obese)', description: `Indica un'alta percentuale di grasso corporeo e un livello di massa muscolare standard.<br>Chi rientra in questa categoria deve prestare attenzione, poiché l'obesità può causare gravi problemi di salute.` },
+'medium-medium': { id: 5, name: 'Standard', description: `Un fisico standard presenta livelli medi sia di grasso corporeo che di massa muscolare.<br>Chi ha questa costituzione può ottenere ottimi progressi con l'allenamento.` },
+'medium-high': { id: 8, name: 'Magro e Muscoloso (Thin and Muscular)', description: `Questa categoria indica una bassa percentuale di grasso corporeo unita a un livello standard di massa muscolare.` },
+'low-low': { id: 1, name: 'Obeso Falso Magro (Hidden Obese)', description: `Questa categoria indica un'alta percentuale di grasso corporeo a fronte di una massa muscolare ridotta.<br>Anche se l'aspetto esteriore può sembrare normale, i livelli di grasso sono eccessivi.<br>Questa condizione può evolvere in obesità con conseguenti rischi per la salute.` },
+'low-medium': { id: 4, name: 'Poco Allenato (Under exercised)', description: `Indica una percentuale di grasso media associata a una massa muscolare scarsa.<br>Per migliorare questa condizione, è consigliabile iniziare un programma di allenamento regolare.` },
+'low-high': { id: 9, name: 'Molto Muscoloso (Very Muscular)', description: `Le persone molto muscolose presentano una bassa percentuale di grasso corporeo e un livello di massa muscolare molto elevato.` }
 };
 
-const key = `${fatLevel}-${smi < 7 ? 'low' : smi >= 7 && smi < 10 ? 'medium' : 'high'}`;
-console.log('[DEBUG calculatePhysiqueRating] key:', key);
-const result = ratingMatrix[key] || { id: 5, name: 'Normal', description: 'Composizione corporea bilanciata' };
-console.log('[DEBUG calculatePhysiqueRating] result:', result);
+const key = `${fatLevel}-${muscleLevel}`;
+const result = ratingMatrix[key] || ratingMatrix['medium-medium'];
+console.log('[DEBUG calculatePhysiqueRating] result:', result, 'key:', key);
 return result;
 }
 

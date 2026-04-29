@@ -725,8 +725,12 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Aggiunte classi CSS per pallini colorati (bia-dot-good, bia-dot-warning, bia-dot-bad)
    - Corretto errore CSS da f39cular a #f39c12
    - Aggiunti console.log debug calculatePhysiqueRating per verificare parametri
+   - Aggiunti console.log debug updateDots per verificare chiamata
+   - Aggiunto !important colori CSS ma non funzionava
+   - SOSTITUITA LOGICA CLASSI CSS CON INLINE STYLE ESATTA DA TANITA
+   - Tanita usa dotEl.style.background = color invece di classi CSS
+   - Copiata logica esatta da tanita-controller.js updateDots
    - Deploy completato
-   - In attesa verifica console per identificare problema Physique Rating
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults
