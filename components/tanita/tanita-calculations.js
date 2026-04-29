@@ -10,8 +10,7 @@
  * @version 1.0
  */
 
-import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../../js/firebase.js';
+import { doc, updateDoc, serverTimestamp, arrayUnion, db } from '../../js/firebase.js';
 
 /* ############################################################ */
 /* #                                                          # */
