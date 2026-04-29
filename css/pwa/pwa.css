@@ -61,6 +61,18 @@ body {
 overscroll-behavior-y: contain !important;
 }
 
+/* Preveni scroll orizzontale su mobile */
+html, body {
+overflow-x: hidden !important;
+max-width: 100vw !important;
+position: relative !important;
+}
+
+/* Preveni zoom su touch */
+body {
+touch-action: pan-x pan-y !important;
+}
+
 /* Disabilita selezione testo su elementi interattivi */
 button, .btn, a[role="button"], i, .icon, .fas, .far, .fab {
 user-select: none !important;
