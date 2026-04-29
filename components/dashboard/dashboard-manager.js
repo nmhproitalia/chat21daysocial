@@ -675,4 +675,11 @@ icon.classList.add('rotated');
 if (typeof window !== 'undefined') {
 window.toggleAccordion = toggleAccordion;
 }
+
+// Assicura che la funzione sia disponibile anche se chiamata prima del caricamento completo
+setTimeout(() => {
+if (typeof window !== 'undefined') {
+window.toggleAccordion = toggleAccordion;
+}
+}, 100);
 // Funzioni initAdminSection, fetchAdminUsers e changeUserRole rimosse;
