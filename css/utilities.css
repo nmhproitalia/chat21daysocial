@@ -77,15 +77,15 @@ transition: background 0.3s ease;
 }
 
 .tanita-dot.bia-dot-good {
-background: #266431;
+background: #266431 !important;
 }
 
 .tanita-dot.bia-dot-warning {
-background: #f39c12;
+background: #f39c12 !important;
 }
 
 .tanita-dot.bia-dot-bad {
-background: #e74c3c;
+background: #e74c3c !important;
 }
 
 /* Fix overflow testo su mobile per Risultati BIA */
