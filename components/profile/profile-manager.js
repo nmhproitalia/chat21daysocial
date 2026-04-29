@@ -906,47 +906,60 @@ console.log(`[DEBUG updateDots] Metric ${metric.id}: color=${color}`);
 export function updateRecompositionProgress(initialBia, latestBia) {
 if (!initialBia || !latestBia) return;
 
+// Gestisce entrambi i formati (minuscolo e camelCase) per dati esistenti
 const initialBodyFat = parseFloat(initialBia.bodyFat?.toString().replace(',', '.') || initialBia.bodyfat?.toString().replace(',', '.') || 0);
 const latestBodyFat = parseFloat(latestBia.bodyFat?.toString().replace(',', '.') || latestBia.bodyfat?.toString().replace(',', '.') || 0);
 const initialLeanKg = parseFloat(initialBia.leanMass || initialBia.leanmass || 0);
 const latestLeanKg = parseFloat(latestBia.leanMass || latestBia.leanmass || 0);
 
+// Calcola massa grassa usando percentuale bodyFat (formula Tanita)
 const initialFatKg = (initialBia.weight * initialBodyFat) / 100;
 const latestFatKg = (latestBia.weight * latestBodyFat) / 100;
 
-const deltaWeight = latestBia.weight - initialBia.weight;
-const deltaLean = latestLeanKg - initialLeanKg;
-const deltaFat = latestFatKg - initialFatKg;
+// Delta per ricomposizione
+const fatDeltaKg = latestFatKg - initialFatKg;
+const leanDeltaKg = latestLeanKg - initialLeanKg;
+const weightDelta = latestBia.weight - initialBia.weight;
 
-const updateEl = (id, value, unit = '') => {
-const el = document.getElementById(id);
-if (el) el.textContent = `${value}${unit}`;
-};
-
-updateEl('weightInitial', initialBia.weight.toFixed(1), ' kg');
-updateEl('weightLatest', latestBia.weight.toFixed(1), ' kg');
-updateEl('leanInitial', initialLeanKg.toFixed(1), ' kg');
-updateEl('leanLatest', latestLeanKg.toFixed(1), ' kg');
-updateEl('fatInitial', initialFatKg.toFixed(1), ' kg');
-updateEl('fatLatest', latestFatKg.toFixed(1), ' kg');
-updateEl('weightDelta', (deltaWeight >= 0 ? '+' : '') + deltaWeight.toFixed(1), ' kg');
-updateEl('leanDelta', (deltaLean >= 0 ? '+' : '') + deltaLean.toFixed(1), ' kg');
-updateEl('fatDelta', (deltaFat >= 0 ? '+' : '') + deltaFat.toFixed(1), ' kg');
-
-const scenarioEl = document.getElementById('recompositionScenario');
-if (scenarioEl) {
-let scenario = 'Maintenance';
+// Scenari ricomposizione per challenge 21 giorni (logica Tanita)
+let scenario = '';
 let color = '#6c757d';
-if (deltaLean > 0 && deltaFat < 0) {
+if (fatDeltaKg < 0 && leanDeltaKg > 0) {
 scenario = 'Ricomposizione Perfetta';
 color = '#28a745';
-} else if (deltaFat < 0 && Math.abs(deltaFat) > Math.abs(deltaLean)) {
+} else if (weightDelta <= -0.5 && fatDeltaKg <= -0.5) {
 scenario = 'Dimagrimento Eccellente';
 color = '#17a2b8';
-} else if (deltaLean > 0 && deltaLean > Math.abs(deltaFat)) {
+} else if (weightDelta >= 0.5 && leanDeltaKg >= 0.5) {
 scenario = 'Lean Bulk';
 color = '#ffc107';
+} else {
+scenario = 'Maintenance';
 }
+
+// Aggiorna UI con valori iniziali, nuovi e delta
+const weightInitialEl = document.getElementById('weightInitial');
+const weightLatestEl = document.getElementById('weightLatest');
+const weightDeltaEl = document.getElementById('weightDelta');
+const fatInitialEl = document.getElementById('fatInitial');
+const fatLatestEl = document.getElementById('fatLatest');
+const fatDeltaEl = document.getElementById('fatDelta');
+const leanInitialEl = document.getElementById('leanInitial');
+const leanLatestEl = document.getElementById('leanLatest');
+const leanDeltaEl = document.getElementById('leanDelta');
+const scenarioEl = document.getElementById('recompositionScenario');
+
+if (weightInitialEl) weightInitialEl.textContent = `${initialBia.weight.toFixed(1)} kg`;
+if (weightLatestEl) weightLatestEl.textContent = `${latestBia.weight.toFixed(1)} kg`;
+if (weightDeltaEl) weightDeltaEl.textContent = `${weightDelta >= 0 ? '+' : ''}${weightDelta.toFixed(1)} kg`;
+if (fatInitialEl) fatInitialEl.textContent = `${initialFatKg.toFixed(1)} kg`;
+if (fatLatestEl) fatLatestEl.textContent = `${latestFatKg.toFixed(1)} kg`;
+if (fatDeltaEl) fatDeltaEl.textContent = `${fatDeltaKg >= 0 ? '+' : ''}${fatDeltaKg.toFixed(1)} kg`;
+if (leanInitialEl) leanInitialEl.textContent = `${initialLeanKg.toFixed(1)} kg`;
+if (leanLatestEl) leanLatestEl.textContent = `${latestLeanKg.toFixed(1)} kg`;
+if (leanDeltaEl) leanDeltaEl.textContent = `${leanDeltaKg >= 0 ? '+' : ''}${leanDeltaKg.toFixed(1)} kg`;
+
+if (scenarioEl) {
 scenarioEl.textContent = scenario;
 scenarioEl.style.color = color;
 }
