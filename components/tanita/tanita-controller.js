@@ -458,12 +458,16 @@ const weightDelta = latestBia.weight - initialBia.weight;
 
 // Scenari ricomposizione per challenge 21 giorni
 let scenario = '';
+let color = '#6c757d';
 if (fatDeltaKg < 0 && leanDeltaKg > 0) {
 scenario = 'Ricomposizione Perfetta';
+color = '#28a745';
 } else if (weightDelta <= -0.5 && fatDeltaKg <= -0.5) {
 scenario = 'Dimagrimento Eccellente';
+color = '#17a2b8';
 } else if (weightDelta >= 0.5 && leanDeltaKg >= 0.5) {
 scenario = 'Lean Bulk';
+color = '#ffc107';
 } else {
 scenario = 'Maintenance';
 }
@@ -489,7 +493,10 @@ if (fatDeltaEl) fatDeltaEl.textContent = `${fatDeltaKg >= 0 ? '+' : ''}${fatDelt
 if (leanInitialEl) leanInitialEl.textContent = `${initialLeanKg.toFixed(1)} kg`;
 if (leanLatestEl) leanLatestEl.textContent = `${latestLeanKg.toFixed(1)} kg`;
 if (leanDeltaEl) leanDeltaEl.textContent = `${leanDeltaKg >= 0 ? '+' : ''}${leanDeltaKg.toFixed(1)} kg`;
-if (scenarioEl) scenarioEl.textContent = scenario;
+if (scenarioEl) {
+scenarioEl.textContent = scenario;
+scenarioEl.style.color = color;
+}
 }
 
 // --- FUNZIONE AGGIORNAMENTO PALLINI BIA ---
