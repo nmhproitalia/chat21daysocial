@@ -37,7 +37,12 @@
 <div id="app">
 
 <!-- SEZIONE VALUTAZIONE BENESSERE -->
-<h3 class="card-section-title"><i class="fas fa-heartbeat"></i> Valutazione Benessere</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('wellness')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-heartbeat"></i> Valutazione Benessere</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-wellness"></i>
+</div>
+<div class="profile-accordion-content" id="content-wellness">
 <section class="card">
 <div class="contenuto">
 <div class="wellness-intro-text">
@@ -65,9 +70,7 @@ Compila questo questionario per valutare il tuo stile di vita e ricevere suggeri
 <div class="wellness-score-line" id="wellnessScoreLine"></div>
 </div>
 <div class="wellness-scale-labels">
-<span class="wellness-label-low">BASSO</span>
-<span class="wellness-label-medium">MEDIO</span>
-<span class="wellness-label-high">ALTO</span>
+<span class="wellness-label-low">BASSO</span><span class="wellness-label-medium">MEDIO</span><span class="wellness-label-high">ALTO</span>
 </div>
 </div>
 <div id="wellnessScoreText" class="wellness-score-text">Punteggio: 0/15</div>
@@ -80,11 +83,16 @@ Compila questo questionario per valutare il tuo stile di vita e ricevere suggeri
 <div id="wellnessSuggestions" class="wellness-suggestions"></div>
 </div>
 </section>
-
-
+</div>
+</div>
 
 <!-- SEZIONE INPUT DATI BIA -->
-<h3 class="card-section-title"><i class="fas fa-scale-balanced"></i> Inserimento Dati BIA</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('biaInput')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-scale-balanced"></i> Inserimento Dati BIA</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-biaInput"></i>
+</div>
+<div class="profile-accordion-content" id="content-biaInput">
 <section id="biaDataCard" class="card">
 <div class="card-body">
 <form id="biaForm">
@@ -168,9 +176,16 @@ Compila questo questionario per valutare il tuo stile di vita e ricevere suggeri
 </form>
 </div>
 </section>
+</div>
+</div>
 
 <!-- SEZIONE FABBISOGNI CALCOLATI -->
-<h3 class="card-section-title"><i class="fas fa-chart-line"></i> Fabbisogni Calcolati</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('needs')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-chart-line"></i> Fabbisogni Calcolati</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-needs"></i>
+</div>
+<div class="profile-accordion-content" id="content-needs">
 <section class="card">
 <div class="contenuto">
 <div id="biaParamsContainer" class="bia-params-container">
@@ -189,10 +204,17 @@ Compila questo questionario per valutare il tuo stile di vita e ricevere suggeri
 </div>
 </div>
 </section>
+</div>
+</div>
 
 
 <!-- SEZIONE RISULTATI E PARAMETRI BIA -->
-<h3 class="card-section-title"><i class="fas fa-calculator"></i> Risultati e Parametri BIA</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('biaResults')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-calculator"></i> Risultati e Parametri BIA</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-biaResults"></i>
+</div>
+<div class="profile-accordion-content" id="content-biaResults">
 <section class="card">
 <div class="contenuto">
 <div class="bia-results-row">
@@ -242,9 +264,16 @@ Compila questo questionario per valutare il tuo stile di vita e ricevere suggeri
 </div>
 </div>
 </section>
+</div>
+</div>
 
 <!-- PROGRESSO RICOMPOSIZIONE CORPOREA -->
-<h3 class="card-section-title"><i class="fas fa-chart-line"></i>Progresso Ricomposizione Corporea</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('recomposition')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-chart-line"></i>Progresso Ricomposizione Corporea</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-recomposition"></i>
+</div>
+<div class="profile-accordion-content" id="content-recomposition">
 <section class="card">
 <div class="contenuto">
 <div class="wellness-intro-text">
@@ -294,9 +323,16 @@ Confrontiamo la tua composizione corporea attuale con quella iniziale per valuta
 </div>
 </div>
 </section>
+</div>
+</div>
 
 <!-- BARRA PHYSIQUE RATING ASSOLUTO -->
-<h3 class="card-section-title"><i class="fas fa-chart-line"></i>Classificazione Fisica Tanita (Physique Rating Assoluto)</h3>
+<div class="profile-section-accordion">
+<div class="profile-accordion-header" onclick="toggleAccordion('physique')">
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-chart-line"></i>Classificazione Fisica Tanita (Physique Rating Assoluto)</h3></span>
+<i class="fas fa-chevron-down profile-accordion-icon" id="icon-physique"></i>
+</div>
+<div class="profile-accordion-content" id="content-physique">
 <section class="card">
 <div class="contenuto">
 <div class="wellness-intro-text">
@@ -315,8 +351,9 @@ Il Physique Rating assoluto mostra il tuo livello attuale di forma fisica basato
 <label class="ranking-label-full">Physique Rating Assoluto</label>
 <div id="physiqueRatingText" class="ranking-text-value">--</div>
 </div>
-</div>
 </section>
+</div>
+</div>
 
 </div>
 </div>
@@ -338,6 +375,20 @@ initFooter();
 window.biaController = new BIAInputController();
 initWellnessTest();
 });
+
+window.toggleAccordion = function(id) {
+const content = document.getElementById('content-' + id);
+const icon = document.getElementById('icon-' + id);
+if (content && icon) {
+if (content.classList.contains('expanded')) {
+content.classList.remove('expanded');
+icon.classList.remove('rotated');
+} else {
+content.classList.add('expanded');
+icon.classList.add('rotated');
+}
+}
+};
 </script>
 
 </body>
