@@ -69,7 +69,7 @@
 </div>
 <div id="wellnessScoreText" class="wellness-score-text">Punteggio: 0/15</div>
 <div id="wellnessTipsContainer" class="wellness-tips-section card">
-<h4 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-magic"></i> Suggerimenti Personalizzati</h4>
+<h4 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-magic"></i> Aree di miglioramento</h4>
 <div class="tips-grid"></div>
 </div>
 </div>
@@ -329,18 +329,10 @@ import { BIAInputController } from "./components/tanita/tanita-controller.js?v=1
 import { initWellnessTest } from "./components/tanita/wellness-test-controller.js?v=1.0";
 
 document.addEventListener('DOMContentLoaded', () => {
-console.log('DOMContentLoaded - tanita.html');
-console.log('initHeader chiamato');
 initHeader();
-console.log('initFooter chiamato');
 initFooter();
-console.log('Header e footer inizializzati');
-console.log('BiaInputController istanziato');
 window.biaController = new BIAInputController();
-console.log('BiaInputController inizializzato');
-console.log('initWellnessTest chiamato');
 initWellnessTest();
-console.log('WellnessTest inizializzato');
 });
 </script>
 

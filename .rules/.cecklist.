@@ -685,8 +685,8 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Deploy completato
 
 103. FIX TESTO INTRODUTTIVO VALUTAZIONE BENESSERE TANITA
-   - Cambiato testo introduttivo per essere generale invece di specifico domanda 12
-   - Descrizione domanda 12 ora appare solo quando necessario
+   - Rimosso completamente wellness-intro-text che non c'era in origine
+   - Form ora come versione originale senza testo introduttivo
    - Deploy completato
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
