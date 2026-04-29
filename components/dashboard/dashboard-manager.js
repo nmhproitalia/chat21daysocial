@@ -578,6 +578,28 @@ modal.style.display = 'flex';
 modal.style.flexDirection = 'column';
 modal.dataset.uid = uid;
 }
+
+// Carica dati esistenti da latest_bia e precompila il form
+getDoc(doc(db, "users", uid)).then(userDoc => {
+if (userDoc.exists()) {
+const userData = userDoc.data();
+const latestBia = userData.latest_bia;
+if (latestBia) {
+console.log('[DEBUG openBIAModal] Dati esistenti:', latestBia);
+if (latestBia.height) document.getElementById('modalHeight').value = latestBia.height;
+if (latestBia.age) document.getElementById('modalAge').value = latestBia.age;
+if (latestBia.gender) document.getElementById('modalGender').value = latestBia.gender;
+if (latestBia.weight) document.getElementById('modalWeight').value = latestBia.weight;
+if (latestBia.bodyFat) document.getElementById('modalBodyFat').value = latestBia.bodyFat;
+if (latestBia.hydration) document.getElementById('modalHydration').value = latestBia.hydration;
+if (latestBia.visceralFat) document.getElementById('modalVisceralFat').value = latestBia.visceralFat;
+if (latestBia.leanMass) document.getElementById('modalLeanMass').value = latestBia.leanMass;
+if (latestBia.boneMass) document.getElementById('modalBoneMass').value = latestBia.boneMass;
+if (latestBia.metabolicAge) document.getElementById('modalMetabolicAge').value = latestBia.metabolicAge;
+}
+}
+}).catch(e => console.error('Errore caricamento dati BIA:', e));
+
 // Chiudi menu
 document.querySelectorAll('[id^="user-menu-"]').forEach(m => m.style.display = 'none');
 };
