@@ -548,7 +548,7 @@ Confrontiamo la tua composizione corporea attuale con quella iniziale per valuta
 <!-- BARRA PHYSIQUE RATING ASSOLUTO -->
 <div class="profile-section-accordion">
 <div class="profile-accordion-header" onclick="toggleAccordion('physique')">
-<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-chart-line"></i>Classificazione Fisica Tanita</h3><br><p>(Physique Rating Assoluto)</p></span>
+<span class="profile-accordion-label"><h3 class="card-section-title"><i class="fas fa-chart-line"></i>Classificazione Fisica Tanita (Physique Rating Assoluto)</h3></span>
 <i class="fas fa-chevron-down profile-accordion-icon" id="icon-physique"></i>
 </div>
 <div class="profile-accordion-content" id="content-physique">
@@ -737,6 +737,7 @@ import { loadUserData as loadUserDataFromManager, formatDisplayName, getPhotoURL
 import { initHeader } from "./components/general/header/header.js?v=6.0";
 import { initFooter } from "./components/general/footer/footer-brand.js?v=5.0";
 import { setupProfiloActions, loadPianiAutomatici, displayNeedsResults, calculatePhysiqueRating, updateDots, updateRecompositionProgress, updatePhysiqueRatingBar, loadObiettiviData } from "./components/profile/profile-manager.js?v=14.3";
+import { toggleAccordion } from "./components/profile/profile-accordion.js?v=1.0";
 import { initGlobalEyes } from "./components/general/ui-helper.js?v=4.0";
 import { auth, db } from "./js/firebase.js";
 import { doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
@@ -1211,20 +1212,6 @@ const rankingText = document.getElementById('rankingText');
 if (indicator) indicator.style.left = position + '%';
 if (rankingText) rankingText.textContent = level;
 }
-
-window.toggleAccordion = function(id) {
-const content = document.getElementById('content-' + id);
-const icon = document.getElementById('icon-' + id);
-if (content && icon) {
-if (content.classList.contains('expanded')) {
-content.classList.remove('expanded');
-icon.classList.remove('rotated');
-} else {
-content.classList.add('expanded');
-icon.classList.add('rotated');
-}
-}
-};
 </script>
 
 
