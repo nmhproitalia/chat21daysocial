@@ -452,8 +452,8 @@ const userCard = document.createElement('div');
 userCard.className = 'card user-card';
 
 const avatarHTML = photoURL
-? `<img src="${photoURL}" class="user-avatar ${roleMeta.className}" style="width: 80px; height: 80px;">`
-: `<div class="user-avatar placeholder ${roleMeta.className}" style="width: 80px; height: 80px;"><i class="fas fa-user"></i></div>`;
+? `<img src="${photoURL}" class="user-avatar ${roleMeta.className}">`
+: `<div class="user-avatar placeholder ${roleMeta.className}"><i class="fas fa-user"></i></div>`;
 
 const gearIcon = `<a href="javascript:toggleUserMenu('${d.id}')" style="position:absolute; top:10px; right:10px; text-decoration:none; cursor:pointer; color:#666; font-size:1.2rem; z-index:1000; padding:5px; display:inline-block;"><i class="fas fa-cog"></i></a>`;
 
@@ -474,13 +474,14 @@ const userMenu = `
 `;
 
 userCard.innerHTML = `
-<div style="position:relative; display:flex; flex-direction:column; align-items:center; text-align:center;">
+<div class="contenuto" style="position:relative;">
 ${gearIcon}
 ${userMenu}
+<div class="profile-header-main">
 ${avatarHTML}
-<h3 style="margin: 10px 0 2px 0; font-size: 1.1rem; font-weight: 700; text-transform: none !important;">${formattedName}</h3>
-<div class="${roleMeta.className}" style="font-size: 0.85rem; font-weight: 600; text-transform: none !important;">
-<i class="fas ${roleMeta.icon}"></i> ${roleMeta.label}
+<div id="badgeStatus-${d.id}" class="badge-status">?</div>
+<h2 id="userNameDisplay-${d.id}">${formattedName}</h2>
+<p id="userRoleDisplay-${d.id}"><i class="fas ${roleMeta.icon}"></i> ${roleMeta.label}</p>
 </div>
 <div class="user-info-grid user-info-grid-dashboard" style="width:100%; margin-top:15px;">
 <div class="user-info-item">

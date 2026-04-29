@@ -270,18 +270,14 @@ if (bmrEl) bmrEl.textContent = `${needs.bmr} kcal`;
 }
 }
 
-if (birthDateEl && ageEl) {
-const birthDate = birthDateEl.value;
-if (birthDate) ageEl.value = calculateAge(birthDate);
-}
-}
-
 
 /* ############################################################ */
 /* #                                                          # */
-/* #           4. FUNZIONI OPERATIVE SALVATAGGIO              # */
+/* #           FUNZIONI GESTIONE HEADER PROFILO              # */
 /* #                                                          # */
 /* ############################################################ */
+
+
 export async function saveAnagrafici(uid) {
 const btn = document.getElementById('saveAnagraficiBtn');
 try {
