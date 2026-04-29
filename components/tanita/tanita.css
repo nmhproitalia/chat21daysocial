@@ -467,6 +467,7 @@ margin: 0;
 
 #biaForm input[type="number"] {
 -moz-appearance: textfield;
+appearance: textfield;
 }
 
 /* Fix overflow testo su mobile per Risultati BIA */
