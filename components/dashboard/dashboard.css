@@ -248,6 +248,10 @@ text-align: center;
 position: relative;
 }
 
+.card.user-card .contenuto {
+position: relative;
+}
+
 .card.user-card .user-avatar {
 width: 60px !important;
 height: 60px !important;
