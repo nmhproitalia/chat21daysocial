@@ -408,7 +408,9 @@ bmr = user.bmr + ' kcal';
 // Physique Rating da latest_bia
 let physiqueRating = 'N/D';
 if (user.latest_bia?.physiqueRating) {
-physiqueRating = user.latest_bia.phiqueRating;
+physiqueRating = typeof user.latest_bia.physiqueRating === 'string' 
+? user.latest_bia.physiqueRating 
+: JSON.stringify(user.latest_bia.physiqueRating);
 }
 
 console.log(`[DEBUG Card ${d.id}] latest_bia:`, user.latest_bia);
