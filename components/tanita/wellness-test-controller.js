@@ -60,7 +60,7 @@ questionText.textContent = question.text;
 }
 
 if (questionCounter) {
-questionCounter.textContent = `Domanda ${index + 1} di ${WELLNESS_QUESTIONS.length}`;
+questionCounter.textContent = `VALUTAZIONE DEL BENESSERE - DOMANDA ${index + 1} DI ${WELLNESS_QUESTIONS.length}`;
 }
 
 if (question12Description) {
