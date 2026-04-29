@@ -428,7 +428,7 @@ const userMenu = `
 `;
 
 userCard.innerHTML = `
-<div class="contenuto dashboard-card-content">
+<div class="contenuto">
 ${gearIcon}
 ${userMenu}
 <div class="profile-header-main">
