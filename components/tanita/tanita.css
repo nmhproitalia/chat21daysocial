@@ -439,7 +439,7 @@ word-break: break-word;
 .physique-rating-value {
 font-size: 1.25rem;
 font-weight: 700;
-color: var(--primary-color);
+color: var(--grass);
 margin-top: 0.5rem;
 text-align: center;
 }

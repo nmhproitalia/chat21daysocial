@@ -773,6 +773,8 @@ const gender = document.getElementById('initialGender')?.value || 'male';
 const bodyFat = parseFloat(document.getElementById('initialBodyFat')?.value) || 0;
 const leanMass = parseFloat(document.getElementById('initialLeanMass')?.value) || 0;
 
+console.log('[DEBUG updateBIACalculations] Input values:', { height, weight, age, gender, bodyFat, leanMass });
+
 // Aggiorna BMI
 if (height && weight) {
 const bmi = weight / ((height / 100) ** 2);
@@ -782,13 +784,16 @@ if (bmiEl) bmiEl.value = bmi.toFixed(1);
 
 // Aggiorna Physique Rating
 if (height && weight && bodyFat && leanMass && gender) {
+console.log('[DEBUG updateBIACalculations] Calcolo Physique Rating con:', { bodyFat, leanMass, gender, height });
 const rating = calculatePhysiqueRating(bodyFat, leanMass, gender, height);
+console.log('[DEBUG updateBIACalculations] Rating calcolato:', rating);
 const physiqueRatingEl = document.getElementById('physiqueRating');
 const physiqueRatingDescEl = document.getElementById('physiqueRatingDescription');
 const physiqueRatingDotEl = document.getElementById('physiqueRatingDot');
 
 if (physiqueRatingEl && rating) {
 physiqueRatingEl.textContent = `${rating.id} - ${rating.name}`;
+console.log('[DEBUG updateBIACalculations] Physique Rating aggiornato:', rating.id, rating.name);
 }
 if (physiqueRatingDescEl && rating) {
 physiqueRatingDescEl.innerHTML = rating.description;
@@ -806,6 +811,8 @@ color = '#266431';
 }
 physiqueRatingDotEl.style.background = color;
 }
+} else {
+console.log('[DEBUG updateBIACalculations] Parametri insufficienti per Physique Rating');
 }
 } catch (e) {
 console.error('Errore aggiornamento calcoli BIA:', e);
