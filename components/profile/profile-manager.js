@@ -1200,6 +1200,7 @@ return;
 
 const latest = userData.latest_bia;
 const initial = userData.initial_bia;
+const goal = userData.mainGoal;
 
 // Calcola delta ricomposizione corporea
 const initialBodyFat = parseFloat(initial.bodyFat?.toString().replace(',', '.') || initial.bodyfat?.toString().replace(',', '.') || 0);
@@ -1214,26 +1215,72 @@ const fatDeltaKg = latestFatKg - initialFatKg;
 const leanDeltaKg = latestLeanKg - initialLeanKg;
 const weightDelta = latest.weight - initial.weight;
 
-// Determina livello badge in base allo scenario di ricomposizione
+// Determina livello badge in base all'obiettivo e allo scenario di ricomposizione
 let level = 0;
 let icon = 'fa-rocket';
 
-if (fatDeltaKg < 0 && leanDeltaKg > 0) {
-// Ricomposizione Perfetta
+if (goal === 'weight_loss') {
+// Per weight_loss valuta solo dimagrimento
+if (weightDelta <= -0.5 && fatDeltaKg <= -0.5) {
 level = 3;
 icon = 'fa-trophy';
-} else if (weightDelta <= -0.5 && fatDeltaKg <= -0.5) {
-// Dimagrimento Eccellente
+} else if (weightDelta <= -0.5 || fatDeltaKg <= -0.5) {
 level = 2;
 icon = 'fa-flag-checkered';
-} else if (weightDelta >= 0.5 && leanDeltaKg >= 0.5) {
-// Lean Bulk
+} else if (weightDelta <= 0 || fatDeltaKg <= 0) {
 level = 1;
 icon = 'fa-chart-line';
 } else {
-// Maintenance
 level = 0;
 icon = 'fa-rocket';
+}
+} else if (goal === 'muscle_gain') {
+// Per muscle_gain valuta solo aumento massa
+if (weightDelta >= 0.5 && leanDeltaKg >= 0.5) {
+level = 3;
+icon = 'fa-trophy';
+} else if (weightDelta >= 0.5 || leanDeltaKg >= 0.5) {
+level = 2;
+icon = 'fa-flag-checkered';
+} else if (weightDelta >= 0 || leanDeltaKg >= 0) {
+level = 1;
+icon = 'fa-chart-line';
+} else {
+level = 0;
+icon = 'fa-rocket';
+}
+} else if (goal === 'toning') {
+// Per toning valuta ricomposizione
+if (fatDeltaKg < 0 && leanDeltaKg > 0) {
+level = 3;
+icon = 'fa-trophy';
+} else if (fatDeltaKg < 0 || leanDeltaKg > 0) {
+level = 2;
+icon = 'fa-flag-checkered';
+} else if (fatDeltaKg <= 0 || leanDeltaKg >= 0) {
+level = 1;
+icon = 'fa-chart-line';
+} else {
+level = 0;
+icon = 'fa-rocket';
+}
+} else {
+// Per maintenance valuta stabilità
+const fatVariation = Math.abs(fatDeltaKg);
+const weightVariation = Math.abs(weightDelta);
+if (fatVariation < 0.5 && weightVariation < 0.5) {
+level = 3;
+icon = 'fa-trophy';
+} else if (fatVariation < 1 && weightVariation < 1) {
+level = 2;
+icon = 'fa-flag-checkered';
+} else if (fatVariation < 2 && weightVariation < 2) {
+level = 1;
+icon = 'fa-chart-line';
+} else {
+level = 0;
+icon = 'fa-rocket';
+}
 }
 
 badgeEl.innerHTML = `<i class="fas ${icon}"></i>`;
