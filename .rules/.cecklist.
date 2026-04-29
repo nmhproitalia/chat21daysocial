@@ -655,6 +655,12 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Riattivato funzionalità suggerimenti decommentando codice
    - Suggerimenti ora mostrati correttamente in profilo
    - Deploy completato
+
+98. RIATTIVAZIONE VALUTAZIONE BENESSERE TANITA
+   - Ricreato wellness-test-controller.js in components/tanita/
+   - Aggiunto import e chiamata initWellnessTest in tanita.html
+   - Test benessere ora funzionante in Tanita
+   - Deploy completato
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults
