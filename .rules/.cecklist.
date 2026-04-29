@@ -678,6 +678,11 @@ SESSIONE 29 APRILE 2026 - PUNTI COMPLETATI:
    - Gestito visualizzazione descrizione solo per domanda 12
    - Corretto retakeTest per mostrare wellnessSummary (bottoni ora visibili)
    - Deploy completato
+
+102. FIX FABBISOGNI CALCOLATI BLOCCATI TANITA
+   - Aggiunto chiamata updateBIAParamsUI dopo fillFormWithExistingData
+   - Fabbisogni ora calcolati con dati caricati dal profilo
+   - Deploy completato
     - Errore: TypeError: biaData.bmi.toFixed is not a function
     - Causa: bmi era stringa invece di numero
     - Soluzione: Aggiunto parseFloat prima di toFixed in updateBIAResults

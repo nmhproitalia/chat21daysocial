@@ -126,6 +126,10 @@ if (el && value) {
 el.value = value;
 }
 });
+
+// Aggiorna fabbisogni calcolati dopo aver caricato i dati
+this.updateBIAParamsUI();
+
 const bmiEl = document.getElementById('bmi');
 if (bmiEl && this.userProfile.bmi) bmiEl.value = this.userProfile.bmi;
 

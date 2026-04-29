@@ -180,7 +180,7 @@ container.innerHTML = `
 </div>
 
 <div class="wellness-tips-section card">
-<h4 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-magic"></i> Suggerimenti Personalizzati</h4>
+<h4 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-magic"></i> Aree di miglioramento</h4>
 <div class="tips-grid">
 ${finalTips}
 </div>
