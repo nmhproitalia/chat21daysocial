@@ -63,8 +63,14 @@
             font-weight: normal;
         }
 
-        .form-group {
+        .form-row {
+            display: flex;
+            gap: 15px;
             margin-bottom: 10px;
+        }
+
+        .form-group {
+            flex: 1;
         }
 
         .form-group label {
@@ -234,6 +240,11 @@
                 padding: 10px;
             }
 
+            .form-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+
             .answer-buttons {
                 flex-direction: column;
             }
@@ -258,21 +269,25 @@
         <!-- FORM CONTATTI -->
         <div class="contact-form" id="contactForm">
             <h2>Dati personali per ricevere il risultato</h2>
-            <div class="form-group">
-                <label for="nome">Nome *</label>
-                <input type="text" id="nome" required>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nome">Nome *</label>
+                    <input type="text" id="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="cognome">Cognome *</label>
+                    <input type="text" id="cognome" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="cognome">Cognome *</label>
-                <input type="text" id="cognome" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email *</label>
-                <input type="email" id="email" required>
-            </div>
-            <div class="form-group">
-                <label for="telefono">Telefono *</label>
-                <input type="tel" id="telefono" required>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Telefono *</label>
+                    <input type="tel" id="telefono" required>
+                </div>
             </div>
         </div>
 
