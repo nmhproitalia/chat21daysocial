@@ -526,7 +526,7 @@
             // Mostra risultati
             showResults(score, nome, cognome, email, telefono, message, yesCount, noCount);
 
-            // Invia email via EmailJS
+            // Invia email via EmailJS al proprietario
             const templateParams = {
                 nome: nome,
                 cognome: cognome,
@@ -541,7 +541,23 @@
 
             emailjs.send('service_2nduqgv', 'template_sbq2mtk', templateParams)
                 .then(function() {
-                    console.log('Email inviata con successo!');
+                    console.log('Email al proprietario inviata con successo!');
+                    
+                    // Invia email all'utente
+                    const userTemplateParams = {
+                        nome: nome,
+                        punteggio: `${score}/15`,
+                        messaggio: message,
+                        risposte_si: yesCount,
+                        dettaglio_risposte: dettaglioRisposte
+                    };
+                    
+                    return emailjs.send('service_2nduqgv', 'template_z8dkfe9', userTemplateParams, {
+                        to_email: email
+                    });
+                })
+                .then(function() {
+                    console.log('Email all\'utente inviata con successo!');
                 }, function(error) {
                     console.log('Errore invio email:', error);
                     alert('Errore nell\'invio dell\'email. Per favore riprova.');
