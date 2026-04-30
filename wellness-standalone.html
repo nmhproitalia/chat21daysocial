@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Valutazione Benessere - 21GIORNIFIT</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("p1yytksDy2GMB9Gpy");
+        })();
+    </script>
     <style>
         /* CSS RESET */
         * {
@@ -291,21 +297,6 @@
             </div>
         </div>
 
-        <!-- FORM NASCOSTO FORMSPREE PER INVIO AUTOMATICO -->
-        <!-- ISTRUZIONI: Registra su formspree.io e sostituisci TUO_FORM_ID con il tuo form ID -->
-        <!-- Esempio: https://formspree.io/f/abc123def -->
-        <form id="formspreeForm" style="display: none;" action="https://formspree.io/f/mpqbaozw" method="POST">
-            <input type="hidden" name="nome" id="fs-nome">
-            <input type="hidden" name="cognome" id="fs-cognome">
-            <input type="hidden" name="email" id="fs-email">
-            <input type="hidden" name="telefono" id="fs-telefono">
-            <input type="hidden" name="punteggio" id="fs-punteggio">
-            <input type="hidden" name="messaggio" id="fs-messaggio">
-            <input type="hidden" name="risposte_si" id="fs-risposte_si">
-            <input type="hidden" name="risposte_no" id="fs-risposte_no">
-            <input type="hidden" name="dettaglio_risposte" id="fs-dettaglio_risposte">
-        </form>
-
         <!-- DOMANDE -->
         <div class="questions-container" id="questionsContainer" style="display: none;">
             <!-- Le domande verranno generate via JS -->
@@ -519,22 +510,29 @@
                 dettaglioRisposte += '\n';
             });
 
-            // Compila form nascosto Formspree
-            document.getElementById('fs-nome').value = nome;
-            document.getElementById('fs-cognome').value = cognome;
-            document.getElementById('fs-email').value = email;
-            document.getElementById('fs-telefono').value = telefono;
-            document.getElementById('fs-punteggio').value = `${score}/15`;
-            document.getElementById('fs-messaggio').value = message;
-            document.getElementById('fs-risposte_si').value = yesCount;
-            document.getElementById('fs-risposte_no').value = noCount;
-            document.getElementById('fs-dettaglio_risposte').value = dettaglioRisposte;
-
             // Mostra risultati
             showResults(score, nome, cognome, email, telefono, message, yesCount, noCount);
 
-            // Invia form Formspree automaticamente
-            document.getElementById('formspreeForm').submit();
+            // Invia email via EmailJS
+            const templateParams = {
+                nome: nome,
+                cognome: cognome,
+                email: email,
+                telefono: telefono,
+                punteggio: `${score}/15`,
+                messaggio: message,
+                risposte_si: yesCount,
+                risposte_no: noCount,
+                dettaglio_risposte: dettaglioRisposte
+            };
+
+            emailjs.send('service_2nduqgv', 'template_sbq2mtk', templateParams)
+                .then(function() {
+                    console.log('Email inviata con successo!');
+                }, function(error) {
+                    console.log('Errore invio email:', error);
+                    alert('Errore nell\'invio dell\'email. Per favore riprova.');
+                });
         }
 
         // MOSTRA RISULTATI
