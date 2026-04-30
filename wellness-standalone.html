@@ -302,14 +302,19 @@
             <!-- Le domande verranno generate via JS -->
         </div>
 
-        <!-- MESSAGIO COMPLETA FORM -->
+        <!-- MESSAGGIO COMPLETA FORM -->
         <div class="submit-container" id="formMessage">
             <p style="color: #666; font-size: 14px;">Compila i dati personali sopra per iniziare il test</p>
         </div>
 
-        <!-- PULSANTE INVIA -->
-        <div class="submit-container">
-            <button type="button" class="submit-btn" id="submitBtn" onclick="calculateWellness()">Inizia la valutazione</button>
+        <!-- PULSANTE INIZIA TEST -->
+        <div class="submit-container" id="startBtnContainer">
+            <button type="button" class="submit-btn" id="startBtn" onclick="startTest()">Inizia il test</button>
+        </div>
+
+        <!-- PULSANTE CALCOLA RISULTATO -->
+        <div class="submit-container" id="submitBtnContainer" style="display: none;">
+            <button type="button" class="submit-btn" id="submitBtn" onclick="calculateWellness()">Calcola Risultato</button>
         </div>
 
         <!-- RISULTATI -->
@@ -426,12 +431,20 @@
             const telefono = document.getElementById('telefono').value.trim();
 
             if (nome && cognome && email && telefono) {
-                document.getElementById('questionsContainer').style.display = 'block';
+                document.getElementById('startBtnContainer').style.display = 'block';
                 document.getElementById('formMessage').style.display = 'none';
             } else {
-                document.getElementById('questionsContainer').style.display = 'none';
+                document.getElementById('startBtnContainer').style.display = 'none';
                 document.getElementById('formMessage').style.display = 'block';
             }
+        }
+
+        // INIZIA TEST
+        function startTest() {
+            document.getElementById('questionsContainer').style.display = 'block';
+            document.getElementById('startBtnContainer').style.display = 'none';
+            document.getElementById('submitBtnContainer').style.display = 'block';
+            window.scrollTo({ top: document.getElementById('questionsContainer').offsetTop, behavior: 'smooth' });
         }
 
         // AGGIUNGI LISTENER AI CAMPI FORM
@@ -539,7 +552,7 @@
         function showResults(score, nome, cognome, email, telefono, message, yesCount, noCount) {
             document.getElementById('questionsContainer').style.display = 'none';
             document.getElementById('contactForm').style.display = 'none';
-            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('submitBtnContainer').style.display = 'none';
             document.getElementById('resultsContainer').classList.add('show');
 
             const scoreDisplay = document.getElementById('scoreDisplay');
