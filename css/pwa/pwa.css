@@ -153,7 +153,31 @@ background: var(--succulent) !important;
 }
 
 /* ---------------------------------------------------------- */
-/* 8. HEADER MOBILE (Max 600px)                               */
+/* 8. FIX CONFLITTI TESTO MOBILE                               */
+/* ---------------------------------------------------------- */
+
+@media (max-width: 768px) {
+/* Riduci min-width card coach/assistant */
+.coach-card, .assistant-card {
+min-width: 150px !important;
+}
+}
+
+@media (max-width: 480px) {
+/* Rimuovi min-width card coach/assistant su smartphone */
+.coach-card, .assistant-card {
+min-width: auto !important;
+flex: 1 !important;
+}
+
+/* Permetti shrink avatar container */
+.challenger-avatar-container {
+flex-shrink: 1 !important;
+}
+}
+
+/* ---------------------------------------------------------- */
+/* 9. HEADER MOBILE (Max 600px)                               */
 /* ---------------------------------------------------------- */
 
 @media screen and (max-width: 600px) {
