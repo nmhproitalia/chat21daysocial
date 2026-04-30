@@ -311,8 +311,13 @@
         </form>
 
         <!-- DOMANDE -->
-        <div class="questions-container" id="questionsContainer">
+        <div class="questions-container" id="questionsContainer" style="display: none;">
             <!-- Le domande verranno generate via JS -->
+        </div>
+
+        <!-- MESSAGIO COMPLETA FORM -->
+        <div class="submit-container" id="formMessage">
+            <p style="color: #666; font-size: 14px;">Compila i dati personali sopra per iniziare il test</p>
         </div>
 
         <!-- PULSANTE INVIA -->
@@ -426,6 +431,34 @@
                     </div>
                 `;
                 container.appendChild(questionDiv);
+            });
+        }
+
+        // VERIFICA FORM COMPILATO
+        function checkFormComplete() {
+            const nome = document.getElementById('nome').value.trim();
+            const cognome = document.getElementById('cognome').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+
+            if (nome && cognome && email && telefono) {
+                document.getElementById('questionsContainer').style.display = 'block';
+                document.getElementById('formMessage').style.display = 'none';
+            } else {
+                document.getElementById('questionsContainer').style.display = 'none';
+                document.getElementById('formMessage').style.display = 'block';
+            }
+        }
+
+        // AGGIUNGI LISTENER AI CAMPI FORM
+        function addFormListeners() {
+            const fields = ['nome', 'cognome', 'email', 'telefono'];
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('input', checkFormComplete);
+                    field.addEventListener('blur', checkFormComplete);
+                }
             });
         }
 
@@ -555,7 +588,10 @@
         }
 
         // INIZIALIZZA
-        document.addEventListener('DOMContentLoaded', generateQuestions);
+        document.addEventListener('DOMContentLoaded', function() {
+            generateQuestions();
+            addFormListeners();
+        });
     </script>
 </body>
 </html>
