@@ -140,7 +140,20 @@ padding: 0 25px !important;
 }
 
 /* ---------------------------------------------------------- */
-/* 7. HEADER MOBILE (Max 600px)                               */
+/* 7. CONTENT PADDING (Mobile - legacy)                       */
+/* ---------------------------------------------------------- */
+
+@media (max-width: 768px) {
+.content {
+max-width: 100%;
+margin: 0 auto;
+padding: 156px 0 62px;
+background: var(--succulent) !important;
+}
+}
+
+/* ---------------------------------------------------------- */
+/* 8. HEADER MOBILE (Max 600px)                               */
 /* ---------------------------------------------------------- */
 
 @media screen and (max-width: 600px) {

@@ -72,14 +72,6 @@ padding: 0 20px;
 box-sizing: border-box;
 }
 
-/* PWA: padding aumentato per mobile */
-.content {
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 156px 0 62px;
-    background: var(--succulent) !important;
-}
-
 .card {
 max-width: 100%;
 margin-top: 0 !important;
