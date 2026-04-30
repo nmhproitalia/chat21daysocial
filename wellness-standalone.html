@@ -152,25 +152,6 @@
             color: #fff;
         }
 
-        /* SUGGERIMENTI */
-        .suggestion {
-            background: #fff3cd;
-            border-left: 4px solid #f39c12;
-            padding: 10px;
-            margin-top: 10px;
-            font-size: 13px;
-            color: #333;
-            display: none;
-        }
-
-        .suggestion.show {
-            display: block;
-        }
-
-        .suggestion strong {
-            color: #f39c12;
-        }
-
         /* PULSANTE INVIA */
         .submit-container {
             text-align: center;
@@ -426,9 +407,6 @@
                         <button class="answer-btn" onclick="selectAnswer(${q.id}, 'yes', this)">SÌ</button>
                         <button class="answer-btn" onclick="selectAnswer(${q.id}, 'no', this)">NO</button>
                     </div>
-                    <div class="suggestion" id="suggestion-${q.id}">
-                        <strong>Suggerimento:</strong> ${q.suggestion}
-                    </div>
                 `;
                 container.appendChild(questionDiv);
             });
@@ -474,10 +452,8 @@
             
             if (answer === 'yes') {
                 btn.classList.add('selected-yes');
-                document.getElementById(`suggestion-${questionId}`).classList.remove('show');
             } else {
                 btn.classList.add('selected-no');
-                document.getElementById(`suggestion-${questionId}`).classList.add('show');
             }
         }
 
@@ -518,11 +494,15 @@
                 message = 'Da migliorare. Ti consigliamo un supporto professionale.';
             }
 
-            // Genera dettaglio risposte
+            // Genera dettaglio risposte con suggerimenti
             let dettaglioRisposte = '';
             questions.forEach((q, index) => {
                 const risposta = answers[q.id];
-                dettaglioRisposte += `${index + 1}. ${q.text}\nRisposta: ${risposta === 'yes' ? 'SÌ' : 'NO'}\n\n`;
+                dettaglioRisposte += `${index + 1}. ${q.text}\nRisposta: ${risposta === 'yes' ? 'SÌ' : 'NO'}\n`;
+                if (risposta === 'no') {
+                    dettaglioRisposte += `Suggerimento: ${q.suggestion}\n`;
+                }
+                dettaglioRisposte += '\n';
             });
 
             // Compila form nascosto Formspree
