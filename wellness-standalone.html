@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valutazione Benessere - 21GIORNIFIT</title>
+    <style>
+        /* CSS RESET */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* CARD PRINCIPALE */
+        .wellness-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        /* HEADER */
+        .wellness-header {
+            text-align: center;
+            padding: 20px 10px;
+            border-bottom: 2px solid #266431;
+            margin-bottom: 20px;
+        }
+
+        .wellness-header h1 {
+            color: #266431;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .wellness-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* FORM CONTATTI */
+        .contact-form {
+            padding: 20px 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .contact-form h2 {
+            color: #266431;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #266431;
+        }
+
+        /* DOMANDE */
+        .questions-container {
+            padding: 10px;
+        }
+
+        .question-item {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px 10px;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            color: #333;
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .question-description {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .answer-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .answer-btn {
+            flex: 1;
+            min-width: 80px;
+            padding: 10px 15px;
+            border: 2px solid #266431;
+            background: #fff;
+            color: #266431;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .answer-btn:hover {
+            background: #266431;
+            color: #fff;
+        }
+
+        .answer-btn.selected-yes {
+            background: #266431;
+            color: #fff;
+        }
+
+        .answer-btn.selected-no {
+            background: #dc3545;
+            border-color: #dc3545;
+            color: #fff;
+        }
+
+        /* SUGGERIMENTI */
+        .suggestion {
+            background: #fff3cd;
+            border-left: 4px solid #f39c12;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #333;
+            display: none;
+        }
+
+        .suggestion.show {
+            display: block;
+        }
+
+        .suggestion strong {
+            color: #f39c12;
+        }
+
+        /* PULSANTE INVIA */
+        .submit-container {
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        .submit-btn {
+            background: #266431;
+            color: #fff;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #1a4a22;
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* RISULTATI */
+        .results-container {
+            display: none;
+            padding: 20px 10px;
+            text-align: center;
+        }
+
+        .results-container.show {
+            display: block;
+        }
+
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #266431;
+            margin: 20px 0;
+        }
+
+        .score-label {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .score-bar {
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .score-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .score-fill.excellent { background: #28a745; }
+        .score-fill.good { background: #17a2b8; }
+        .score-fill.medium { background: #ffc107; }
+        .score-fill.poor { background: #dc3545; }
+
+        .score-message {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .share-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .share-btn.whatsapp { background: #25D366; }
+        .share-btn.email { background: #007bff; }
+        .share-btn.copy { background: #6c757d; }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .answer-buttons {
+                flex-direction: column;
+            }
+
+            .answer-btn {
+                width: 100%;
+            }
+
+            .score-display {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wellness-card">
+        <div class="wellness-header">
+            <h1>Valutazione Benessere</h1>
+            <p>21GIORNIFIT - Scopri il tuo stato di benessere in pochi minuti</p>
+        </div>
+
+        <!-- FORM CONTATTI -->
+        <div class="contact-form" id="contactForm">
+            <h2>Inserisci i tuoi dati</h2>
+            <div class="form-group">
+                <label for="nome">Nome *</label>
+                <input type="text" id="nome" required>
+            </div>
+            <div class="form-group">
+                <label for="cognome">Cognome *</label>
+                <input type="text" id="cognome" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Telefono *</label>
+                <input type="tel" id="telefono" required>
+            </div>
+        </div>
+
+        <!-- DOMANDE -->
+        <div class="questions-container" id="questionsContainer">
+            <!-- Le domande verranno generate via JS -->
+        </div>
+
+        <!-- PULSANTE INVIA -->
+        <div class="submit-container">
+            <button class="submit-btn" id="submitBtn" onclick="calculateWellness()">Calcola Risultato</button>
+        </div>
+
+        <!-- RISULTATI -->
+        <div class="results-container" id="resultsContainer">
+            <div class="score-label">Il tuo punteggio di benessere</div>
+            <div class="score-display" id="scoreDisplay">0/15</div>
+            <div class="score-bar">
+                <div class="score-fill" id="scoreFill" style="width: 0%"></div>
+            </div>
+            <div class="score-message" id="scoreMessage"></div>
+            
+            <div class="share-buttons">
+                <button class="share-btn whatsapp" onclick="shareWhatsApp()">Condividi su WhatsApp</button>
+                <button class="share-btn email" onclick="shareEmail()">Invia via Email</button>
+                <button class="share-btn copy" onclick="copyResults()">Copia Risultati</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOMANDE DEL TEST BENESSERE
+        const questions = [
+            {
+                id: 1,
+                text: "Consumi in prevalenza carni bianche, pollo, carni magre, pesce e proteine vegetali (fagioli, lenticchie, soia) invece che bistecche, arrosti e altre carni rosse?",
+                suggestion: "Bilanciamento Proteico: Le carni bianche e il pesce contengono meno grassi saturi. Se consumi spesso carni rosse, bilancia l'apporto proteico inserendo più spesso pollo, tacchino o proteine vegetali come soia e tofu per non appesantire l'organismo."
+            },
+            {
+                id: 2,
+                text: "Mangi una buona varietà di frutta e verdura colorate e almeno cinque porzioni al giorno?",
+                suggestion: "Varietà Cromatica: Per garantire al corpo vitamine e minerali, non basta mangiare verdura, serve varietà. Se non raggiungi le 5 porzioni, prova a 'mangiare l'arcobaleno', scegliendo frutta e verdura di colori diversi ogni giorno."
+            },
+            {
+                id: 3,
+                text: "Mangi pesce grasso (come salmone, sgombro, sardine, trota) almeno 3 volte la settimana?",
+                suggestion: "Supporto Omega-3: Gli oli del pesce grasso (salmone, sgombro) proteggono il cuore. Se non li consumi 3 volte a settimana, bilancia la dieta con noci e semi o valuta un'integrazione specifica per mantenere il peso e la salute cardiaca."
+            },
+            {
+                id: 4,
+                text: "Pensi di consumare abbastanza fibre nella tua dieta quotidiana?",
+                suggestion: "Regolarità e Fibre: Un apparato digerente regolare elimina le tossine e bilancia il colesterolo. Se hai problemi di regolarità, aumenta l'apporto a 25g di fibra giornalieri combinando cereali integrali, frutta e almeno 8 bicchieri d'acqua."
+            },
+            {
+                id: 5,
+                text: "Fai almeno 30 minuti di attività fisica per 3-5 giorni la settimana?",
+                suggestion: "Attivazione Metabolica: Il cuore ha bisogno di stimoli costanti. Se non fai movimento, inizia con 30 minuti per 3-5 volte a settimana: non solo aiuterai il sistema cardiovascolare, ma ridurrai sensibilmente lo stress quotidiano."
+            },
+            {
+                id: 6,
+                text: "Riesci a mantenere il tuo peso equilibrato?",
+                suggestion: "Stabilità del Metabolismo: I rapidi cali o aumenti di peso danneggiano il metabolismo. Se non riesci a mantenerlo costante, punta su una dieta a base di proteine magre e cereali integrali per preservare la massa muscolare."
+            },
+            {
+                id: 7,
+                text: "Di solito hai tempo per prepararti pasti equilibrati?",
+                suggestion: "Soluzioni Pasti Veloci: Se mangi sempre di corsa, non cedere al junk food. Esistono alternative sane e rapide come insalate pronte, verdure surgelate o petti di pollo veloci da cuocere che permettono di nutrire il corpo anche in pochi minuti."
+            },
+            {
+                id: 8,
+                text: "Riesci ad evitare bibite gasate e spuntini poco sani (patatine, dolci) nel corso della giornata e dopo cena?",
+                suggestion: "Gestione Stress e Snack: Spesso mangiamo snack grassi o zuccherati per noia o stress. Prova a sostituire le patatine o i dolci con uno spuntino sano e placa la voglia di 'conforto' con un infuso caldo alle erbe."
+            },
+            {
+                id: 9,
+                text: "Hai l'energia e la concentrazione necessarie per svolgere le tue attività quotidiane senza avvertire stanchezza?",
+                suggestion: "Energia Costante: Se avverti cali durante il giorno, la causa potrebbe essere una nutrizione incompleta. Assicurati di fornire all'organismo i nutrienti necessari per favorire la produzione di energia senza dover ricorrere a troppi caffè o zuccheri."
+            },
+            {
+                id: 10,
+                text: "Bevi almeno 8 bicchieri d'acqua al giorno?",
+                suggestion: "Idratazione Profonda: Non aspettare di avere sete: la sete è già un segnale di disidratazione. Bevi 8 bicchieri d'acqua (circa 2 litri) distribuiti nella giornata per mantenere sani i tessuti e supportare le funzioni vitali."
+            },
+            {
+                id: 11,
+                text: "Assumi la razione giornaliera raccomandata di calcio?",
+                suggestion: "Integrazione di Calcio: 800mg di calcio al giorno sono vitali per ossa e denti. Se non consumi abbastanza latticini magri, bilancia con alimenti rinforzati e vitamina D, fondamentale per l'assorbimento corretto del calcio."
+            },
+            {
+                id: 12,
+                text: "Ritieni che il tuo stile di vita e la tua alimentazione siano adeguati per il benessere dell'apparato cardiocircolatorio?",
+                description: "Il benessere dell'apparato cardiocircolatorio dipende da una combinazione di fattori; su alcuni non possiamo intervenire (sesso, età, ereditarietà) mentre altri possono essere cambiati (peso, esercizio fisico, fumo) attraverso l'adozione di corrette abitudini alimentari ed uno stile di vita sano e attivo.",
+                suggestion: "Supporto Cardiovascolare: Il benessere del cuore dipende da ciò che puoi cambiare: fumo, peso e dieta. Con l'età la produzione di Ossido Nitrico diminuisce; è essenziale adottare abitudini che ne supportino i livelli ottimali."
+            },
+            {
+                id: 13,
+                text: "Fai spuntini sani nel corso della giornata?",
+                suggestion: "Spuntini Intelligenti: Lo spuntino non deve essere un 'extra' vuoto, ma un supporto energetico. Scegli spuntini ricchi di proteine e fibre ma poveri di zuccheri per evitare picchi glicemici e arrivare al pasto successivo con la giusta fame."
+            }
+        ];
+
+        // RISPOSTE UTENTE
+        let answers = {};
+
+        // GENERA DOMANDE
+        function generateQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-item';
+                questionDiv.innerHTML = `
+                    <div class="question-text">${index + 1}. ${q.text}</div>
+                    ${q.description ? `<div class="question-description">${q.description}</div>` : ''}
+                    <div class="answer-buttons">
+                        <button class="answer-btn" onclick="selectAnswer(${q.id}, 'yes', this)">SÌ</button>
+                        <button class="answer-btn" onclick="selectAnswer(${q.id}, 'no', this)">NO</button>
+                    </div>
+                    <div class="suggestion" id="suggestion-${q.id}">
+                        <strong>Suggerimento:</strong> ${q.suggestion}
+                    </div>
+                `;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        // SELEZIONA RISPOSTA
+        function selectAnswer(questionId, answer, btn) {
+            answers[questionId] = answer;
+            
+            // Aggiorna stile bottoni
+            const buttons = btn.parentElement.querySelectorAll('.answer-btn');
+            buttons.forEach(b => {
+                b.classList.remove('selected-yes', 'selected-no');
+            });
+            
+            if (answer === 'yes') {
+                btn.classList.add('selected-yes');
+                document.getElementById(`suggestion-${questionId}`).classList.remove('show');
+            } else {
+                btn.classList.add('selected-no');
+                document.getElementById(`suggestion-${questionId}`).classList.add('show');
+            }
+        }
+
+        // CALCOLA PUNTEGGIO
+        function calculateWellness() {
+            // Verifica form contatti
+            const nome = document.getElementById('nome').value.trim();
+            const cognome = document.getElementById('cognome').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+
+            if (!nome || !cognome || !email || !telefono) {
+                alert('Per favore compila tutti i campi del form contatti');
+                return;
+            }
+
+            // Verifica che tutte le domande siano state risposte
+            const answeredQuestions = Object.keys(answers).length;
+            if (answeredQuestions < questions.length) {
+                alert(`Per favore rispondi a tutte le domande (${answeredQuestions}/${questions.length} risposte)`);
+                return;
+            }
+
+            // Calcola punteggio
+            const yesCount = Object.values(answers).filter(a => a === 'yes').length;
+            const score = Math.min(15, Math.round((yesCount / 13) * 15));
+
+            // Mostra risultati
+            showResults(score, nome, cognome, email, telefono);
+        }
+
+        // MOSTRA RISULTATI
+        function showResults(score, nome, cognome, email, telefono) {
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.getElementById('contactForm').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('resultsContainer').classList.add('show');
+
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const scoreFill = document.getElementById('scoreFill');
+            const scoreMessage = document.getElementById('scoreMessage');
+
+            scoreDisplay.textContent = `${score}/15`;
+            scoreFill.style.width = `${(score / 15) * 100}%`;
+
+            // Colore e messaggio in base al punteggio
+            let message = '';
+            let className = '';
+            
+            if (score >= 12) {
+                message = 'Eccellente! Il tuo stile di vita è ottimo.';
+                className = 'excellent';
+            } else if (score >= 10) {
+                message = 'Buono! Ci sono piccoli margini di miglioramento.';
+                className = 'good';
+            } else if (score >= 7) {
+                message = 'Medio. Consigliamo di lavorare su alcuni aspetti.';
+                className = 'medium';
+            } else {
+                message = 'Da migliorare. Ti consigliamo un supporto professionale.';
+                className = 'poor';
+            }
+
+            scoreFill.className = `score-fill ${className}`;
+            scoreMessage.textContent = message;
+
+            // Salva dati per condivisione
+            window.wellnessResults = {
+                nome,
+                cognome,
+                email,
+                telefono,
+                score,
+                message,
+                answers
+            };
+        }
+
+        // CONDIVIDI WHATSAPP
+        function shareWhatsApp() {
+            const r = window.wellnessResults;
+            const text = `Valutazione Benessere 21GIORNIFIT\n\nNome: ${r.nome} ${r.cognome}\nEmail: ${r.email}\nTelefono: ${r.telefono}\n\nPunteggio: ${r.score}/15\n${r.message}\n\nRisposte SÌ: ${Object.values(r.answers).filter(a => a === 'yes').length}/13`;
+            const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        }
+
+        // CONDIVIDI EMAIL
+        function shareEmail() {
+            const r = window.wellnessResults;
+            const subject = `Valutazione Benessere - ${r.nome} ${r.cognome}`;
+            const body = `Valutazione Benessere 21GIORNIFIT\n\nNome: ${r.nome} ${r.cognome}\nEmail: ${r.email}\nTelefono: ${r.telefono}\n\nPunteggio: ${r.score}/15\n${r.message}\n\nRisposte SÌ: ${Object.values(r.answers).filter(a => a === 'yes').length}/13`;
+            const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = url;
+        }
+
+        // COPIA RISULTATI
+        function copyResults() {
+            const r = window.wellnessResults;
+            const text = `Valutazione Benessere 21GIORNIFIT\n\nNome: ${r.nome} ${r.cognome}\nEmail: ${r.email}\nTelefono: ${r.telefono}\n\nPunteggio: ${r.score}/15\n${r.message}\n\nRisposte SÌ: ${Object.values(r.answers).filter(a => a === 'yes').length}/13`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Risultati copiati negli appunti!');
+            }).catch(() => {
+                alert('Impossibile copiare i risultati. Seleziona e copia manualmente.');
+            });
+        }
+
+        // INIZIALIZZA
+        document.addEventListener('DOMContentLoaded', generateQuestions);
+    </script>
+</body>
+</html>
