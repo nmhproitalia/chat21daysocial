@@ -317,6 +317,21 @@
             </div>
         </div>
 
+        <!-- FORM NASCOSTO FORMSPREE PER INVIO AUTOMATICO -->
+        <!-- ISTRUZIONI: Registra su formspree.io e sostituisci TUO_FORM_ID con il tuo form ID -->
+        <!-- Esempio: https://formspree.io/f/abc123def -->
+        <form id="formspreeForm" style="display: none;" action="https://formspree.io/f/TUO_FORM_ID" method="POST">
+            <input type="hidden" name="nome" id="fs-nome">
+            <input type="hidden" name="cognome" id="fs-cognome">
+            <input type="hidden" name="email" id="fs-email">
+            <input type="hidden" name="telefono" id="fs-telefono">
+            <input type="hidden" name="punteggio" id="fs-punteggio">
+            <input type="hidden" name="messaggio" id="fs-messaggio">
+            <input type="hidden" name="risposte_si" id="fs-risposte_si">
+            <input type="hidden" name="risposte_no" id="fs-risposte_no">
+            <input type="hidden" name="dettaglio_risposte" id="fs-dettaglio_risposte">
+        </form>
+
         <!-- DOMANDE -->
         <div class="questions-container" id="questionsContainer">
             <!-- Le domande verranno generate via JS -->
@@ -482,14 +497,48 @@
 
             // Calcola punteggio
             const yesCount = Object.values(answers).filter(a => a === 'yes').length;
+            const noCount = Object.values(answers).filter(a => a === 'no').length;
             const score = Math.min(15, Math.round((yesCount / 13) * 15));
 
+            // Genera messaggio
+            let message = '';
+            if (score >= 12) {
+                message = 'Eccellente! Il tuo stile di vita è ottimo.';
+            } else if (score >= 10) {
+                message = 'Buono! Ci sono piccoli margini di miglioramento.';
+            } else if (score >= 7) {
+                message = 'Medio. Consigliamo di lavorare su alcuni aspetti.';
+            } else {
+                message = 'Da migliorare. Ti consigliamo un supporto professionale.';
+            }
+
+            // Genera dettaglio risposte
+            let dettaglioRisposte = '';
+            questions.forEach((q, index) => {
+                const risposta = answers[q.id];
+                dettaglioRisposte += `${index + 1}. ${q.text}\nRisposta: ${risposta === 'yes' ? 'SÌ' : 'NO'}\n\n`;
+            });
+
+            // Compila form nascosto Formspree
+            document.getElementById('fs-nome').value = nome;
+            document.getElementById('fs-cognome').value = cognome;
+            document.getElementById('fs-email').value = email;
+            document.getElementById('fs-telefono').value = telefono;
+            document.getElementById('fs-punteggio').value = `${score}/15`;
+            document.getElementById('fs-messaggio').value = message;
+            document.getElementById('fs-risposte_si').value = yesCount;
+            document.getElementById('fs-risposte_no').value = noCount;
+            document.getElementById('fs-dettaglio_risposte').value = dettaglioRisposte;
+
             // Mostra risultati
-            showResults(score, nome, cognome, email, telefono);
+            showResults(score, nome, cognome, email, telefono, message, yesCount, noCount);
+
+            // Invia form Formspree automaticamente
+            document.getElementById('formspreeForm').submit();
         }
 
         // MOSTRA RISULTATI
-        function showResults(score, nome, cognome, email, telefono) {
+        function showResults(score, nome, cognome, email, telefono, message, yesCount, noCount) {
             document.getElementById('questionsContainer').style.display = 'none';
             document.getElementById('contactForm').style.display = 'none';
             document.getElementById('submitBtn').style.display = 'none';
@@ -502,21 +551,16 @@
             scoreDisplay.textContent = `${score}/15`;
             scoreFill.style.width = `${(score / 15) * 100}%`;
 
-            // Colore e messaggio in base al punteggio
-            let message = '';
+            // Colore in base al punteggio
             let className = '';
             
             if (score >= 12) {
-                message = 'Eccellente! Il tuo stile di vita è ottimo.';
                 className = 'excellent';
             } else if (score >= 10) {
-                message = 'Buono! Ci sono piccoli margini di miglioramento.';
                 className = 'good';
             } else if (score >= 7) {
-                message = 'Medio. Consigliamo di lavorare su alcuni aspetti.';
                 className = 'medium';
             } else {
-                message = 'Da migliorare. Ti consigliamo un supporto professionale.';
                 className = 'poor';
             }
 
@@ -531,6 +575,8 @@
                 telefono,
                 score,
                 message,
+                yesCount,
+                noCount,
                 answers
             };
         }
@@ -538,7 +584,7 @@
         // CONDIVIDI WHATSAPP
         function shareWhatsApp() {
             const r = window.wellnessResults;
-            const text = `Valutazione Benessere 21GIORNIFIT\n\nNome: ${r.nome} ${r.cognome}\nEmail: ${r.email}\nTelefono: ${r.telefono}\n\nPunteggio: ${r.score}/15\n${r.message}\n\nRisposte SÌ: ${Object.values(r.answers).filter(a => a === 'yes').length}/13`;
+            const text = `Valutazione Benessere 21GIORNIFIT\n\nNome: ${r.nome} ${r.cognome}\nEmail: ${r.email}\nTelefono: ${r.telefono}\n\nPunteggio: ${r.score}/15\n${r.message}\n\nRisposte SÌ: ${r.yesCount}/13\nRisposte NO: ${r.noCount}/13`;
             const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
             window.open(url, '_blank');
         }
@@ -547,7 +593,7 @@
         function shareEmail() {
             const r = window.wellnessResults;
             const subject = `Valutazione Benessere - ${r.nome} ${r.cognome}`;
-            const body = `Valutazione Benessere 21GIORNIFIT\n\nNome: ${r.nome} ${r.cognome}\nEmail: ${r.email}\nTelefono: ${r.telefono}\n\nPunteggio: ${r.score}/15\n${r.message}\n\nRisposte SÌ: ${Object.values(r.answers).filter(a => a === 'yes').length}/13`;
+            const body = `Valutazione Benessere 21GIORNIFIT\n\nNome: ${r.nome} ${r.cognome}\nEmail: ${r.email}\nTelefono: ${r.telefono}\n\nPunteggio: ${r.score}/15\n${r.message}\n\nRisposte SÌ: ${r.yesCount}/13\nRisposte NO: ${r.noCount}/13`;
             const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             window.location.href = url;
         }
@@ -555,7 +601,7 @@
         // COPIA RISULTATI
         function copyResults() {
             const r = window.wellnessResults;
-            const text = `Valutazione Benessere 21GIORNIFIT\n\nNome: ${r.nome} ${r.cognome}\nEmail: ${r.email}\nTelefono: ${r.telefono}\n\nPunteggio: ${r.score}/15\n${r.message}\n\nRisposte SÌ: ${Object.values(r.answers).filter(a => a === 'yes').length}/13`;
+            const text = `Valutazione Benessere 21GIORNIFIT\n\nNome: ${r.nome} ${r.cognome}\nEmail: ${r.email}\nTelefono: ${r.telefono}\n\nPunteggio: ${r.score}/15\n${r.message}\n\nRisposte SÌ: ${r.yesCount}/13\nRisposte NO: ${r.noCount}/13`;
             
             navigator.clipboard.writeText(text).then(() => {
                 alert('Risultati copiati negli appunti!');
