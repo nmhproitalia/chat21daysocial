@@ -247,28 +247,6 @@
             margin: 10px 0;
         }
 
-        .share-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-        .share-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            color: #fff;
-            font-size: 14px;
-        }
-
-        .share-btn.whatsapp { background: #25D366; }
-        .share-btn.email { background: #007bff; }
-        .share-btn.copy { background: #6c757d; }
-
         /* RESPONSIVE */
         @media (max-width: 600px) {
             body {
@@ -320,7 +298,7 @@
         <!-- FORM NASCOSTO FORMSPREE PER INVIO AUTOMATICO -->
         <!-- ISTRUZIONI: Registra su formspree.io e sostituisci TUO_FORM_ID con il tuo form ID -->
         <!-- Esempio: https://formspree.io/f/abc123def -->
-        <form id="formspreeForm" style="display: none;" action="https://formspree.io/f/TUO_FORM_ID" method="POST">
+        <form id="formspreeForm" style="display: none;" action="https://formspree.io/f/mpqbaozw" method="POST">
             <input type="hidden" name="nome" id="fs-nome">
             <input type="hidden" name="cognome" id="fs-cognome">
             <input type="hidden" name="email" id="fs-email">
@@ -350,12 +328,7 @@
                 <div class="score-fill" id="scoreFill" style="width: 0%"></div>
             </div>
             <div class="score-message" id="scoreMessage"></div>
-            
-            <div class="share-buttons">
-                <button class="share-btn whatsapp" onclick="shareWhatsApp()">Condividi su WhatsApp</button>
-                <button class="share-btn email" onclick="shareEmail()">Invia via Email</button>
-                <button class="share-btn copy" onclick="copyResults()">Copia Risultati</button>
-            </div>
+            <p style="margin-top: 20px; color: #666; font-size: 14px;">I tuoi dati e il risultato sono stati inviati automaticamente.</p>
         </div>
     </div>
 
@@ -579,35 +552,6 @@
                 noCount,
                 answers
             };
-        }
-
-        // CONDIVIDI WHATSAPP
-        function shareWhatsApp() {
-            const r = window.wellnessResults;
-            const text = `Valutazione Benessere 21GIORNIFIT\n\nNome: ${r.nome} ${r.cognome}\nEmail: ${r.email}\nTelefono: ${r.telefono}\n\nPunteggio: ${r.score}/15\n${r.message}\n\nRisposte SÌ: ${r.yesCount}/13\nRisposte NO: ${r.noCount}/13`;
-            const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-            window.open(url, '_blank');
-        }
-
-        // CONDIVIDI EMAIL
-        function shareEmail() {
-            const r = window.wellnessResults;
-            const subject = `Valutazione Benessere - ${r.nome} ${r.cognome}`;
-            const body = `Valutazione Benessere 21GIORNIFIT\n\nNome: ${r.nome} ${r.cognome}\nEmail: ${r.email}\nTelefono: ${r.telefono}\n\nPunteggio: ${r.score}/15\n${r.message}\n\nRisposte SÌ: ${r.yesCount}/13\nRisposte NO: ${r.noCount}/13`;
-            const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = url;
-        }
-
-        // COPIA RISULTATI
-        function copyResults() {
-            const r = window.wellnessResults;
-            const text = `Valutazione Benessere 21GIORNIFIT\n\nNome: ${r.nome} ${r.cognome}\nEmail: ${r.email}\nTelefono: ${r.telefono}\n\nPunteggio: ${r.score}/15\n${r.message}\n\nRisposte SÌ: ${r.yesCount}/13\nRisposte NO: ${r.noCount}/13`;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Risultati copiati negli appunti!');
-            }).catch(() => {
-                alert('Impossibile copiare i risultati. Seleziona e copia manualmente.');
-            });
         }
 
         // INIZIALIZZA
