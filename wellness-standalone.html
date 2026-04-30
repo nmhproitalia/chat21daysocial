@@ -251,8 +251,8 @@
 <body>
     <div class="wellness-card">
         <div class="wellness-header">
-            <h1>Valutazione Benessere</h1>
-            <p>21GIORNIFIT - Scopri il tuo stato di benessere in pochi minuti</p>
+            <h1>Valutazione del Benessere</h1>
+            <p>PROGETTO BENESSERE<br>Scopri il tuo stato di benessere in pochi minuti</p>
         </div>
 
         <!-- FORM CONTATTI -->
@@ -434,7 +434,6 @@
             fields.forEach(fieldId => {
                 const field = document.getElementById(fieldId);
                 if (field) {
-                    field.addEventListener('input', checkFormComplete);
                     field.addEventListener('blur', checkFormComplete);
                 }
             });
